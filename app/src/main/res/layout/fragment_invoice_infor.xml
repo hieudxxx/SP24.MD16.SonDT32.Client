@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/custom_bgr_layout"
+    tools:context=".Invoice.Fragment.InvoiceInforFragment">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tb_account"
+        style="@style/custom_toolbar"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/img_back"
+            style="@style/custom_img_back_toolbar" />
+
+        <TextView
+            android:id="@+id/tv_toolbar"
+            style="@style/custom_title_toolbar"
+            android:text="Thông tin phiếu nhập" />
+
+        <TextView
+            android:id="@+id/tv_save"
+            style="@style/custom_tv_title"
+            android:layout_gravity="end"
+            android:layout_marginRight="20dp"
+            android:text="Lưu"
+            android:textColor="@color/tv_blue_bold" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bgr_btn_menu"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="15dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingVertical="10dp">
+
+            <TextView
+                style="@style/custom_tv_title"
+                android:layout_weight="1"
+                android:text="Mã phiếu" />
+
+            <TextView
+                style="@style/custom_tv_title"
+                android:layout_weight="1"
+                android:text="355325325" />
+        </LinearLayout>
+
+        <View style="@style/custom_line" />
+
+        <LinearLayout
+            android:id="@+id/layout_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingVertical="10dp">
+
+            <TextView
+                style="@style/custom_tv_title"
+                android:layout_weight="1.5"
+                android:text="Người nhập" />
+
+            <TextView
+                style="@style/custom_tv_title"
+                android:layout_weight="1"
+                android:text="Đỗ Xuân Hiếu" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/next_forgot_bold" />
+        </LinearLayout>
+
+        <View style="@style/custom_line" />
+
+        <LinearLayout
+            android:id="@+id/layout_date_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingVertical="10dp">
+
+            <TextView
+                style="@style/custom_tv_title"
+                android:layout_weight="4"
+                android:text="Ngày nhập" />
+
+            <TextView
+                style="@style/custom_tv_title"
+                android:layout_weight="1"
+                android:text="29/3/2024 01:40" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/next_forgot_bold" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <EditText
+        style="@style/custom_title_product_detail"
+        android:layout_width="match_parent"
+        android:layout_marginTop="20dp"
+        android:height="50dp"
+        android:background="@color/white"
+        android:hint="Ghi chú"
+        android:paddingHorizontal="10dp" />
+
+</LinearLayout>

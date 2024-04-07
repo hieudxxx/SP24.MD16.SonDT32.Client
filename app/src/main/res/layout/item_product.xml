@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/img"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:shapeAppearanceOverlay="@style/custom_shape_img"
+            app:srcCompat="@drawable/burger"
+            app:strokeColor="@color/bgr_screen"
+            app:strokeWidth="2dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="2.5"
+            android:orientation="vertical"
+            android:paddingLeft="8dp">
+
+            <TextView
+                android:id="@+id/tv_name"
+                style="@style/custom_tv_product_name"
+                android:text="Tên" />
+
+            <TextView
+                android:id="@+id/tv_barcode"
+                style="@style/custom_tv_product_sold"
+                android:text="Mã: " />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2.5"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_inventory"
+                style="@style/custom_tv_product_sold"
+                android:layout_gravity="end"
+                android:layout_weight="1"
+                android:text="Tồn kho: 50" />
+
+            <TextView
+                android:id="@+id/tv_export_price"
+                style="@style/custom_tv_date_time"
+                android:layout_gravity="end"
+                android:text="55555"
+                android:textColor="@color/tv_blue_bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view"
+        style="@style/custom_line"
+        android:layout_below="@+id/abc"
+        android:layout_marginTop="10dp" />
+</LinearLayout>

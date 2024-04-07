@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="match_parent"
+    tools:context=".ForgotPassword.ForgotPasswordActivity">
+
+    <ImageView
+        android:id="@+id/img_back"
+        style="@style/custom_img_back" />
+
+    <TextView
+        android:id="@+id/textView"
+        style="@style/custom_tv_forgot_pass"
+        android:text="@string/text_forgot_password" />
+
+    <RelativeLayout
+        android:id="@+id/rlt_forgot_pass_mail"
+        style="@style/custom_bgr_select_forgot"
+        android:layout_below="@+id/textView"
+        android:layout_marginTop="60dp">
+
+        <ImageView
+            android:id="@+id/imageView29"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="5dp"
+            android:src="@drawable/gmail" />
+
+        <TextView
+            android:id="@+id/textView10"
+            style="@style/custom_tv_send_otp"
+            android:layout_toEndOf="@+id/imageView29"
+            android:text="Gửi mã OTP qua email" />
+
+        <TextView
+            style="@style/custom_tvResetPwd"
+            android:layout_below="@+id/textView10"
+            android:layout_toEndOf="@+id/imageView29"
+            android:text="Đặt lại mật khẩu qua Email" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/next_forgot" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlForgotPwdPhone"
+        style="@style/custom_bgr_select_forgot"
+        android:layout_below="@+id/rlt_forgot_pass_mail"
+        android:layout_marginTop="20dp">
+
+        <ImageView
+            android:id="@+id/imageView30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="5dp"
+            android:src="@drawable/phone" />
+
+        <TextView
+            android:id="@+id/textView13"
+            style="@style/custom_tv_send_otp"
+            android:layout_toEndOf="@+id/imageView30"
+            android:text="Gửi mã OTP qua số điện thoại" />
+
+        <TextView
+            style="@style/custom_tvResetPwd"
+            android:layout_below="@+id/textView13"
+            android:layout_toEndOf="@+id/imageView30"
+            android:text="Đăt lại mật khẩu qua SMS" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/next_forgot" />
+    </RelativeLayout>
+</RelativeLayout>

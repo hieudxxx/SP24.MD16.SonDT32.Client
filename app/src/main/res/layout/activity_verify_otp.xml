@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ForgotPassword.VerifyOtpActivity">
+
+    <ImageView
+        android:id="@+id/img_back"
+        style="@style/custom_img_back" />
+
+    <TextView
+        android:id="@+id/textView"
+        style="@style/custom_tv_forgot_pass"
+        android:text="Verify OTP" />
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/edt_number1"
+            style="@style/custom_etPin"
+            android:layout_marginEnd="20dp"
+            tools:ignore="LabelFor" />
+
+        <EditText
+            android:id="@+id/edt_number2"
+            style="@style/custom_etPin"
+            android:layout_marginEnd="20dp"
+            tools:ignore="LabelFor" />
+
+        <EditText
+            android:id="@+id/edt_number3"
+            style="@style/custom_etPin"
+            android:layout_marginEnd="20dp"
+            tools:ignore="LabelFor" />
+
+        <EditText
+            android:id="@+id/edt_number4"
+            style="@style/custom_etPin"
+            tools:ignore="LabelFor" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nunito_semibold"
+            android:text="Không nhận được ?"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_resend_otp"
+            style="@style/custom_tv_forgot_pass"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="0dp"
+            android:text="Gửi lại mã"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_verify_otp"
+        style="@style/custom_btn"
+        android:layout_below="@+id/linearLayout2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginTop="50dp"
+        android:text="@string/text_authentication" />
+    >
+</RelativeLayout>

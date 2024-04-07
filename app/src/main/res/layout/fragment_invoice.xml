@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/custom_bgr_layout"
+    tools:context=".Invoice.Fragment.InvoiceFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tb_invoice"
+            style="@style/custom_toolbar"
+            android:background="@color/white">
+
+            <TextView
+                style="@style/custom_title_toolbar"
+                android:text="@string/text_invoice" />
+        </androidx.appcompat.widget.Toolbar>
+
+        <View
+            android:id="@+id/view"
+            style="@style/custom_line"
+            android:layout_below="@+id/tb_invoice" />
+
+        <LinearLayout
+            android:id="@+id/layout_total"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="10dp"
+            android:visibility="gone">
+
+            <TextView
+                style="@style/custom_tv_date_time"
+                android:fontFamily="@font/nunito_bold"
+                android:text="@string/text_invoice"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tv_total_invoice"
+                style="@style/custom_tv_date_time"
+                android:fontFamily="@font/nunito_extrabold"
+                android:text="10000"
+                android:textColor="@color/tv_blue_bold" />
+
+            <LinearLayout
+                style="@style/custom_llInvoice"
+                android:layout_width="match_parent"
+                android:gravity="end">
+
+                <TextView
+                    style="@style/custom_tv_date_time"
+                    android:fontFamily="@font/nunito_bold"
+                    android:text="@string/text_sum"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/tv_total_money"
+                    style="@style/custom_tv_date_time"
+                    android:layout_marginStart="3dp"
+                    android:fontFamily="@font/nunito_extrabold"
+                    android:text="1.000.000"
+                    android:textColor="@color/tv_blue_bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_calendar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="end"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/calendar" />
+
+            <TextView
+                android:id="@+id/tv_date"
+                style="@style/custom_tv_date_time"
+                android:text="Hôm nay, 5/3/2024" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/arrow_down_bold" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcv_invoice"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bgr_bot_sheet"
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_invoice" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_empty"
+        style="@style/custom_tv_title"
+        android:text="Bạn chưa có hóa đơn nào"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#66000000"
+        android:visibility="invisible" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_add_import"
+        style="@style/custom_fab"
+        android:layout_marginBottom="15dp"
+        android:src="@drawable/import_invoice"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/fab" />
+
+    <TextView
+        android:id="@+id/tv_add_import"
+        style="@style/custom_fab_tv"
+        android:text="@string/text_import"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/fab_add_import"
+        app:layout_constraintEnd_toStartOf="@+id/fab_add_import" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_add_export"
+        style="@style/custom_fab"
+        android:layout_marginBottom="15dp"
+        android:src="@drawable/export_invoice"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/fab_add_import" />
+
+    <TextView
+        android:id="@+id/tv_add_export"
+        style="@style/custom_fab_tv"
+        android:text="@string/text_export"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/fab_add_export"
+        app:layout_constraintEnd_toStartOf="@+id/fab_add_export" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fab"
+        style="@style/custom_fab"
+        app:icon="@drawable/add"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
