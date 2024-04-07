@@ -10,13 +10,15 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import fpoly.md16.depotlife.R;
+import fpoly.md16.depotlife.databinding.FragmentProductEditBinding;
 
 public class ProductEditFragment extends Fragment {
+    private FragmentProductEditBinding binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_product_edit, container, false);
     }
 

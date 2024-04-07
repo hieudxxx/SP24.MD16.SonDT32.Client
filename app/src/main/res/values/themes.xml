@@ -18,12 +18,6 @@
 
     <style name="Theme.DeportLife" parent="Base.Theme.DeportLife" />
 
-    <!--    Toolbar style-->
-    <style name="custom_toolbar_theme" parent="Theme.AppCompat.Light">
-        <item name="android:colorBackground">@color/white</item>
-        <item name="android:textColor">@color/black</item>
-    </style>
-
     <!--Custom textview-->
     <style name="custom_tv_app_name">
         <item name="android:layout_width">wrap_content</item>
@@ -37,6 +31,10 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">20sp</item>
+        <item name="layout_constraintBottom_toBottomOf">parent</item>
+        <item name="layout_constraintEnd_toEndOf">parent</item>
+        <item name="layout_constraintStart_toStartOf">parent</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
     </style>
 
     <style name="custom_tv_product_name">
@@ -349,7 +347,7 @@
         <item name="android:textSize">18sp</item>
     </style>
 
-    <!--    -->
+
     <style name="custom_tv_date_time">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:fontFamily">@font/nunito_semibold</item>
@@ -358,6 +356,19 @@
         <item name="android:padding">5dp</item>
         <item name="android:textSize">18sp</item>
     </style>
+
+    <style name="custom_rcv">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">40dp</item>
+        <item name="android:visibility">gone</item>
+        <item name="layoutManager">androidx.recyclerview.widget.LinearLayoutManager</item>
+        <item name="layout_constraintBottom_toBottomOf">parent</item>
+        <item name="layout_constraintEnd_toEndOf">parent</item>
+        <item name="layout_constraintStart_toStartOf">parent</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
+    </style>
+
 
     <style name="custom_llInvoice">
         <item name="android:layout_width">wrap_content</item>
@@ -372,7 +383,6 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:orientation">vertical</item>
         <item name="android:background">@color/bgr_screen</item>
-
     </style>
 
     <style name="custom_fab">
@@ -383,7 +393,25 @@
         <item name="android:layout_marginEnd">10dp</item>
         <item name="android:layout_marginBottom">65dp</item>
         <item name="layout_constraintEnd_toEndOf">parent</item>
+        <item name="layout_constraintBottom_toBottomOf">parent</item>
         <item name="shapeAppearanceOverlay">@style/fabRounded</item>
+    </style>
+
+    <style name="custom_layout_supplier">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:background">@drawable/bgr_btn_menu</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingHorizontal">20dp</item>
+        <item name="android:paddingTop">15dp</item>
+    </style>
+
+    <style name="custom_tv_supplier">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingVertical">10dp</item>
     </style>
 
     <style name="custom_fab_tv">

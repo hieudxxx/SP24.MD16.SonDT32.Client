@@ -6,8 +6,7 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tb_account"
-        style="@style/custom_toolbar"
-        android:background="@color/white">
+        style="@style/custom_toolbar">
 
         <ImageView
             android:id="@+id/img_back"
@@ -27,14 +26,7 @@
             android:textColor="@color/tv_blue_bold" />
     </androidx.appcompat.widget.Toolbar>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/bgr_btn_menu"
-        android:orientation="vertical"
-        android:paddingHorizontal="20dp"
-        android:paddingTop="15dp">
+    <LinearLayout style="@style/custom_layout_supplier">
 
         <LinearLayout
             android:layout_width="match_parent"
