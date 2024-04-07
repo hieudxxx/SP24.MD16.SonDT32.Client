@@ -2,16 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/bgr_screen"
-    android:orientation="vertical"
+    style="@style/custom_bgr_layout"
     tools:context=".Menu.Account.Fragment.AccountFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tb_account"
-        style="@style/custom_toolbar"
-        android:background="@color/white">
+        style="@style/custom_toolbar">
 
         <ImageView
             android:id="@+id/img_back"

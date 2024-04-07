@@ -12,11 +12,7 @@
         android:paddingHorizontal="20dp"
         android:paddingTop="15dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingVertical="10dp">
+        <LinearLayout style="@style/custom_tv_supplier">
 
             <TextView
                 style="@style/custom_tv_title"
@@ -31,11 +27,7 @@
 
         <View style="@style/custom_line" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingVertical="10dp">
+        <LinearLayout style="@style/custom_tv_supplier">
 
             <TextView
                 style="@style/custom_tv_title"
@@ -52,11 +44,7 @@
 
         <View style="@style/custom_line" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingVertical="10dp">
+        <LinearLayout style="@style/custom_tv_supplier">
 
             <TextView
                 style="@style/custom_tv_title"
@@ -73,11 +61,7 @@
 
         <View style="@style/custom_line" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingVertical="10dp">
+        <LinearLayout style="@style/custom_tv_supplier">
 
             <TextView
                 style="@style/custom_tv_title"
@@ -94,11 +78,7 @@
 
         <View style="@style/custom_line" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingVertical="10dp">
+        <LinearLayout style="@style/custom_tv_supplier">
 
             <TextView
                 style="@style/custom_tv_title"
@@ -115,11 +95,7 @@
 
         <View style="@style/custom_line" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingVertical="10dp">
+        <LinearLayout style="@style/custom_tv_supplier">
 
             <TextView
                 style="@style/custom_tv_title"

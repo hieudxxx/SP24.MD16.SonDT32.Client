@@ -16,17 +16,14 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/tb_product"
-            style="@style/custom_toolbar"
-            android:background="@color/white">
+            style="@style/custom_toolbar">
 
             <TextView
                 style="@style/custom_title_toolbar"
                 android:text="@string/text_product" />
         </androidx.appcompat.widget.Toolbar>
 
-        <View
-            android:id="@+id/view"
-            style="@style/custom_line" />
+        <View style="@style/custom_line" />
 
         <LinearLayout
             android:id="@+id/layout_total"
@@ -91,6 +88,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="40dp"
             android:background="@drawable/bgr_bot_sheet"
+            android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_product" />
     </LinearLayout>
@@ -98,17 +96,11 @@
     <TextView
         android:id="@+id/tv_empty"
         style="@style/custom_tv_title"
-        android:text="Bạn chưa có hàng hóa nào"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="Bạn chưa có hàng hóa nào" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fab"
         style="@style/custom_fab"
-        app:icon="@drawable/add"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:icon="@drawable/add" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

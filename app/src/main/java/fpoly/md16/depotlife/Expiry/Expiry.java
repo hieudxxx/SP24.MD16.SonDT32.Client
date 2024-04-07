@@ -1,4 +1,4 @@
-package fpoly.md16.depotlife.Model;
+package fpoly.md16.depotlife.Expiry;
 
 import org.bson.types.ObjectId;
 import java.util.Date;
