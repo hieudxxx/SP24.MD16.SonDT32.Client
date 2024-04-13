@@ -1,8 +1,16 @@
 package fpoly.md16.depotlife;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Invoice.Fragment.InvoiceFragment;
@@ -26,21 +34,19 @@ public class MainActivity extends AppCompatActivity {
 
         binding.botNav.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.bot_nav_statistic)
-                Helper.loadFragment(getSupportFragmentManager(), new StatisticFragment(), null, R.id.frag_container_main)
-                        ;
+                Helper.loadFragment(getSupportFragmentManager(), new StatisticFragment(), null, R.id.frag_container_main);
             if (item.getItemId() == R.id.bot_nav_invoice)
-                Helper.loadFragment(getSupportFragmentManager(), new InvoiceFragment(), null, R.id.frag_container_main)
-                        ;
+                Helper.loadFragment(getSupportFragmentManager(), new InvoiceFragment(), null, R.id.frag_container_main);
             if (item.getItemId() == R.id.bot_nav_product)
-                Helper.loadFragment(getSupportFragmentManager(), new ProductFragment(), null, R.id.frag_container_main)
-                        ;
+                Helper.loadFragment(getSupportFragmentManager(), new ProductFragment(), null, R.id.frag_container_main);
             if (item.getItemId() == R.id.bot_nav_menu) {
-                Helper.loadFragment(getSupportFragmentManager(), new MenuFragment(), null, R.id.frag_container_main)
-                ;
+                Helper.loadFragment(getSupportFragmentManager(), new MenuFragment(), null, R.id.frag_container_main);
             }
             return true;
         });
 
+
     }
+
 
 }

@@ -11,14 +11,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import fpoly.md16.depotlife.Staff.Model.User;
+import fpoly.md16.depotlife.Staff.Model.UserResponse;
 import fpoly.md16.depotlife.databinding.ItemStaffBinding;
 
 public class StaffAdapter extends RecyclerView.Adapter<StaffAdapter.ViewHolder> implements Filterable {
     private Context context;
-    private ArrayList<User> list;
+    private ArrayList<UserResponse.User> list;
 
-    public StaffAdapter(Context context, ArrayList<User> list) {
+    public StaffAdapter(Context context, ArrayList<UserResponse.User> list) {
         this.context = context;
         this.list = list;
     }
@@ -39,7 +39,7 @@ public class StaffAdapter extends RecyclerView.Adapter<StaffAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.binding.tvName.setText(list.get(position).getName());
         holder.binding.tvEmail.setText(list.get(position).getEmail());
-        holder.binding.tvPhone.setText(list.get(position).getPhone());
+//        holder.binding.tvPhone.setText(list.get(position).getPhone_number());
     }
 
     @Override

@@ -13,7 +13,6 @@
             style="@style/custom_img_back_toolbar" />
 
         <TextView
-            android:id="@+id/tv_toolbar"
             style="@style/custom_title_toolbar"
             android:text="Thêm nhà cung cấp" />
 
@@ -22,137 +21,128 @@
             style="@style/custom_tv_title"
             android:layout_gravity="end"
             android:layout_marginRight="20dp"
-            android:text="Xong"
+            android:text="Thêm"
             android:textColor="@color/tv_blue_bold" />
     </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout style="@style/custom_layout_supplier">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingVertical="10dp">
+        <LinearLayout style="@style/custom_tv_supplier">
 
             <TextView
-                style="@style/custom_tv_title"
+                style="@style/custom_title_product_detail"
                 android:layout_weight="1"
                 android:text="Mã NCC" />
 
             <EditText
-                style="@style/custom_tv_title"
-                android:layout_weight="1"
-                android:background="@color/white"
+                android:id="@+id/edt_id"
+                style="@style/custom_title_product_detail"
+                android:layout_weight="2.5"
+                android:clickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
                 android:hint="Mã tự động" />
         </LinearLayout>
 
         <View style="@style/custom_line" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingVertical="10dp">
+        <LinearLayout style="@style/custom_tv_supplier">
 
             <TextView
-                style="@style/custom_tv_title"
+                style="@style/custom_title_product_detail"
                 android:layout_weight="1"
                 android:text="Tên NCC" />
 
-            <TextView
-                style="@style/custom_tv_title"
-                android:layout_weight="1"
-                android:text="qửbnaokbnf" />
-
-
+            <EditText
+                android:id="@+id/edt_name"
+                style="@style/custom_title_product_detail"
+                android:layout_weight="2.5"
+                android:hint="tên ncc" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_war_name"
+            style="@style/custom_tv_warning" />
 
         <View style="@style/custom_line" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingVertical="10dp">
+        <LinearLayout style="@style/custom_tv_supplier">
 
             <TextView
-                style="@style/custom_tv_title"
+                style="@style/custom_title_product_detail"
                 android:layout_weight="1"
                 android:text="Điện thoại" />
 
-            <TextView
-                style="@style/custom_tv_title"
-                android:layout_weight="1"
-                android:text="0973967774" />
-
-
+            <EditText
+                android:id="@+id/edt_phone"
+                style="@style/custom_title_product_detail"
+                android:layout_weight="2.5"
+                android:hint="số điện thoại" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_war_phone"
+            style="@style/custom_tv_warning" />
 
         <View style="@style/custom_line" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingVertical="10dp">
+        <LinearLayout style="@style/custom_tv_supplier">
 
             <TextView
-                style="@style/custom_tv_title"
+                style="@style/custom_title_product_detail"
                 android:layout_weight="1"
                 android:text="Email" />
 
-            <TextView
-                style="@style/custom_tv_title"
-                android:layout_weight="1"
-                android:text="" />
-
-
+            <EditText
+                android:id="@+id/edt_email"
+                style="@style/custom_title_product_detail"
+                android:layout_weight="2.5"
+                android:hint="email" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_war_email"
+            style="@style/custom_tv_warning" />
 
         <View style="@style/custom_line" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingVertical="10dp">
+        <LinearLayout style="@style/custom_tv_supplier">
 
             <TextView
-                style="@style/custom_tv_title"
+                style="@style/custom_title_product_detail"
                 android:layout_weight="1"
-                android:text="Đia chỉ" />
+                android:text="Địa chỉ" />
 
-            <TextView
-                style="@style/custom_tv_title"
-                android:layout_weight="1"
-                android:text="" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/next_forgot_bold" />
+            <EditText
+                android:id="@+id/edt_address"
+                style="@style/custom_title_product_detail"
+                android:layout_weight="2.5"
+                android:hint="địa chỉ" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_war_address"
+            style="@style/custom_tv_warning" />
 
         <View style="@style/custom_line" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingVertical="10dp">
+        <LinearLayout style="@style/custom_tv_supplier">
 
             <TextView
-                style="@style/custom_tv_title"
+                style="@style/custom_title_product_detail"
                 android:layout_weight="1"
                 android:text="Mã số thuế" />
 
-            <TextView
-                style="@style/custom_tv_title"
-                android:layout_weight="1"
-                android:text="" />
-
-
+            <EditText
+                android:id="@+id/edt_taxCode"
+                style="@style/custom_title_product_detail"
+                android:layout_weight="2.5"
+                android:hint="mã số thuế" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_war_taxCode"
+            style="@style/custom_tv_warning" />
 
         <View
             style="@style/custom_line"
@@ -161,12 +151,13 @@
     </LinearLayout>
 
     <EditText
+        android:id="@+id/edt_note"
         style="@style/custom_title_product_detail"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:height="50dp"
         android:background="@color/white"
         android:hint="Ghi chú"
         android:paddingHorizontal="10dp" />
-
 </LinearLayout>

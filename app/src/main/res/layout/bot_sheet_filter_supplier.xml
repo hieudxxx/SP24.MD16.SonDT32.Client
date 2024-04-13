@@ -24,11 +24,11 @@
         <RadioButton
             android:id="@+id/rd_filter_active"
             style="@style/custom_rd_sort_filter"
-            android:text="Hoạt động" />
+            android:text="Hợp tác" />
 
         <RadioButton
             android:id="@+id/rd_filter_inactive"
             style="@style/custom_rd_sort_filter"
-            android:text="Ngưng hoạt động" />
+            android:text="Ngưng hợp tác" />
     </RadioGroup>
 </LinearLayout>

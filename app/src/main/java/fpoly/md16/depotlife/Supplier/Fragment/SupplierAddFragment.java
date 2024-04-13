@@ -25,5 +25,14 @@ public class SupplierAddFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        binding.imgBack.setOnClickListener(view1 -> {
+            requireActivity().getSupportFragmentManager().popBackStack();
+
+        });
+
+        binding.tvSave.setOnClickListener(view12 -> {
+
+        });
     }
 }

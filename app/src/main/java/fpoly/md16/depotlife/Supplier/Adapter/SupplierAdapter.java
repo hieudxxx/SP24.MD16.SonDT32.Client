@@ -25,10 +25,11 @@ public class SupplierAdapter extends RecyclerView.Adapter<SupplierAdapter.ViewHo
     private ArrayList<Supplier> mlist;
     private FragmentManager fragmentManager;
 
-    public SupplierAdapter(Context context, ArrayList<Supplier> list) {
+    public SupplierAdapter(Context context, ArrayList<Supplier> list, FragmentManager fragmentManager) {
         this.context = context;
         this.list = list;
         this.mlist = list;
+        this.fragmentManager = fragmentManager;
     }
 
     @NonNull
@@ -40,12 +41,17 @@ public class SupplierAdapter extends RecyclerView.Adapter<SupplierAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
         holder.binding.tvName.setText(list.get(position).getName());
+        holder.binding.tvStatus.setText(list.get(position).isStatus() ? "Đang hợp tác" : "Đã ngừng hợp tác");
+
+
         holder.binding.tvTotal.setText(Helper.formatVND(list.get(position).getTotal()));
 
         holder.itemView.setOnClickListener(view -> {
             Bundle bundle = new Bundle();
-            bundle.putSerializable("supplier",list.get(holder.getAdapterPosition()));
+//            bundle.putSerializable("supplier", list.get(holder.getAdapterPosition()));
+            bundle.putString("id", list.get(holder.getAdapterPosition()).getId());
             Helper.loadFragment(fragmentManager, new SupplierDetailFragment(), bundle, R.id.frag_container_supplier);
         });
     }
