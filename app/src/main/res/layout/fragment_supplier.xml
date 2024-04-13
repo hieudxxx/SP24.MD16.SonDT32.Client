@@ -25,8 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:padding="10dp"
-        android:visibility="gone">
+        android:padding="10dp">
 
         <TextView
             style="@style/custom_tv_date_time"

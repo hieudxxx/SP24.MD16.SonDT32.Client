@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission
+        android:name="android.permission.READ_PRIVILEGED_PHONE_STATE"
+        tools:ignore="ProtectedPermissions" />
+
 
     <application
         android:allowBackup="true"
@@ -13,6 +18,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DeportLife"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
             android:name=".Product.Activity.ProductActivity"
@@ -63,7 +69,7 @@
             android:name=".ForgotPassword.ConfirmOtpActivity"
             android:exported="false" />
         <activity
-            android:name=".Login.LoginActivity"
+            android:name=".MainActivity"
             android:exported="true" />
         <activity
             android:name=".Category.CategoryActivity"
@@ -72,7 +78,7 @@
             android:name=".ForgotPassword.ForgotPasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Login.LoginActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustNothing">
             <intent-filter>

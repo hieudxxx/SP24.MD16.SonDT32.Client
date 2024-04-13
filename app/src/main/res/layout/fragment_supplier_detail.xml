@@ -6,7 +6,7 @@
     tools:context=".Supplier.Fragment.SupplierDetailFragment">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tb_invoice"
+        android:id="@+id/tb_supplier"
         style="@style/custom_toolbar">
 
         <ImageView
@@ -14,17 +14,9 @@
             style="@style/custom_img_back_toolbar" />
 
         <TextView
-            android:id="@+id/tv_id_invoice_detail"
+            android:id="@+id/tv_name"
             style="@style/custom_title_toolbar"
             android:text="Công ty cổ phần..." />
-
-        <ImageView
-            android:id="@+id/img_edit_detail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:src="@drawable/edit_invoice" />
-
     </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
@@ -34,6 +26,7 @@
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab"
+            android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:tabSelectedTextColor="@color/black">

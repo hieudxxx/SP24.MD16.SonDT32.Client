@@ -16,11 +16,14 @@
 
             <TextView
                 style="@style/custom_tv_title"
+                android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="Mã NCC" />
 
             <TextView
+                android:id="@+id/tv_id"
                 style="@style/custom_tv_title"
+                android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="NCC004" />
         </LinearLayout>
@@ -31,11 +34,14 @@
 
             <TextView
                 style="@style/custom_tv_title"
+                android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="Tên NCC" />
 
             <TextView
+                android:id="@+id/tv_name"
                 style="@style/custom_tv_title"
+                android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="qửbnaokbnf" />
 
@@ -48,11 +54,14 @@
 
             <TextView
                 style="@style/custom_tv_title"
+                android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="Điện thoại" />
 
             <TextView
+                android:id="@+id/tv_phone"
                 style="@style/custom_tv_title"
+                android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="0973967774" />
 
@@ -65,11 +74,14 @@
 
             <TextView
                 style="@style/custom_tv_title"
+                android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="Email" />
 
             <TextView
+                android:id="@+id/tv_email"
                 style="@style/custom_tv_title"
+                android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="" />
 
@@ -82,11 +94,14 @@
 
             <TextView
                 style="@style/custom_tv_title"
+                android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="Đia chỉ" />
 
             <TextView
+                android:id="@+id/tv_address"
                 style="@style/custom_tv_title"
+                android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="" />
 
@@ -99,11 +114,14 @@
 
             <TextView
                 style="@style/custom_tv_title"
+                android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="Mã số thuế" />
 
             <TextView
+                android:id="@+id/tv_taxCode"
                 style="@style/custom_tv_title"
+                android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="" />
 
@@ -121,11 +139,14 @@
 
             <TextView
                 style="@style/custom_tv_title"
+                android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="Ghi chú" />
 
             <TextView
+                android:id="@+id/tv_note"
                 style="@style/custom_tv_title"
+                android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="" />
         </LinearLayout>
