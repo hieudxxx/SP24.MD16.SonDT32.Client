@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/custom_bgr_layout"
+    tools:context=".Supplier.Fragment.DetailTabFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bgr_btn_menu"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="15dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingVertical="10dp">
+
+            <TextView
+                style="@style/custom_tv_title"
+                android:layout_weight="1"
+                android:text="Mã NCC" />
+
+            <TextView
+                style="@style/custom_tv_title"
+                android:layout_weight="1"
+                android:text="NCC004" />
+        </LinearLayout>
+
+        <View style="@style/custom_line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingVertical="10dp">
+
+            <TextView
+                style="@style/custom_tv_title"
+                android:layout_weight="1"
+                android:text="Tên NCC" />
+
+            <TextView
+                style="@style/custom_tv_title"
+                android:layout_weight="1"
+                android:text="qửbnaokbnf" />
+
+
+        </LinearLayout>
+
+        <View style="@style/custom_line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingVertical="10dp">
+
+            <TextView
+                style="@style/custom_tv_title"
+                android:layout_weight="1"
+                android:text="Điện thoại" />
+
+            <TextView
+                style="@style/custom_tv_title"
+                android:layout_weight="1"
+                android:text="0973967774" />
+
+
+        </LinearLayout>
+
+        <View style="@style/custom_line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingVertical="10dp">
+
+            <TextView
+                style="@style/custom_tv_title"
+                android:layout_weight="1"
+                android:text="Email" />
+
+            <TextView
+                style="@style/custom_tv_title"
+                android:layout_weight="1"
+                android:text="" />
+
+
+        </LinearLayout>
+
+        <View style="@style/custom_line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingVertical="10dp">
+
+            <TextView
+                style="@style/custom_tv_title"
+                android:layout_weight="1"
+                android:text="Đia chỉ" />
+
+            <TextView
+                style="@style/custom_tv_title"
+                android:layout_weight="1"
+                android:text="" />
+
+
+        </LinearLayout>
+
+        <View style="@style/custom_line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingVertical="10dp">
+
+            <TextView
+                style="@style/custom_tv_title"
+                android:layout_weight="1"
+                android:text="Mã số thuế" />
+
+            <TextView
+                style="@style/custom_tv_title"
+                android:layout_weight="1"
+                android:text="" />
+
+
+        </LinearLayout>
+
+        <View
+            style="@style/custom_line"
+            android:layout_marginBottom="20dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/custom_tv_title"
+                android:layout_weight="1"
+                android:text="Ghi chú" />
+
+            <TextView
+                style="@style/custom_tv_title"
+                android:layout_weight="1"
+                android:text="" />
+        </LinearLayout>
+
+        <View
+            style="@style/custom_line"
+            android:layout_marginBottom="20dp" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

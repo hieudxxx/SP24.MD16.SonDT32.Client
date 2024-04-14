@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bgr_dialog_notification"
+    android:theme="@style/Base.Theme.DeportLife">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imageView2"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/img_add"
+            app:shapeAppearanceOverlay="@style/custom_shape_img_circle"
+            app:strokeWidth="2dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_name"
+                style="@style/custom_tv_title"
+                android:text="Đỗ Xuân Hiếu" />
+
+            <TextView
+                android:id="@+id/tv_phone"
+                style="@style/custom_tv_title"
+                android:text="0973967774" />
+
+            <TextView
+                android:id="@+id/tv_email"
+                style="@style/custom_tv_title"
+                android:text="hieudxph21411@fpt.edu.vn" />
+        </LinearLayout>
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:layout_weight="2"
+            android:clickable="true"
+            android:focusable="true"
+            android:textColor="@color/white"
+            android:textOff="Hạn chế"
+            android:textOn="Hạn chế"
+            android:thumb="@drawable/thumb"
+            app:showText="true"
+            app:track="@drawable/track" />
+
+        <!--        <com.google.android.material.switchmaterial.SwitchMaterial-->
+        <!--            android:layout_width="130dp"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:checked="true"-->
+        <!--            android:clickable="true"-->
+        <!--            android:focusable="true"-->
+        <!--            android:textOff="Hạn chế"-->
+        <!--            android:textOn="Hạn chế"-->
+        <!--            android:thumb="@drawable/thumb"-->
+        <!--            app:showText="true"-->
+        <!--            app:switchTextAppearance="@style/TextAppearance.AppCompat.Subhead"-->
+        <!--            app:track="@drawable/track" />-->
+
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

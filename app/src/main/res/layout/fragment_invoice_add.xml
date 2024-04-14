@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/custom_bgr_layout"
+    android:orientation="vertical"
+    tools:context=".Invoice.Fragment.InvoiceAddFragment">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tb_invoice"
+        style="@style/custom_toolbar"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/img_back"
+            style="@style/custom_img_back_toolbar" />
+
+        <TextView
+            android:id="@+id/tv_toolbar"
+            style="@style/custom_title_toolbar"
+            android:text="Tạo phiếu" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/bgr_bot_sheet"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/custom_tv_product_name"
+                android:text="MÃ HÓA ĐƠN" />
+
+            <TextView
+                style="@style/custom_tv_invoice_add"
+                android:text="SDGADFASDASD" />
+
+            <TextView
+                style="@style/custom_tv_product_name"
+                android:text="NGÀY TẠO" />
+
+            <TextView
+                android:id="@+id/tv_date_time"
+                style="@style/custom_tv_invoice_add"
+                android:text="SDGADFASDASD" />
+
+            <!--            <TextView-->
+            <!--                style="@style/custom_tv_product_name"-->
+            <!--                android:text="LOẠI HÓA ĐƠN" />-->
+
+            <!--            <Spinner-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="5dp"-->
+            <!--                android:layout_marginBottom="20dp" />-->
+
+            <TextView
+                style="@style/custom_tv_product_name"
+                android:text="THÊM SẢN PHẨM" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/custom_bgr_edt"
+                android:orientation="horizontal">
+
+                <SearchView
+                    android:id="@+id/sv_product"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:queryHint="Chọn hàng nhập" />
+
+                <ImageView
+                    android:id="@+id/img_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/category_add_invoice" />
+
+                <ImageView
+                    android:id="@+id/img_add_product"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/baseline_add_24" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_empty"
+                style="@style/custom_tv_title"
+                android:layout_width="match_parent"
+                android:layout_marginTop="100dp"
+                android:gravity="center"
+                android:text="Bạn chưa có hàng hóa nào"
+                android:visibility="gone" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv_add_invoice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="8dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_product_invoice" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bgr_btn_menu"
+            android:backgroundTint="@color/tv_blue_bold"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tổng 5"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:text="157.000"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/next_add_invoice" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
