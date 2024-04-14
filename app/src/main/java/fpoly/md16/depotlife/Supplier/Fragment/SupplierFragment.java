@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 
-import fpoly.md16.depotlife.Helper.Api.ApiSupplier;
+import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiSupplier;
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Supplier.Adapter.SupplierAdapter;
 import fpoly.md16.depotlife.Supplier.Model.Supplier;
@@ -29,7 +29,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SupplierFragment extends Fragment {
-
     private FragmentSupplierBinding binding;
     private ArrayList<Supplier> list;
     private SupplierAdapter adapter;
@@ -54,7 +53,6 @@ public class SupplierFragment extends Fragment {
 
         binding.fab.setOnClickListener(view12 -> {
             Helper.loadFragment(getParentFragmentManager(), new SupplierAddFragment(), null, R.id.frag_container_supplier);
-
         });
 
         list = new ArrayList<>();
@@ -74,6 +72,7 @@ public class SupplierFragment extends Fragment {
                 if (list != null && !list.isEmpty()) {
                     binding.rcvInvoice.setVisibility(View.VISIBLE);
                     binding.layoutTotal.setVisibility(View.VISIBLE);
+                    binding.tvTotalInvoice.setText(list.size() + "");
                     binding.tvEmpty.setVisibility(View.GONE);
                     setHasOptionsMenu(true);
                 } else {
@@ -82,7 +81,7 @@ public class SupplierFragment extends Fragment {
                     binding.tvEmpty.setVisibility(View.VISIBLE);
                     setHasOptionsMenu(false);
                 }
-                adapter = new SupplierAdapter(getContext(), list);
+                adapter = new SupplierAdapter(getContext(), list, getParentFragmentManager());
                 binding.rcvInvoice.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
             }
@@ -95,6 +94,7 @@ public class SupplierFragment extends Fragment {
         });
 
     }
+
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -122,11 +122,11 @@ public class SupplierFragment extends Fragment {
         BotSheetFilterSupplierBinding filterBinding = BotSheetFilterSupplierBinding.inflate(LayoutInflater.from(getActivity()));
         filterBinding.rdGr.setOnCheckedChangeListener((radioGroup, i) -> {
             if (i == R.id.rd_filter_active) {
-                adapter = new SupplierAdapter(getContext(), Supplier.filterByStatus(list, true));
+                adapter = new SupplierAdapter(getContext(), Supplier.filterByStatus(list, true), getParentFragmentManager());
             } else if (i == R.id.rd_filter_inactive) {
-                adapter = new SupplierAdapter(getContext(), Supplier.filterByStatus(list, false));
+                adapter = new SupplierAdapter(getContext(), Supplier.filterByStatus(list, false), getParentFragmentManager());
             } else if (i == R.id.rd_filter_all) {
-                adapter = new SupplierAdapter(getContext(), list);
+                adapter = new SupplierAdapter(getContext(), list, getParentFragmentManager());
             }
             binding.rcvInvoice.setAdapter(adapter);
             adapter.notifyDataSetChanged();

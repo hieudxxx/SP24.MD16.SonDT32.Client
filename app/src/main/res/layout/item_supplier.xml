@@ -24,17 +24,24 @@
         <TextView
             android:id="@+id/tv_total"
             android:layout_width="0dp"
-            android:gravity="end"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:fontFamily="@font/nunito_bold"
+            android:gravity="end"
             android:text="0973967774"
             android:textColor="@color/black"
             android:textSize="20sp" />
     </LinearLayout>
 
-    <View
-        android:id="@+id/view"
-        style="@style/custom_line" />
+    <TextView
+        android:id="@+id/tv_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nunito_semibold"
+        android:text="Đã ngừng hợp tác"
+        android:textColor="@color/gray60"
+        android:textSize="18sp" />
+
+    <View style="@style/custom_line" />
 </LinearLayout>

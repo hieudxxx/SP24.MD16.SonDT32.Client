@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 import fpoly.md16.depotlife.Category.Adapter.CategoryAdapter;
 import fpoly.md16.depotlife.Category.Model.Category;
-import fpoly.md16.depotlife.Helper.Api.ApiCategory;
+import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiCategory;
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.R;
 import fpoly.md16.depotlife.databinding.ActivityCategoryBinding;

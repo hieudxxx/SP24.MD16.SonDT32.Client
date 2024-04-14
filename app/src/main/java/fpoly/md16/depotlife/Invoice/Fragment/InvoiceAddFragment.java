@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-import fpoly.md16.depotlife.Helper.Api.ApiProduct;
+import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiProduct;
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Invoice.Adapter.InvoiceAddAdapter;
 import fpoly.md16.depotlife.Product.Model.Product;

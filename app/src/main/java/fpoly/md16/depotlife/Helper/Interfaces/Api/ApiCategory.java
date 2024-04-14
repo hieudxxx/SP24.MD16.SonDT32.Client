@@ -1,6 +1,6 @@
-package fpoly.md16.depotlife.Helper.Api;
+package fpoly.md16.depotlife.Helper.Interfaces.Api;
 
-import static fpoly.md16.depotlife.Helper.Api.API.URL1;
+import static fpoly.md16.depotlife.Helper.Interfaces.Api.API.URL1;
 
 import java.util.ArrayList;
 

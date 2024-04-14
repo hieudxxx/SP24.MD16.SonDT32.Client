@@ -22,6 +22,7 @@
     <string name="text_statistic">Tổng quan</string>
     <string name="text_category">Loại hàng hóa</string>
     <string name="text_staff">Nhân viên</string>
+    <string name="sharedpreferences">ACC</string>
 
 
     <string name="text_hint_re_password">Repassword</string>

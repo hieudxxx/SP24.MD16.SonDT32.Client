@@ -19,7 +19,7 @@ import androidx.fragment.app.Fragment;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import fpoly.md16.depotlife.Helper.Api.ApiInvoice;
+import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiInvoice;
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Invoice.Activity.InvoiceActivity;
 import fpoly.md16.depotlife.Invoice.Adapter.InvoiceAdapter;
