@@ -16,8 +16,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.google.gson.Gson;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
+import fpoly.md16.depotlife.Category.CategoryActivity;
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiProduct;
 import fpoly.md16.depotlife.Product.Activity.ProductActivity;
@@ -92,17 +96,31 @@ public class ProductFragment extends Fragment {
         ApiProduct.apiProduct.getData("Bearer " + token).enqueue(new Callback<ProductResponse>() {
             @Override
             public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
-                Log.d("onResponse", "responseCode: " + response.code());
+
                 if (response.isSuccessful()) {
+
                     productResponse = response.body();
                     Log.d("onResponse", "productResponse: " + productResponse.toString());
+                } else {
+                    Log.e("onResponse", "responseCode: " + response.code());
+                    try {
+                        String errorBody = response.errorBody().string();
+                        Log.e("onResponse", "errorBody: " + errorBody);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    // Xử lý lỗi cụ thể
+                    Toast.makeText(getActivity(), "Không thể lấy dữ liệu danh mục", Toast.LENGTH_SHORT).show();
+
                 }
+
             }
 
             @Override
             public void onFailure(Call<ProductResponse> call, Throwable throwable) {
                 Log.d("onFailure", "onFailure: " + throwable.getMessage());
-                Toast.makeText(getContext(), "thất bại", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
 
             }
         });
