@@ -1,23 +1,23 @@
 package fpoly.md16.depotlife.Helper.Interfaces.Api;
 
-import static fpoly.md16.depotlife.Helper.Interfaces.Api.API.URL1;
+import static fpoly.md16.depotlife.Helper.Interfaces.Api.RetrofitRequest.getRetrofit;
 
 import java.util.ArrayList;
 
 import fpoly.md16.depotlife.Category.Model.Category;
+import fpoly.md16.depotlife.Category.Model.CategoryResponse;
 import retrofit2.Call;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 
 public interface ApiCategory {
 
-    ApiCategory apiCategory= new Retrofit.Builder()
-            .baseUrl(URL1)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(ApiCategory.class);
+    ApiCategory apiCategory = getRetrofit().create(ApiCategory.class);
 
-    @GET("Category")
+    @GET("category")
+    Call<CategoryResponse> getData(@Header("Authorization") String authToken);
+
+    @GET("category")
     Call<ArrayList<Category>> getCategoryList();
+
 }
