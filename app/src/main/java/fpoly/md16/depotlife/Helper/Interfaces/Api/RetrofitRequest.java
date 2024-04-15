@@ -23,7 +23,6 @@ public class RetrofitRequest {
 //        }
 //    });
     public static Retrofit getRetrofit() {
-
         return retrofit = new Retrofit.Builder()
                 .baseUrl("https://warehouse.sinhvien.io.vn/public/api/")
                 .addConverterFactory(GsonConverterFactory.create())
