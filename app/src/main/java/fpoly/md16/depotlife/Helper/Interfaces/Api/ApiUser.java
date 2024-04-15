@@ -9,9 +9,12 @@ import retrofit2.http.POST;
 
 public interface ApiUser {
     ApiUser apiUser = getRetrofit().create(ApiUser.class);
-//    @GET("Staff")
-//    Call<ArrayList<User>> getStaffList();
 
     @POST("login")
     Call<UserResponse> login(@Body UserResponse data);
+
+
+
+    //    @GET("Staff")
+//    Call<ArrayList<User>> getStaffList();
 }

@@ -65,12 +65,13 @@ public class LoginActivity extends AppCompatActivity {
                 ApiUser.apiUser.login(userResponse).enqueue(new Callback<UserResponse>() {
                     @Override
                     public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-                        Log.d("response_code", "onResponse: " + response.code());
+                        Log.d("onResponse", "response_code: " + response.code());
                         if (response.isSuccessful()) {
                             UserResponse userResponse = response.body();
 //                            UserResponse.User user = userResponse.getUser();
 //                            Log.d("token", "onResponse: " + userResponse.getToken());
 
+                            Log.d("token", "token: "+userResponse.getToken());
                             data.put("id", userResponse.getUser().getId());
                             data.put("name", userResponse.getUser().getName());
                             data.put("phone_number", userResponse.getUser().getPhoneNumber());
@@ -81,22 +82,20 @@ public class LoginActivity extends AppCompatActivity {
                             data.put("password", "Duylam@2003");
                             data.put("birthday", userResponse.getUser().getBirthday());
                             data.put("status", userResponse.getUser().getStatus());
-                            Log.d("tag_kiemTra", "onResponse: "+data);
-                            Log.d("tag_kiemTra", "onResponse: "+LoginActivity.this);
-                            Log.d("tag_kiemTra", "onResponse: "+getApplicationContext());
 
                             Helper.saveSharedPre(getApplicationContext(), data);
                             onLoadingNavigate();
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
 
                         } else {
-                            Log.d("response_code", "onResponse failed: " + response.code());
+                            Log.d("onResponse", "connect_failed: " + response.code());
                         }
                     }
 
                     @Override
                     public void onFailure(Call<UserResponse> call, Throwable throwable) {
-                        Log.d("connect_failed", "onFailure: " + throwable.getMessage());
+                        Log.d("onFailure", "connect_failed: " + throwable.getMessage());
+                        Toast.makeText(LoginActivity.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
                     }
                 });
 
