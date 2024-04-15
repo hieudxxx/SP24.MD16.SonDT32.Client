@@ -1,22 +1,17 @@
 package fpoly.md16.depotlife.Helper.Interfaces.Api;
 
-import static fpoly.md16.depotlife.Helper.Interfaces.Api.API.URL;
+import static fpoly.md16.depotlife.Helper.Interfaces.Api.RetrofitRequest.getRetrofit;
 
-import java.util.ArrayList;
-
-import fpoly.md16.depotlife.Product.Model.Product;
+import fpoly.md16.depotlife.Product.Model.ProductResponse;
 import retrofit2.Call;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 
 public interface ApiProduct {
-    ApiProduct apiProduct = new Retrofit.Builder()
-            .baseUrl(URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(ApiProduct.class);
+    ApiProduct apiProduct = getRetrofit().create(ApiProduct.class);
 
-    @GET("Product")
-    Call<ArrayList<Product>> getProductList();
+    @GET("products")
+    Call<ProductResponse> getData(@Header("Authorization") String authToken);
+
+
 }

@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,8 +17,9 @@ import java.util.ArrayList;
 
 import fpoly.md16.depotlife.Category.Adapter.CategoryAdapter;
 import fpoly.md16.depotlife.Category.Model.Category;
-import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiCategory;
+import fpoly.md16.depotlife.Category.Model.CategoryResponse;
 import fpoly.md16.depotlife.Helper.Helper;
+import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiCategory;
 import fpoly.md16.depotlife.R;
 import fpoly.md16.depotlife.databinding.ActivityCategoryBinding;
 import fpoly.md16.depotlife.databinding.DialogAddCategoryBinding;
@@ -31,6 +31,7 @@ public class CategoryActivity extends AppCompatActivity {
     private ActivityCategoryBinding binding;
     private ArrayList<Category> list;
     private CategoryAdapter adapter;
+    private CategoryResponse categoryResponse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,16 +53,6 @@ public class CategoryActivity extends AppCompatActivity {
         });
 
     }
-
-
-
-//    public List<Category> getCategoryList1() {
-//        List<Category> list = new ArrayList<>();
-//        list.add(new Category("id1", "Mỹ phẩm", true));
-//        list.add(new Category("id2", "Gia dụng", true));
-//        list.add(new Category("id3", "Thức ăn", true));
-//        return list;
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -87,33 +78,53 @@ public class CategoryActivity extends AppCompatActivity {
     }
 
     private void getData() {
-        ApiCategory.apiCategory.getCategoryList().enqueue(new Callback<ArrayList<Category>>() {
-            @Override
-            public void onResponse(Call<ArrayList<Category>> call, Response<ArrayList<Category>> response) {
-//                Log.d("tag_kiemTra", "onResponse: " + response.code());
+        String token = (String) Helper.getSharedPre(this, "token", String.class);
 
+        ApiCategory.apiCategory.getData("Bearer " + token).enqueue(new Callback<CategoryResponse>() {
+            @Override
+            public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
+                Log.d("onResponse", "responseCode: " + response.code());
+                Log.d("onResponse", "responseCode: " + response.raw().toString());
+                Log.d("onResponse", "responseCode: " + response.body());
                 if (response.isSuccessful()) {
-                    list = response.body();
-//                    Log.d("tag_kiemTra", "onResponse: " + response);
+                    categoryResponse = response.body();
+                    Log.d("onResponse", "productResponse: " + categoryResponse.toString());
                 }
-                if (list.isEmpty()) {
-                    binding.rcvCategory.setVisibility(View.GONE);
-                    binding.tvEmpty.setVisibility(View.VISIBLE);
-                } else {
-                    binding.rcvCategory.setVisibility(View.VISIBLE);
-                    binding.tvEmpty.setVisibility(View.GONE);
-                }
-                adapter = new CategoryAdapter(CategoryActivity.this, list);
-                binding.rcvCategory.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onFailure(Call<ArrayList<Category>> call, Throwable t) {
-                Log.d("tag_kiemTra", "onFailure: " + t.getMessage());
+            public void onFailure(Call<CategoryResponse> call, Throwable throwable) {
+                Log.d("onFailure", "onFailure: " + throwable.getMessage());
                 Toast.makeText(CategoryActivity.this, "thất bại", Toast.LENGTH_SHORT).show();
             }
         });
+//        ApiCategory.apiCategory.getCategoryList().enqueue(new Callback<ArrayList<Category>>() {
+//            @Override
+//            public void onResponse(Call<ArrayList<Category>> call, Response<ArrayList<Category>> response) {
+////                Log.d("tag_kiemTra", "onResponse: " + response.code());
+//
+//                if (response.isSuccessful()) {
+//                    list = response.body();
+////                    Log.d("tag_kiemTra", "onResponse: " + response);
+//                }
+//                if (list.isEmpty()) {
+//                    binding.rcvCategory.setVisibility(View.GONE);
+//                    binding.tvEmpty.setVisibility(View.VISIBLE);
+//                } else {
+//                    binding.rcvCategory.setVisibility(View.VISIBLE);
+//                    binding.tvEmpty.setVisibility(View.GONE);
+//                }
+//                adapter = new CategoryAdapter(CategoryActivity.this, list);
+//                binding.rcvCategory.setAdapter(adapter);
+//                adapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ArrayList<Category>> call, Throwable t) {
+//                Log.d("tag_kiemTra", "onFailure: " + t.getMessage());
+//                Toast.makeText(CategoryActivity.this, "thất bại", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
     }
 

@@ -1,11 +1,9 @@
 package fpoly.md16.depotlife.Invoice.Fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,15 +14,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiProduct;
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Invoice.Adapter.InvoiceAddAdapter;
 import fpoly.md16.depotlife.Product.Model.Product;
 import fpoly.md16.depotlife.R;
 import fpoly.md16.depotlife.databinding.FragmentInvoiceAddBinding;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class InvoiceAddFragment extends Fragment {
@@ -60,26 +54,26 @@ public class InvoiceAddFragment extends Fragment {
         binding.imgBack.setOnClickListener(view1 -> requireActivity().finish());
         list = new ArrayList<>();
 
-        ApiProduct.apiProduct.getProductList().enqueue(new Callback<ArrayList<Product>>() {
-            @Override
-            public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
-//                Log.d("tag_kiemTra", "onResponse: " + response.code());
-
-                if (response.isSuccessful()) {
-                    list = response.body();
-//                    Log.d("tag_kiemTra", "onResponse: " + response);
-                }
-                adapter = new InvoiceAddAdapter(getContext(), list);
-                binding.rcvAddInvoice.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<Product>> call, Throwable t) {
-                Log.d("tag_kiemTra", "onFailure: " + t.getMessage());
-                Toast.makeText(getContext(), "thất bại", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        ApiProduct.apiProduct.getProductList().enqueue(new Callback<ArrayList<Product>>() {
+//            @Override
+//            public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
+////                Log.d("tag_kiemTra", "onResponse: " + response.code());
+//
+//                if (response.isSuccessful()) {
+//                    list = response.body();
+////                    Log.d("tag_kiemTra", "onResponse: " + response);
+//                }
+//                adapter = new InvoiceAddAdapter(getContext(), list);
+//                binding.rcvAddInvoice.setAdapter(adapter);
+//                adapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ArrayList<Product>> call, Throwable t) {
+//                Log.d("tag_kiemTra", "onFailure: " + t.getMessage());
+//                Toast.makeText(getContext(), "thất bại", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         binding.svProduct.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
             @Override
