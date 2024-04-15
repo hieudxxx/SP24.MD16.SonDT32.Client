@@ -87,6 +87,7 @@ public class ProductFragment extends Fragment {
 
     private void getData() {
         String token = (String) Helper.getSharedPre(getContext(), "token", String.class);
+//        RetrofitRequest.getToken(getContext());
 
         ApiProduct.apiProduct.getData("Bearer " + token).enqueue(new Callback<ProductResponse>() {
             @Override
