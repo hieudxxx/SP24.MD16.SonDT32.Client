@@ -37,18 +37,8 @@
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/fab"
             style="@style/custom_fab"
-            app:icon="@drawable/add"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:icon="@drawable/add" />
 
-        <androidx.appcompat.widget.AppCompatToggleButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textOff=""
-            android:textOn=""
-            tools:ignore="MissingConstraints">
-
-
-        </androidx.appcompat.widget.AppCompatToggleButton>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

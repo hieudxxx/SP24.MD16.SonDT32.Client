@@ -42,7 +42,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
 
         Picasso.get().load(list.get(position).getImg()).into(holder.binding.img);
-        holder.binding.tvName.setText(list.get(position).getName());
+        holder.binding.tvName.setText(list.get(position).getProduct_name());
         holder.binding.tvBarcode.setText(list.get(position).getBarcode());
         holder.binding.tvInventory.setText(list.get(position).getInventory()+"");
 
@@ -74,7 +74,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 } else {
                     ArrayList<Product> listFilter = new ArrayList<>();
                     for (Product product : mlist) {
-                        if (product.getName().toLowerCase().contains(strSearch.toLowerCase())) {
+                        if (product.getProduct_name().toLowerCase().contains(strSearch.toLowerCase())) {
                             listFilter.add(product);
                         }
                     }

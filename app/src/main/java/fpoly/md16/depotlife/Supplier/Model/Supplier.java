@@ -1,39 +1,48 @@
 package fpoly.md16.depotlife.Supplier.Model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 
 public class Supplier implements Serializable {
-    private String id;
+    @SerializedName("id")
+    private int id;
+    @SerializedName("supplier_name")
     private String name;
+    @SerializedName("supplier_phone")
     private String phone;
     private String email;
+    @SerializedName("tax")
     private String tax_code;
+    @SerializedName("address")
     private String address;
+    @SerializedName("total_import_price")
     private double total;
-    private boolean status;
+    @SerializedName("status")
+    private int status;
 
     public static ArrayList<Supplier> filterByStatus(ArrayList<Supplier> list, boolean status) {
         ArrayList<Supplier> filteredList = new ArrayList<>();
 
-        for (Supplier supplier : list) {
-            if (supplier.isStatus() == status) {
-                filteredList.add(supplier);
-            }
-        }
+//        for (Supplier supplier : list) {
+//            if (supplier.isStatus() == status) {
+//                filteredList.add(supplier);
+//            }
+//        }
         return filteredList;
     }
 
     public static Comparator<Supplier> sortByAsc = (t1, t2) -> (int) (t1.getTotal() - t2.getTotal());
 
-    public static Comparator<Supplier> sortByNameAZ = (t1, t2) -> t1.getName().compareTo(t2.getId());
+    public static Comparator<Supplier> sortByNameAZ = (t1, t2) -> t1.getName().compareTo(t2.getName());
 
 
     public Supplier() {
     }
 
-    public Supplier(String id, String name, String phone, String email, String tax_code, String address, double total, boolean status) {
+    public Supplier(int id, String name, String phone, String email, String tax_code, String address, double total, int status) {
         this.id = id;
         this.name = name;
         this.phone = phone;
@@ -44,11 +53,11 @@ public class Supplier implements Serializable {
         this.status = status;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -100,11 +109,27 @@ public class Supplier implements Serializable {
         this.total = total;
     }
 
-    public boolean isStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(int status) {
         this.status = status;
+    }
+
+    public static Comparator<Supplier> getSortByAsc() {
+        return sortByAsc;
+    }
+
+    public static void setSortByAsc(Comparator<Supplier> sortByAsc) {
+        Supplier.sortByAsc = sortByAsc;
+    }
+
+    public static Comparator<Supplier> getSortByNameAZ() {
+        return sortByNameAZ;
+    }
+
+    public static void setSortByNameAZ(Comparator<Supplier> sortByNameAZ) {
+        Supplier.sortByNameAZ = sortByNameAZ;
     }
 }
