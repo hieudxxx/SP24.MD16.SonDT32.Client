@@ -33,7 +33,7 @@ public class InvoiceDetailAdapter extends RecyclerView.Adapter<InvoiceDetailAdap
 
     @Override
     public void onBindViewHolder(@NonNull InvoiceDetailViewHolder holder, int position) {
-        holder.binding.tvNameProduct.setText(list.get(position).getId() + list.get(position).getName());
+        holder.binding.tvNameProduct.setText(list.get(position).getId() + list.get(position).getProduct_name());
 
         holder.binding.tvPrice.setText(Helper.formatVND(list.get(position).getExport_price()));
     }

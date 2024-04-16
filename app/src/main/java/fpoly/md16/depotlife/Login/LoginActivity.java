@@ -65,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
                 ApiUser.apiUser.login(userResponse).enqueue(new Callback<UserResponse>() {
                     @Override
                     public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-                        Log.d("onResponse", "response_code: " + response.code());
+                        Log.d("onResponse_login", "response_code: " + response.code());
                         if (response.isSuccessful()) {
                             UserResponse userResponse = response.body();
 //                            UserResponse.User user = userResponse.getUser();
@@ -94,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<UserResponse> call, Throwable throwable) {
-                        Log.d("onFailure", "connect_failed: " + throwable.getMessage());
+                        Log.d("onFailure_login", "connect_failed: " + throwable.getMessage());
                         Toast.makeText(LoginActivity.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
                     }
                 });
