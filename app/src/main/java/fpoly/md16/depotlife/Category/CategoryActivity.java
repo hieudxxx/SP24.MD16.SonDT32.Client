@@ -13,6 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.gson.Gson;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 import fpoly.md16.depotlife.Category.Adapter.CategoryAdapter;
@@ -68,7 +71,7 @@ public class CategoryActivity extends AppCompatActivity {
             Helper.onSearch(item, adapter);
             return true;
         } else if (id == R.id.item_sort) {
-            Helper.onSort(this, list, adapter,null, Category.sortByNameAZ);
+            Helper.onSort(this, list, adapter, null, Category.sortByNameAZ);
 
 //            showSortDialogCategory();
             return true;
@@ -89,13 +92,25 @@ public class CategoryActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     categoryResponse = response.body();
                     Log.d("onResponse", "productResponse: " + categoryResponse.toString());
+                } else {
+                    Log.e("onResponse", "responseCode: " + response.code());
+                    try {
+                        String errorBody = response.errorBody().string();
+                        Log.e("onResponse", "errorBody: " + errorBody);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    // Xử lý lỗi cụ thể
+                    Toast.makeText(CategoryActivity.this, "Không thể lấy dữ liệu danh mục", Toast.LENGTH_SHORT).show();
+
                 }
             }
 
             @Override
             public void onFailure(Call<CategoryResponse> call, Throwable throwable) {
                 Log.d("onFailure", "onFailure: " + throwable.getMessage());
-                Toast.makeText(CategoryActivity.this, "thất bại", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CategoryActivity.this, "Không thể kết nối đến máy chủ ", Toast.LENGTH_SHORT).show();
             }
         });
 //        ApiCategory.apiCategory.getCategoryList().enqueue(new Callback<ArrayList<Category>>() {

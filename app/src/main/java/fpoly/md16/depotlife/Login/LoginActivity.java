@@ -72,6 +72,7 @@ public class LoginActivity extends AppCompatActivity {
 //                            Log.d("token", "onResponse: " + userResponse.getToken());
 
                             Log.d("token", "token: "+userResponse.getToken());
+                            data.put("token",userResponse.getToken());
                             data.put("id", userResponse.getUser().getId());
                             data.put("name", userResponse.getUser().getName());
                             data.put("phone_number", userResponse.getUser().getPhoneNumber());
