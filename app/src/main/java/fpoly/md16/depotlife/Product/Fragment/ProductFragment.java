@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 
 import java.io.IOException;
@@ -40,6 +41,9 @@ public class ProductFragment extends Fragment {
     private ArrayList<Product> list;
     private ProductResponse productResponse;
     private int pageIndex = 1;
+    private int perPage = 0;
+    private int count = 0;
+    private String token;
 
 
     @Override
@@ -61,7 +65,23 @@ public class ProductFragment extends Fragment {
             startActivity(new Intent(getActivity(), ProductActivity.class));
         });
 
+        token = (String) Helper.getSharedPre(getContext(), "token", String.class);
+
+        list = new ArrayList<>();
         getData();
+
+        binding.nestScoll.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
+//                    count++;
+                binding.pbLoadMore.setVisibility(View.VISIBLE);
+                if (pageIndex <= perPage) {
+                    Log.d("onScrollChange", "onScrollChange: " + pageIndex);
+                    getData();
+                } else {
+                    binding.pbLoadMore.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     @Override
@@ -89,20 +109,17 @@ public class ProductFragment extends Fragment {
     }
 
     private void getData() {
-        list = new ArrayList<>();
-        String token = (String) Helper.getSharedPre(getContext(), "token", String.class);
         ApiProduct.apiProduct.getData("Bearer " + token, pageIndex).enqueue(new Callback<ProductResponse>() {
             @Override
             public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
                 Log.d("onResponse_product", "response_code: " + response.code());
-
                 if (response.isSuccessful()) {
                     productResponse = response.body();
                     if (productResponse != null) {
-                        List<Product> tempList = Arrays.asList(productResponse.getData()); // hoặc có thể dùng foreach để check từng item
-                        list.addAll(tempList);
+                        binding.tvTotalProduct.setText(productResponse.getTotal()+"");
+                        perPage = productResponse.getLast_page();
+                        onCheckList(productResponse);
                     }
-                    Log.d("onResponse", "productResponse: " + productResponse.toString());
                 } else {
                     try {
                         String errorBody = response.errorBody().string();
@@ -110,65 +127,47 @@ public class ProductFragment extends Fragment {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-
-                    // Xử lý lỗi cụ thể
                     Toast.makeText(getActivity(), "Không thể lấy dữ liệu danh mục", Toast.LENGTH_SHORT).show();
-
                 }
-
             }
 
             @Override
             public void onFailure(Call<ProductResponse> call, Throwable throwable) {
                 Log.d("onFailure", "onFailure: " + throwable.getMessage());
                 Toast.makeText(getActivity(), "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
-
             }
         });
-
-
-//        new CompositeDisposable().add(ApiProduct.apiProduct.getData("Bearer " + token, currentPage)
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribeOn(Schedulers.io())
-//                .subscribe(this::handleResponse, this::handleError)
-//        );
-//        ApiProduct.apiProduct.getProductList().enqueue(new Callback<ArrayList<Product>>() {
-//            @Override
-//            public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
-//
-//                if (response.isSuccessful()) {
-//                    list = response.body();
-////                    Log.d("tag_kiemTra", "onResponse: " + response);
-//                }
-//                if (list.isEmpty()) {
-//                    binding.rcvProduct.setVisibility(View.GONE);
-//                    binding.tvEmpty.setVisibility(View.VISIBLE);
-//                    binding.layoutTotal.setVisibility(View.GONE);
-//                } else {
-//                    binding.rcvProduct.setVisibility(View.VISIBLE);
-//                    binding.tvEmpty.setVisibility(View.GONE);
-//                    binding.layoutTotal.setVisibility(View.VISIBLE);
-//                }
-//                adapter = new ProductAdapter(getContext(), list);
-//                binding.rcvProduct.setAdapter(adapter);
-//                adapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ArrayList<Product>> call, Throwable t) {
-//                Log.d("tag_kiemTra", "onFailure: " + t.getMessage());
-//                Toast.makeText(getContext(), "thất bại", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
     }
 
-    //    public List<Product> getProductList() {
-//        List<Product> list = new ArrayList<>();
-//        list.add(new Product("1", "1", "1", "Sữa tắm", "QEQ", "Unit 1", "https://static.kfcvietnam.com.vn/images/items/lg/Burger-Zinger.jpg?v=3oOMd3", 10.0, 2000.0, 100, true));
-//        list.add(new Product("2", "2", "2", "Bánh Cosy", "QFA", "Unit 2", "https://static.kfcvietnam.com.vn/images/items/lg/Burger-Zinger.jpg?v=3oOMd3", 15.0, 25000.0, 150, false));
-//        return list;
-//    }
+    private void onCheckList(ProductResponse productResponse) {
+        if (productResponse.getData() != null) {
+            List<Product> tempList = Arrays.asList(productResponse.getData()); // hoặc có thể dùng foreach để check từng item
+            list.addAll(tempList);
 
+            binding.rcvProduct.setVisibility(View.VISIBLE);
+            binding.layoutTotal.setVisibility(View.VISIBLE);
+            binding.tvEmpty.setVisibility(View.GONE);
+            binding.pbLoading.setVisibility(View.GONE);
+            binding.pbLoadMore.setVisibility(View.GONE);
+            setHasOptionsMenu(true);
+            adapter = new ProductAdapter(getContext(), list);
+            binding.rcvProduct.setAdapter(adapter);
+//                            adapter.notifyDataSetChanged();
+            pageIndex++;
+        } else {
+            setHasOptionsMenu(false);
+            binding.rcvProduct.setVisibility(View.GONE);
+            binding.layoutTotal.setVisibility(View.GONE);
+            binding.pbLoading.setVisibility(View.GONE);
+            binding.pbLoadMore.setVisibility(View.GONE);
+            binding.tvEmpty.setVisibility(View.VISIBLE);
+        }
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        perPage = 1;
+        getData();
+    }
 }

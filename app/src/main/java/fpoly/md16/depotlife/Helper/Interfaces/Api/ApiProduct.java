@@ -6,6 +6,7 @@ import fpoly.md16.depotlife.Product.Model.ProductResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiProduct {
@@ -13,6 +14,9 @@ public interface ApiProduct {
 
     @GET("products")
     Call<ProductResponse> getData(@Header("Authorization") String authToken, @Query("page") int page_index);
+
+    @GET("products/delete/{id}")
+    Call<ProductResponse> delete(@Header("Authorization") String authToken, @Path("id") String id);
 
 
 }

@@ -111,15 +111,6 @@ public class Helper {
         }
     }
 
-//    public static void isContainSpecialChar(String value, TextView tv) {
-//        if () {
-//
-//        } else {
-//            tv.setText("");
-//            tv.setVisibility(View.GONE);
-//        }
-//    }
-
     public static void isPhoneValid(String value, TextView tv) {
         if (value.length() < 10 || value.length() > 10) {
             tv.setVisibility(View.VISIBLE);
@@ -231,11 +222,9 @@ public class Helper {
     public static String formatVND(Double sum) {
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
 
-//        holder.binding.tvTotal.setText(decimalFormat.format(list.get(position).getTotal())+"đ");
-
         Locale locale = new Locale("vi", "VN");
         NumberFormat nf = NumberFormat.getInstance(locale);
-        String money = nf.format(sum) + " đ";
+        String money = decimalFormat.format(sum) + " đ";
         return money;
     }
 
