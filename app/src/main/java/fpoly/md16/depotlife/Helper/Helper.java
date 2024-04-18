@@ -23,6 +23,7 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -41,6 +42,8 @@ import java.util.Map;
 
 import fpoly.md16.depotlife.Helper.Interfaces.onClickListener.CheckdeleteListener;
 import fpoly.md16.depotlife.R;
+import fpoly.md16.depotlife.databinding.BotSheetDetailStaffBinding;
+import fpoly.md16.depotlife.databinding.BotSheetOptionStaffBinding;
 import fpoly.md16.depotlife.databinding.BotSheetSortBinding;
 import fpoly.md16.depotlife.databinding.BotSheetSortStaffBinding;
 import fpoly.md16.depotlife.databinding.DialogCheckDeleteBinding;
@@ -111,15 +114,6 @@ public class Helper {
             tv.setText("");
         }
     }
-
-//    public static void isContainSpecialChar(String value, TextView tv) {
-//        if () {
-//
-//        } else {
-//            tv.setText("");
-//            tv.setVisibility(View.GONE);
-//        }
-//    }
 
     public static void isPhoneValid(String value, TextView tv) {
         if (value.length() < 10 || value.length() > 10) {
@@ -232,11 +226,9 @@ public class Helper {
     public static String formatVND(Double sum) {
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
 
-//        holder.binding.tvTotal.setText(decimalFormat.format(list.get(position).getTotal())+"đ");
-
         Locale locale = new Locale("vi", "VN");
         NumberFormat nf = NumberFormat.getInstance(locale);
-        String money = nf.format(sum) + " đ";
+        String money = decimalFormat.format(sum) + " đ";
         return money;
     }
 
@@ -296,22 +288,42 @@ public class Helper {
 
 
     public static <T> void onOptionStaff(Context context) {
-        BotSheetSortStaffBinding sortStaffBinding = BotSheetSortStaffBinding.inflate(LayoutInflater.from(context));
-        sortStaffBinding.rdGr.setOnCheckedChangeListener(((radioGroup, i) -> {
+        BotSheetOptionStaffBinding optionStaffBinding = BotSheetOptionStaffBinding.inflate(LayoutInflater.from(context));
+        BotSheetDetailStaffBinding detailStaffBinding = BotSheetDetailStaffBinding.inflate(LayoutInflater.from(context));
+//        optionStaffBinding.rdGr.setOnCheckedChangeListener(((radioGroup, i) -> {
+//
+////            if (i == R.id.rd_sort_asc && sortByAsc != null) {
+////                Collections.sort(list, sortByAsc);
+////            } else if (i == R.id.rd_sort_desc && sortByAsc != null) {
+////                Collections.sort(list, Collections.reverseOrder(sortByAsc));
+////            } else if (i == R.id.rd_sort_AZ && sortByAZ != null) {
+////                Collections.sort(list, sortByAZ);
+////            } else if (i == R.id.rd_sort_ZA && sortByAZ != null) {
+////                Collections.sort(list, Collections.reverseOrder(sortByAZ));
+////            }
+////            adapter.notifyDataSetChanged();
+//        }));
 
-//            if (i == R.id.rd_sort_asc && sortByAsc != null) {
-//                Collections.sort(list, sortByAsc);
-//            } else if (i == R.id.rd_sort_desc && sortByAsc != null) {
-//                Collections.sort(list, Collections.reverseOrder(sortByAsc));
-//            } else if (i == R.id.rd_sort_AZ && sortByAZ != null) {
-//                Collections.sort(list, sortByAZ);
-//            } else if (i == R.id.rd_sort_ZA && sortByAZ != null) {
-//                Collections.sort(list, Collections.reverseOrder(sortByAZ));
-//            }
-//            adapter.notifyDataSetChanged();
-        }));
-        Helper.onSettingsBotSheet(context, sortStaffBinding);
+
+        optionStaffBinding.layoutCall.setOnClickListener(v -> {
+            Toast.makeText(v.getContext(), "Ok Call",Toast.LENGTH_SHORT).show();
+        });
+        optionStaffBinding.layoutEmail.setOnClickListener(v -> {
+            Toast.makeText(v.getContext(), "Ok Email",Toast.LENGTH_SHORT).show();
+        });
+        optionStaffBinding.layoutSendSms.setOnClickListener(v -> {
+            Toast.makeText(v.getContext(), "Ok SendSms",Toast.LENGTH_SHORT).show();
+        });
+        optionStaffBinding.layoutDetail.setOnClickListener(v -> {
+            Helper.onSettingsBotSheet(context,detailStaffBinding);
+            //Toast.makeText(v.getContext(), "Ok Detail",Toast.LENGTH_SHORT).show();
+        });
+        Helper.onSettingsBotSheet(context,optionStaffBinding );
     }
+
+
+
+
 
 
 }

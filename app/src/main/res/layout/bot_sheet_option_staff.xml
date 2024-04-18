@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    style="@style/custom_rd_sort_filter"
     android:orientation="vertical"
-
-    android:layout_height="wrap_content">
+    android:background="@drawable/bgr_bot_sheet">
 
 
     <TextView
         android:text="Tuỳ chọn"
-        android:layout_gravity="center"
         style="@style/custom_tv_title_bot_sheet"/>
 
     <View
@@ -47,7 +45,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:src="@drawable/email"
+            android:src="@drawable/email2"
             android:layout_width="24dp"
             android:layout_height="24dp"
             />

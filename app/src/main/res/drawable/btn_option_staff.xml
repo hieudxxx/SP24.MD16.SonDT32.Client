@@ -5,7 +5,7 @@
             <!-- Định nghĩa màu nền khi được nhấn -->
             <solid android:color="@color/gray20" />
             <!-- Định nghĩa góc bo tròn -->
-            <corners android:radius="8dp" />
+
         </shape>
     </item>
     <!-- Trạng thái mặc định -->
@@ -14,7 +14,7 @@
             <!-- Định nghĩa màu nền mặc định -->
             <solid android:color="@color/white" />
             <!-- Định nghĩa góc bo tròn -->
-            <corners android:radius="8dp" />
+
         </shape>
     </item>
 </selector>

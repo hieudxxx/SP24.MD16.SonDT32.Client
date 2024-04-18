@@ -55,12 +55,12 @@ public class StaffFragment extends Fragment {
 
 
         ArrayList<UserResponse.User> list1 = new ArrayList<>();
-        list1.add(new UserResponse.User("Nguyen Van Sang","0961984330","","abc@gmail.com",false));
+        list1.add(new UserResponse.User("Nguyen Van Sang","0961984330","","abc@gmail.com",1));
 
         adapter =new StaffAdapter(getContext(), list1, new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Helper.onSortStaff(getContext());
+                Helper.onOptionStaff(getContext());
             }
         });
         binding.rcvStaff.setLayoutManager(new LinearLayoutManager(getContext()));

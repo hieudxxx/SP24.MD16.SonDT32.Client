@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/custom_rd_sort_filter"
+    android:orientation="vertical"
+    android:background="@drawable/bgr_bot_sheet">
+
+
+    <TextView
+        android:text="Chi tiết nhân viên"
+        style="@style/custom_tv_title_bot_sheet"/>
+
+
+
+
+    <LinearLayout
+        android:background="@drawable/btn_option_staff"
+        android:id="@+id/layoutCall"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:padding="10dp"
+
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Tên nhân viên "/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="2.5"
+            android:layout_height="wrap_content"
+
+            android:text="Vân Anh"/>
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/layoutEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_option_staff"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Tài khoản " />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2.5"
+
+            android:text="abc@gmail.com" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:background="@drawable/btn_option_staff"
+        android:id="@+id/layoutSendSms"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:padding="10dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Chức vụ "/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="2.5"
+            android:layout_height="wrap_content"
+
+            android:text="Nhân viên"/>
+
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/layoutDetail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_option_staff"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Số điện thoại " />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="2.5"
+            android:layout_height="wrap_content"
+
+            android:text="0961984330" />
+
+
+    </LinearLayout>
+
+</LinearLayout>
