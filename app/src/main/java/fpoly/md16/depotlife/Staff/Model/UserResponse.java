@@ -1,6 +1,7 @@
 package fpoly.md16.depotlife.Staff.Model;
 
 import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
 
 public class UserResponse {
@@ -10,7 +11,6 @@ public class UserResponse {
     private String token;
     @SerializedName("email")
     private String email;
-
     @SerializedName("password")
     private String password;
     @SerializedName("device_imei")
@@ -82,18 +82,18 @@ public class UserResponse {
         private String email;
         @SerializedName("email_verified_at")
         private Date emailVerifiedAt; // Chú ý: JSON phải có định dạng ngày thích hợp
-        @SerializedName("password")
-        private String password; // Chú ý: Mật khẩu thường không được truyền qua API
+        //        @SerializedName("password")
+//        private String password; // Chú ý: Mật khẩu thường không được truyền qua API
         @SerializedName("birthday")
-        private String birthday; // Chú ý: Định dạng ngày tháng phụ thuộc vào JSON
+        private String birthday;
+        @SerializedName("address")
+        private String address;
+        @SerializedName("status")
+        private int status;
         @SerializedName("device_imei")
         private String deviceImei;
-        @SerializedName("status")
-        private Boolean status;
 
-        // Getters and Setters
-
-        public User(int id, String name, String phoneNumber, int role, String avatar, String email, Date emailVerifiedAt, String password, String birthday, String deviceImei, Boolean status) {
+        public User(int id, String name, String phoneNumber, int role, String avatar, String email, Date emailVerifiedAt, String birthday, String address, int status, String deviceImei) {
             this.id = id;
             this.name = name;
             this.phoneNumber = phoneNumber;
@@ -101,10 +101,10 @@ public class UserResponse {
             this.avatar = avatar;
             this.email = email;
             this.emailVerifiedAt = emailVerifiedAt;
-            this.password = password;
             this.birthday = birthday;
-            this.deviceImei = deviceImei;
+            this.address = address;
             this.status = status;
+            this.deviceImei = deviceImei;
         }
 
         public int getId() {
@@ -163,14 +163,6 @@ public class UserResponse {
             this.emailVerifiedAt = emailVerifiedAt;
         }
 
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
-
         public String getBirthday() {
             return birthday;
         }
@@ -179,20 +171,28 @@ public class UserResponse {
             this.birthday = birthday;
         }
 
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
+
         public String getDeviceImei() {
             return deviceImei;
         }
 
         public void setDeviceImei(String deviceImei) {
             this.deviceImei = deviceImei;
-        }
-
-        public Boolean getStatus() {
-            return status;
-        }
-
-        public void setStatus(Boolean status) {
-            this.status = status;
         }
 
         @Override
@@ -205,10 +205,10 @@ public class UserResponse {
                     ", avatar='" + avatar + '\'' +
                     ", email='" + email + '\'' +
                     ", emailVerifiedAt=" + emailVerifiedAt +
-                    ", password='" + password + '\'' +
                     ", birthday='" + birthday + '\'' +
+                    ", address='" + address + '\'' +
+                    ", status='" + status + '\'' +
                     ", deviceImei='" + deviceImei + '\'' +
-                    ", status=" + status +
                     '}';
         }
     }

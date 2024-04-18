@@ -2,8 +2,8 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:id="@+id/nest_scoll"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Product.Fragment.ProductFragment">
 
@@ -31,7 +31,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:padding="10dp">
+            android:padding="10dp"
+            android:visibility="gone">
 
             <TextView
                 style="@style/custom_tv_date_time"
@@ -45,7 +46,6 @@
                 style="@style/custom_tv_date_time"
                 android:fontFamily="@font/nunito_extrabold"
                 android:padding="0dp"
-                android:text="10000"
                 android:textColor="@color/tv_blue_bold" />
 
             <TextView
@@ -93,10 +93,30 @@
                 style="@style/custom_rcv"
                 tools:listitem="@layout/item_product" />
 
+            <ProgressBar
+                android:id="@+id/pbLoadMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rcv_product" />
+
+            <ProgressBar
+                android:id="@+id/pbLoading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
                 android:id="@+id/tv_empty"
                 style="@style/custom_tv_title"
-                android:text="Bạn chưa có hàng hóa nào" />
+                android:text="Bạn chưa có hàng hóa nào"
+                android:visibility="gone" />
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/fab"
