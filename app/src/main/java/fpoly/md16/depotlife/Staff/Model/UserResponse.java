@@ -107,6 +107,14 @@ public class UserResponse {
             this.status = status;
         }
 
+        public User(String name, String phoneNumber, String avatar, String email, Boolean status) {
+            this.name = name;
+            this.phoneNumber = phoneNumber;
+            this.avatar = avatar;
+            this.email = email;
+            this.status = status;
+        }
+
         public int getId() {
             return id;
         }

@@ -95,7 +95,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<UserResponse> call, Throwable throwable) {
                         Log.d("onFailure_login", "connect_failed: " + throwable.getMessage());
-                        Toast.makeText(LoginActivity.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Không thể kết nối", Toast.LENGTH_SHORT).show();
                     }
                 });
 

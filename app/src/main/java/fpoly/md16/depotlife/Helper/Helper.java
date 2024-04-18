@@ -42,6 +42,7 @@ import java.util.Map;
 import fpoly.md16.depotlife.Helper.Interfaces.onClickListener.CheckdeleteListener;
 import fpoly.md16.depotlife.R;
 import fpoly.md16.depotlife.databinding.BotSheetSortBinding;
+import fpoly.md16.depotlife.databinding.BotSheetSortStaffBinding;
 import fpoly.md16.depotlife.databinding.DialogCheckDeleteBinding;
 
 public class Helper {
@@ -274,6 +275,42 @@ public class Helper {
             adapter.notifyDataSetChanged();
         }));
         Helper.onSettingsBotSheet(context, sortBinding);
+    }
+    public static <T> void onSortStaff(Context context) {
+        BotSheetSortStaffBinding sortStaffBinding = BotSheetSortStaffBinding.inflate(LayoutInflater.from(context));
+        sortStaffBinding.rdGr.setOnCheckedChangeListener(((radioGroup, i) -> {
+
+//            if (i == R.id.rd_sort_asc && sortByAsc != null) {
+//                Collections.sort(list, sortByAsc);
+//            } else if (i == R.id.rd_sort_desc && sortByAsc != null) {
+//                Collections.sort(list, Collections.reverseOrder(sortByAsc));
+//            } else if (i == R.id.rd_sort_AZ && sortByAZ != null) {
+//                Collections.sort(list, sortByAZ);
+//            } else if (i == R.id.rd_sort_ZA && sortByAZ != null) {
+//                Collections.sort(list, Collections.reverseOrder(sortByAZ));
+//            }
+//            adapter.notifyDataSetChanged();
+        }));
+        Helper.onSettingsBotSheet(context, sortStaffBinding);
+    }
+
+
+    public static <T> void onOptionStaff(Context context) {
+        BotSheetSortStaffBinding sortStaffBinding = BotSheetSortStaffBinding.inflate(LayoutInflater.from(context));
+        sortStaffBinding.rdGr.setOnCheckedChangeListener(((radioGroup, i) -> {
+
+//            if (i == R.id.rd_sort_asc && sortByAsc != null) {
+//                Collections.sort(list, sortByAsc);
+//            } else if (i == R.id.rd_sort_desc && sortByAsc != null) {
+//                Collections.sort(list, Collections.reverseOrder(sortByAsc));
+//            } else if (i == R.id.rd_sort_AZ && sortByAZ != null) {
+//                Collections.sort(list, sortByAZ);
+//            } else if (i == R.id.rd_sort_ZA && sortByAZ != null) {
+//                Collections.sort(list, Collections.reverseOrder(sortByAZ));
+//            }
+//            adapter.notifyDataSetChanged();
+        }));
+        Helper.onSettingsBotSheet(context, sortStaffBinding);
     }
 
 

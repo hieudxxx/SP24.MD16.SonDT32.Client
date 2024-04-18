@@ -36,6 +36,7 @@
             android:orientation="vertical">
 
             <Button
+                android:drawableStart="@drawable/ring_phone"
                 android:id="@+id/btn_option_call"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

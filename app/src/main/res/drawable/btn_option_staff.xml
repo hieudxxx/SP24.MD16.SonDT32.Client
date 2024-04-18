@@ -1,0 +1,20 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Trạng thái khi được nhấn -->
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <!-- Định nghĩa màu nền khi được nhấn -->
+            <solid android:color="@color/gray20" />
+            <!-- Định nghĩa góc bo tròn -->
+            <corners android:radius="8dp" />
+        </shape>
+    </item>
+    <!-- Trạng thái mặc định -->
+    <item>
+        <shape android:shape="rectangle">
+            <!-- Định nghĩa màu nền mặc định -->
+            <solid android:color="@color/white" />
+            <!-- Định nghĩa góc bo tròn -->
+            <corners android:radius="8dp" />
+        </shape>
+    </item>
+</selector>

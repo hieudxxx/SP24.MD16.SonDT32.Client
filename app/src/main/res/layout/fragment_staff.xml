@@ -11,7 +11,8 @@
 
         <ImageView
             android:id="@+id/img_back"
-            style="@style/custom_img_back_toolbar" />
+            style="@style/custom_img_back_toolbar"
+            android:importantForAccessibility="no" />
 
         <TextView
             style="@style/custom_title_toolbar"
@@ -27,17 +28,33 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcv_staff"
             style="@style/custom_rcv"
-            tools:listitem="@layout/item_staff" />
+            android:layout_marginTop="40dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_empty"
             style="@style/custom_tv_title"
-            android:text="Bạn chưa có nhân viên nào" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="Bạn chưa có nhân viên nào"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
             style="@style/custom_fab"
-            app:icon="@drawable/add" />
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="92dp"
+            android:src="@drawable/add"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
