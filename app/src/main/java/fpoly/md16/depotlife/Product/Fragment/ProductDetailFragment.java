@@ -17,7 +17,6 @@ import com.squareup.picasso.Picasso;
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiProduct;
 import fpoly.md16.depotlife.Product.Model.Product;
-import fpoly.md16.depotlife.Product.Model.ProductResponse;
 import fpoly.md16.depotlife.R;
 import fpoly.md16.depotlife.databinding.FragmentProductDetailBinding;
 import retrofit2.Call;
@@ -28,6 +27,7 @@ public class ProductDetailFragment extends Fragment {
     private FragmentProductDetailBinding binding;
     private Product product;
     private String token;
+    private Bundle bundle;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,18 +49,20 @@ public class ProductDetailFragment extends Fragment {
             requireActivity().finish();
         });
 
-        Bundle bundle = getArguments();
+        bundle = getArguments();
         if (bundle != null) {
             product = (Product) bundle.getSerializable("product");
             if (product != null) {
+
                 binding.tvIdProduct.setText(product.getId() + "");
-                binding.tvBarCode.setText(product.getBarcode());
+                binding.tvBarCode.setText(product.getId()+"");
                 binding.tvName.setText(product.getProduct_name());
                 binding.tvSupplier.setText(product.getSupplier_name());
                 binding.tvCategory.setText(product.getCategory_name());
                 binding.tvExportPrice.setText(Helper.formatVND(product.getExport_price()));
                 binding.tvImportPrice.setText(Helper.formatVND(product.getImport_price()));
                 binding.tvInventory.setText(product.getInventory() + "");
+                binding.tvWeight.setText(product.getUnit());
 
                 if (!product.getImg().isEmpty()) {
                     Picasso.get().load(product.getImg()).into(binding.imgProduct);
@@ -70,9 +72,9 @@ public class ProductDetailFragment extends Fragment {
 
                 binding.layoutDelete.setOnClickListener(view12 -> {
                     Helper.onCheckdeleteDialog(getContext(), () -> {
-                        ApiProduct.apiProduct.delete("Bearer " + token, product.getId()).enqueue(new Callback<ProductResponse>() {
+                        ApiProduct.apiProduct.delete("Bearer " + token, product.getId()).enqueue(new Callback<Product>() {
                             @Override
-                            public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
+                            public void onResponse(Call<Product> call, Response<Product> response) {
                                 if (response.isSuccessful() || response.code() == 200) {
                                     Toast.makeText(getContext(), "Xóa thành công", Toast.LENGTH_SHORT).show();
                                     requireActivity().finish();
@@ -80,7 +82,7 @@ public class ProductDetailFragment extends Fragment {
                             }
 
                             @Override
-                            public void onFailure(Call<ProductResponse> call, Throwable throwable) {
+                            public void onFailure(Call<Product> call, Throwable throwable) {
                                 Log.d("onFailure", "onFailure: " + throwable.getMessage());
                                 Toast.makeText(getActivity(), "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
                             }
@@ -90,11 +92,22 @@ public class ProductDetailFragment extends Fragment {
                 });
 
                 binding.imgEdit.setOnClickListener(view13 -> {
-                    Helper.loadFragment(getActivity().getSupportFragmentManager(), new ProductEditFragment(), null, R.id.frag_container_product);
+                    bundle = new Bundle();
+                    bundle.putSerializable("product", product);
+                    Helper.loadFragment(getActivity().getSupportFragmentManager(), new ProductEditFragment(), bundle, R.id.frag_container_product);
                 });
             }
         }
-
-
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+//        ApiProduct.apiProduct.getProductById("Bearer " + token, product.getId())
+    }
+
+
+
+
 }
