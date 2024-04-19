@@ -16,12 +16,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import com.google.gson.Gson;
-
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-import fpoly.md16.depotlife.Category.CategoryActivity;
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiProduct;
 import fpoly.md16.depotlife.Product.Activity.ProductActivity;
@@ -40,6 +39,8 @@ public class ProductFragment extends Fragment {
     private ProductAdapter adapter;
     private ArrayList<Product> list;
     private ProductResponse productResponse;
+    private int pageIndex = 1;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,9 +61,7 @@ public class ProductFragment extends Fragment {
             startActivity(new Intent(getActivity(), ProductActivity.class));
         });
 
-        list = new ArrayList<>();
         getData();
-
     }
 
     @Override
@@ -90,18 +89,21 @@ public class ProductFragment extends Fragment {
     }
 
     private void getData() {
+        list = new ArrayList<>();
         String token = (String) Helper.getSharedPre(getContext(), "token", String.class);
-
-        ApiProduct.apiProduct.getData("Bearer " + token).enqueue(new Callback<ProductResponse>() {
+        ApiProduct.apiProduct.getData("Bearer " + token, pageIndex).enqueue(new Callback<ProductResponse>() {
             @Override
             public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
+                Log.d("onResponse_product", "response_code: " + response.code());
 
                 if (response.isSuccessful()) {
-
                     productResponse = response.body();
+                    if (productResponse != null) {
+                        List<Product> tempList = Arrays.asList(productResponse.getData()); // hoặc có thể dùng foreach để check từng item
+                        list.addAll(tempList);
+                    }
                     Log.d("onResponse", "productResponse: " + productResponse.toString());
                 } else {
-                    Log.e("onResponse", "responseCode: " + response.code());
                     try {
                         String errorBody = response.errorBody().string();
                         Log.e("onResponse", "errorBody: " + errorBody);
@@ -123,6 +125,13 @@ public class ProductFragment extends Fragment {
 
             }
         });
+
+
+//        new CompositeDisposable().add(ApiProduct.apiProduct.getData("Bearer " + token, currentPage)
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribeOn(Schedulers.io())
+//                .subscribe(this::handleResponse, this::handleError)
+//        );
 //        ApiProduct.apiProduct.getProductList().enqueue(new Callback<ArrayList<Product>>() {
 //            @Override
 //            public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {

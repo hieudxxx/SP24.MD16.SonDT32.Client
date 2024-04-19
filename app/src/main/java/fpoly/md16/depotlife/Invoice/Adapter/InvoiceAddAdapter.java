@@ -35,7 +35,7 @@ public class InvoiceAddAdapter extends RecyclerView.Adapter<InvoiceAddAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.binding.tvNameProduct.setText(list.get(position).getName());
+        holder.binding.tvNameProduct.setText(list.get(position).getProduct_name());
     }
 
     @Override
@@ -49,7 +49,7 @@ public class InvoiceAddAdapter extends RecyclerView.Adapter<InvoiceAddAdapter.Vi
                 } else {
                     ArrayList<Product> listFilter = new ArrayList<>();
                     for (Product product : mList) {
-                        if (product.getName().toLowerCase().contains(strSearch.toLowerCase())) {
+                        if (product.getProduct_name().toLowerCase().contains(strSearch.toLowerCase())) {
                             listFilter.add(product);
                         }
                     }

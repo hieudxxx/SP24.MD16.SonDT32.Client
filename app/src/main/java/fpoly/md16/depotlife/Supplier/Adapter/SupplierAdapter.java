@@ -43,7 +43,7 @@ public class SupplierAdapter extends RecyclerView.Adapter<SupplierAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         holder.binding.tvName.setText(list.get(position).getName());
-        holder.binding.tvStatus.setText(list.get(position).isStatus() ? "Đang hợp tác" : "Đã ngừng hợp tác");
+//        holder.binding.tvStatus.setText(list.get(position).isStatus() ? "Đang hợp tác" : "Đã ngừng hợp tác");
 
 
         holder.binding.tvTotal.setText(Helper.formatVND(list.get(position).getTotal()));
@@ -51,7 +51,7 @@ public class SupplierAdapter extends RecyclerView.Adapter<SupplierAdapter.ViewHo
         holder.itemView.setOnClickListener(view -> {
             Bundle bundle = new Bundle();
 //            bundle.putSerializable("supplier", list.get(holder.getAdapterPosition()));
-            bundle.putString("id", list.get(holder.getAdapterPosition()).getId());
+            bundle.putInt("id", list.get(holder.getAdapterPosition()).getId());
             Helper.loadFragment(fragmentManager, new SupplierDetailFragment(), bundle, R.id.frag_container_supplier);
         });
     }

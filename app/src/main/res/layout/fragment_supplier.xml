@@ -1,82 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/custom_bgr_layout"
+    android:id="@+id/nest_scoll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     tools:context=".Supplier.Fragment.SupplierFragment">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tb_supplier"
-        style="@style/custom_toolbar">
+    <LinearLayout style="@style/custom_bgr_layout">
 
-        <ImageView
-            android:id="@+id/img_back"
-            style="@style/custom_img_back_toolbar" />
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tb_supplier"
+            style="@style/custom_toolbar">
 
-        <TextView
-            style="@style/custom_title_toolbar"
-            android:text="@string/text_suppplier" />
-    </androidx.appcompat.widget.Toolbar>
+            <ImageView
+                android:id="@+id/btn_back"
+                style="@style/custom_img_back_toolbar" />
 
-    <View style="@style/custom_line" />
+            <TextView
+                style="@style/custom_title_toolbar"
+                android:text="@string/text_suppplier" />
+        </androidx.appcompat.widget.Toolbar>
 
-    <LinearLayout
-        android:id="@+id/layout_total"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:padding="10dp">
-
-        <TextView
-            style="@style/custom_tv_date_time"
-            android:fontFamily="@font/nunito_bold"
-            android:text="@string/text_suppplier"
-            android:textColor="@color/black" />
-
-        <TextView
-            android:id="@+id/tv_total_invoice"
-            style="@style/custom_tv_date_time"
-            android:fontFamily="@font/nunito_extrabold"
-            android:text="4"
-            android:textColor="@color/tv_blue_bold" />
+        <View style="@style/custom_line" />
 
         <LinearLayout
-            style="@style/custom_llInvoice"
+            android:id="@+id/layout_total"
             android:layout_width="match_parent"
-            android:gravity="end">
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="10dp">
 
             <TextView
                 style="@style/custom_tv_date_time"
                 android:fontFamily="@font/nunito_bold"
-                android:text="@string/text_sum" />
+                android:text="@string/text_suppplier"
+                android:textColor="@color/black" />
 
             <TextView
-                android:id="@+id/tv_total_money"
+                android:id="@+id/tv_total_invoice"
                 style="@style/custom_tv_date_time"
-                android:layout_marginStart="3dp"
                 android:fontFamily="@font/nunito_extrabold"
-                android:text="1.000.000"
+                android:text="4"
                 android:textColor="@color/tv_blue_bold" />
+
+            <LinearLayout
+                style="@style/custom_llInvoice"
+                android:layout_width="match_parent"
+                android:layout_marginTop="0dp"
+                android:gravity="end">
+
+                <TextView
+                    style="@style/custom_tv_date_time"
+                    android:fontFamily="@font/nunito_bold"
+                    android:text="@string/text_sum" />
+
+                <TextView
+                    android:id="@+id/tv_total_money"
+                    style="@style/custom_tv_date_time"
+                    android:layout_marginStart="3dp"
+                    android:fontFamily="@font/nunito_extrabold"
+                    android:text="1.000.000"
+                    android:textColor="@color/tv_blue_bold" />
+            </LinearLayout>
         </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv"
+                style="@style/custom_rcv"
+                tools:listitem="@layout/item_supplier" />
+
+            <ProgressBar
+                android:id="@+id/pbLoadMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rcv" />
+
+            <ProgressBar
+                android:id="@+id/pbLoading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_empty"
+                style="@style/custom_tv_title"
+                android:text="Bạn chưa có nhà cung cấp nào"
+                android:visibility="gone" />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/fab"
+                style="@style/custom_fab"
+                app:icon="@drawable/add" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcv_invoice"
-            style="@style/custom_rcv"
-            tools:listitem="@layout/item_supplier" />
-
-        <TextView
-            android:id="@+id/tv_empty"
-            style="@style/custom_tv_title"
-            android:text="Bạn chưa có nhà cung cấp nào" />
-
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/fab"
-            style="@style/custom_fab"
-            app:icon="@drawable/add" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</LinearLayout>
+</androidx.core.widget.NestedScrollView>
