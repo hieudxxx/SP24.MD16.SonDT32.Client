@@ -80,7 +80,7 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:layout_margin">10dp</item>
+        <item name="android:layout_marginHorizontal">10dp</item>
         <item name="android:textSize">17sp</item>
         <item name="android:padding">10dp</item>
         <item name="android:background">@drawable/bgr_btn_menu</item>
@@ -229,6 +229,7 @@
         <item name="android:background">@drawable/custom_bgr_btn</item>
         <item name="android:fontFamily">@font/nunito_bold</item>
         <item name="android:text">@string/text_reset</item>
+        <item name="android:textAllCaps">false</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">20sp</item>
     </style>
