@@ -228,6 +228,4 @@
                 android:src="@drawable/delete" />
         </LinearLayout>
     </LinearLayout>
-
-
 </ScrollView>
