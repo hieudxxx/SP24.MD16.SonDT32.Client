@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
             if (username.isEmpty() || pass.isEmpty()) {
                 Toast.makeText(this, "Hãy nhập đủ dữ liệu", Toast.LENGTH_SHORT).show();
             } else {
-                userResponse = new UserResponse("duylamjunpio@gmail.com", "Duylam@2003", "12121212");
+                userResponse = new UserResponse("doxuanhieu13012003@gmail.com", "Hieudeptrai102", "12121212");
 
                 ApiUser.apiUser.login(userResponse).enqueue(new Callback<UserResponse>() {
                     @Override
@@ -70,6 +70,7 @@ public class LoginActivity extends AppCompatActivity {
                             UserResponse userResponse = response.body();
 //                            UserResponse.User user = userResponse.getUser();
 //                            Log.d("token", "onResponse: " + userResponse.getToken());
+                            Log.d("onResponse_login", "userResponse: " + userResponse.toString());
 
                             Log.d("token", "token: "+userResponse.getToken());
                             data.put("token",userResponse.getToken());

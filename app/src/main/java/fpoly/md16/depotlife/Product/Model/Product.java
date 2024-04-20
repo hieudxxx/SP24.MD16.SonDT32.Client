@@ -33,7 +33,6 @@ public class Product implements Serializable {
     @SerializedName("supplier")
     private String supplier_name;
 
-
     public static Comparator<Product> sortByAsc = (t1, t2) -> (int) (t1.getExport_price() - t2.getExport_price());
 
     public static Comparator<Product> sortByNameAZ = (t1, t2) -> t1.getProduct_name().compareTo(t2.getProduct_name());

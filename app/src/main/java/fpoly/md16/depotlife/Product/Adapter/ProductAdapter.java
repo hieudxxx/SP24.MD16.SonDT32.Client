@@ -40,13 +40,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
-
         Picasso.get().load(list.get(position).getImg()).into(holder.binding.img);
         holder.binding.tvName.setText(list.get(position).getProduct_name());
         holder.binding.tvBarcode.setText(list.get(position).getBarcode());
-        holder.binding.tvInventory.setText(list.get(position).getInventory()+"");
-
-        holder.binding.tvExportPrice.setText(Helper.formatVND(list.get(position).getExport_price()));
+        holder.binding.tvBarcode.setText(list.get(position).getBarcode());
+        holder.binding.tvInventory.setText("Tồn kho: "+list.get(position).getInventory());
+        holder.binding.tvExportPrice.setText("Giá bán: "+Helper.formatVND(list.get(position).getExport_price()));
+        holder.binding.tvImportPrice.setText("Giá vốn: "+Helper.formatVND(list.get(position).getImport_price()));
 
         holder.itemView.setOnClickListener(view -> {
             Bundle bundle = new Bundle();

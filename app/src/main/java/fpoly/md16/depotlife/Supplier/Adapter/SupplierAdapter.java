@@ -1,6 +1,7 @@
 package fpoly.md16.depotlife.Supplier.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -14,7 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import fpoly.md16.depotlife.Helper.Helper;
+import fpoly.md16.depotlife.Product.Activity.ProductActivity;
 import fpoly.md16.depotlife.R;
+import fpoly.md16.depotlife.Supplier.Activity.SupplierActivity;
 import fpoly.md16.depotlife.Supplier.Fragment.SupplierDetailFragment;
 import fpoly.md16.depotlife.Supplier.Model.Supplier;
 import fpoly.md16.depotlife.databinding.ItemSupplierBinding;
@@ -43,16 +46,15 @@ public class SupplierAdapter extends RecyclerView.Adapter<SupplierAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         holder.binding.tvName.setText(list.get(position).getName());
-//        holder.binding.tvStatus.setText(list.get(position).isStatus() ? "Đang hợp tác" : "Đã ngừng hợp tác");
 
+        holder.binding.tvStatus.setText(list.get(position).getStatus() == 0 ? "Đang hợp tác" : "Đã ngừng hợp tác");
 
         holder.binding.tvTotal.setText(Helper.formatVND(list.get(position).getTotal()));
 
         holder.itemView.setOnClickListener(view -> {
             Bundle bundle = new Bundle();
-//            bundle.putSerializable("supplier", list.get(holder.getAdapterPosition()));
-            bundle.putInt("id", list.get(holder.getAdapterPosition()).getId());
-            Helper.loadFragment(fragmentManager, new SupplierDetailFragment(), bundle, R.id.frag_container_supplier);
+            bundle.putSerializable("supplier", list.get(holder.getAdapterPosition()));
+            context.startActivity(new Intent(context, SupplierActivity.class).putExtras(bundle));
         });
     }
 

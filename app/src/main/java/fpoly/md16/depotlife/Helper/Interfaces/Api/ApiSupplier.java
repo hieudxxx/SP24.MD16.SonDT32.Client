@@ -4,6 +4,7 @@ import static fpoly.md16.depotlife.Helper.Interfaces.Api.RetrofitRequest.getRetr
 
 import java.util.ArrayList;
 
+import fpoly.md16.depotlife.Product.Model.ProductResponse;
 import fpoly.md16.depotlife.Supplier.Model.Supplier;
 import fpoly.md16.depotlife.Supplier.Model.SupplierResponse;
 import retrofit2.Call;
@@ -27,8 +28,10 @@ public interface ApiSupplier {
     @GET("Supplier/{id}")
     Call<Supplier> getSupplier(@Path("id") String id);
 
-    @DELETE("Supplier/{id}")
-    Call<Supplier> delete(@Path("id") String id);
+//    @DELETE("Supplier/{id}")
+//    Call<Supplier> delete(@Path("id") String id);
+    @GET("suppliers/delete/{id}")
+    Call<SupplierResponse> delete(@Header("Authorization") String authToken, @Path("id") int id);
 
     @PUT("Supplier/edit/{id}")
     Call<Supplier> editById(@Path("id") String id, @Body Supplier data);

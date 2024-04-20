@@ -4,6 +4,24 @@
     style="@style/custom_bgr_layout"
     tools:context=".Supplier.Fragment.DetailTabFragment">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tb_supplier"
+        style="@style/custom_toolbar">
+
+        <TextView
+            android:id="@+id/tv_id_product"
+            style="@style/custom_title_toolbar"
+            android:text="SP21423" />
+
+        <ImageView
+            android:id="@+id/img_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/edit_invoice" />
+    </androidx.appcompat.widget.Toolbar>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -44,8 +62,6 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="qửbnaokbnf" />
-
-
         </LinearLayout>
 
         <View style="@style/custom_line" />
@@ -154,6 +170,30 @@
         <View
             style="@style/custom_line"
             android:layout_marginBottom="20dp" />
+
+        <LinearLayout
+            android:id="@+id/layout_delete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/custom_title_product_detail"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="Xóa"
+                android:textColor="@color/red" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:src="@drawable/delete" />
+        </LinearLayout>
 
     </LinearLayout>
 
