@@ -7,7 +7,7 @@ import java.util.Comparator;
 
 public class Product implements Serializable {
     @SerializedName("id")
-    private String id;
+    private int id;
     @SerializedName("supplier_id")
     private int supplier_id;
     @SerializedName("categories_id")
@@ -40,7 +40,8 @@ public class Product implements Serializable {
     public Product() {
     }
 
-    public Product(String id, int supplier_id, int category_id, String product_name, String img, String barcode, String unit, double import_price, double export_price, int inventory, int status, String category_name, String supplier_name) {
+
+    public Product(int id, int supplier_id, int category_id, String product_name, String img, String barcode, String unit, double import_price, double export_price, int inventory, int status, String category_name, String supplier_name) {
         this.id = id;
         this.supplier_id = supplier_id;
         this.category_id = category_id;
@@ -56,11 +57,11 @@ public class Product implements Serializable {
         this.supplier_name = supplier_name;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

@@ -77,6 +77,7 @@ public class ProductFragment extends Fragment {
                 if (pageIndex <= perPage) {
                     Log.d("onScrollChange", "onScrollChange: " + pageIndex);
                     getData();
+                    binding.pbLoadMore.setVisibility(View.GONE);
                 } else {
                     binding.pbLoadMore.setVisibility(View.GONE);
                 }
@@ -116,7 +117,7 @@ public class ProductFragment extends Fragment {
                 if (response.isSuccessful()) {
                     productResponse = response.body();
                     if (productResponse != null) {
-                        binding.tvTotalProduct.setText(productResponse.getTotal()+"");
+                        binding.tvTotalProduct.setText(productResponse.getTotal() + "");
                         perPage = productResponse.getLast_page();
                         onCheckList(productResponse);
                     }
@@ -142,6 +143,7 @@ public class ProductFragment extends Fragment {
     private void onCheckList(ProductResponse productResponse) {
         if (productResponse.getData() != null) {
             List<Product> tempList = Arrays.asList(productResponse.getData()); // hoặc có thể dùng foreach để check từng item
+            list.clear();
             list.addAll(tempList);
 
             binding.rcvProduct.setVisibility(View.VISIBLE);
@@ -164,10 +166,17 @@ public class ProductFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        perPage = 1;
-        getData();
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        perPage = 1;
+//        getData();
+//        Log.d("tag_kiemTra", "onResume: " + list.size());
+//        binding.rcvProduct.setVisibility(View.VISIBLE);
+//    }
+//
+//    @Override
+//    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+//        super.onViewStateRestored(savedInstanceState);
+//    }
 }

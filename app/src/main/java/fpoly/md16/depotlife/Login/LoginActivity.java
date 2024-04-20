@@ -35,7 +35,6 @@ public class LoginActivity extends AppCompatActivity {
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
         boolean isCheck = (boolean) Helper.getSharedPre(LoginActivity.this, "isRemember", Boolean.class);
         if (isCheck) {
             binding.edtUsername.setText((String) Helper.getSharedPre(LoginActivity.this, "email", String.class));
