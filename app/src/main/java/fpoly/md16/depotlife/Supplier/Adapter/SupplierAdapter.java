@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Product.Activity.ProductActivity;
@@ -28,10 +29,13 @@ public class SupplierAdapter extends RecyclerView.Adapter<SupplierAdapter.ViewHo
     private ArrayList<Supplier> mlist;
     private FragmentManager fragmentManager;
 
-    public SupplierAdapter(Context context, ArrayList<Supplier> list, FragmentManager fragmentManager) {
+    public void setData(List<Supplier> list) {
+        this.list = (ArrayList<Supplier>) list;
+        notifyDataSetChanged();
+    }
+
+    public SupplierAdapter(Context context, FragmentManager fragmentManager) {
         this.context = context;
-        this.list = list;
-        this.mlist = list;
         this.fragmentManager = fragmentManager;
     }
 
@@ -47,14 +51,15 @@ public class SupplierAdapter extends RecyclerView.Adapter<SupplierAdapter.ViewHo
 
         holder.binding.tvName.setText(list.get(position).getName());
 
-        holder.binding.tvStatus.setText(list.get(position).getStatus() == 0 ? "Đang hợp tác" : "Đã ngừng hợp tác");
+        holder.binding.tvStatus.setText(list.get(position).getStatus() == 1 ? "Đang hợp tác" : "Đã ngừng hợp tác");
 
         holder.binding.tvTotal.setText(Helper.formatVND(list.get(position).getTotal()));
 
         holder.itemView.setOnClickListener(view -> {
             Bundle bundle = new Bundle();
             bundle.putSerializable("supplier", list.get(holder.getAdapterPosition()));
-            context.startActivity(new Intent(context, SupplierActivity.class).putExtras(bundle));
+            Helper.loadFragment(fragmentManager, new SupplierDetailFragment(), bundle, R.id.frag_container_supplier);
+//            context.startActivity(new Intent(context, SupplierActivity.class).putExtras(bundle));
         });
     }
 

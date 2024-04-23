@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -72,6 +73,9 @@ public class SupplierFragment extends Fragment {
         token = (String) Helper.getSharedPre(getContext(), "token", String.class);
 
         list = new ArrayList<>();
+        LinearLayoutManager manager = new LinearLayoutManager(view.getContext());
+        binding.rcv.setLayoutManager(manager);
+        adapter = new SupplierAdapter(getContext(), getParentFragmentManager());
         getData();
 
         binding.nestScoll.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
@@ -89,6 +93,7 @@ public class SupplierFragment extends Fragment {
     }
 
     private void getData() {
+        list.clear();
         ApiSupplier.apiSupplier.getData("Bearer " + token, pageIndex).enqueue(new Callback<SupplierResponse>() {
             @Override
             public void onResponse(Call<SupplierResponse> call, Response<SupplierResponse> response) {
@@ -131,9 +136,9 @@ public class SupplierFragment extends Fragment {
             binding.pbLoading.setVisibility(View.GONE);
             binding.pbLoadMore.setVisibility(View.GONE);
             setHasOptionsMenu(true);
-            adapter = new SupplierAdapter(getContext(), list, getParentFragmentManager());
+            adapter.setData(list);
             binding.rcv.setAdapter(adapter);
-//          adapter.notifyDataSetChanged();
+            adapter.setData(list);
             pageIndex++;
         } else {
             setHasOptionsMenu(false);
@@ -171,11 +176,11 @@ public class SupplierFragment extends Fragment {
         BotSheetFilterSupplierBinding filterBinding = BotSheetFilterSupplierBinding.inflate(LayoutInflater.from(getActivity()));
         filterBinding.rdGr.setOnCheckedChangeListener((radioGroup, i) -> {
             if (i == R.id.rd_filter_active) {
-                adapter = new SupplierAdapter(getContext(), Supplier.filterByStatus(list, true), getParentFragmentManager());
+                adapter.setData(Supplier.filterByStatus(list, true));
             } else if (i == R.id.rd_filter_inactive) {
-                adapter = new SupplierAdapter(getContext(), Supplier.filterByStatus(list, false), getParentFragmentManager());
+                adapter.setData(Supplier.filterByStatus(list, true));
             } else if (i == R.id.rd_filter_all) {
-                adapter = new SupplierAdapter(getContext(), list, getParentFragmentManager());
+                adapter.setData(list);
             }
             binding.rcv.setAdapter(adapter);
             adapter.notifyDataSetChanged();
