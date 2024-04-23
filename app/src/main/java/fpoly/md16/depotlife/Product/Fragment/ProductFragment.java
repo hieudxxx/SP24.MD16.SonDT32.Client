@@ -26,6 +26,7 @@ import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiProduct;
 import fpoly.md16.depotlife.Product.Activity.ProductActivity;
 import fpoly.md16.depotlife.Product.Adapter.ProductAdapter;
+import fpoly.md16.depotlife.Product.Model.ImagesResponse;
 import fpoly.md16.depotlife.Product.Model.Product;
 import fpoly.md16.depotlife.Product.Model.ProductResponse;
 import fpoly.md16.depotlife.Product.ProductFilterActivity;
@@ -40,10 +41,12 @@ public class ProductFragment extends Fragment {
     private ProductAdapter adapter;
     private ArrayList<Product> list;
     private ProductResponse productResponse;
+    private ImagesResponse imagesResponse;
     private int pageIndex = 1;
     private int perPage = 0;
     private int count = 0;
     private String token;
+    private boolean isLoadData = true;
 
 
     @Override
@@ -58,6 +61,21 @@ public class ProductFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true); // Bật hiển thị menu
 
+//        getLifecycle().addObserver((LifecycleObserver) this);
+//
+//        if (savedInstanceState != null) {
+//            // Fragment B đã được khởi chạy trước đó
+//            // Kiểm tra xem có cần tải lại dữ liệu không (tùy theo logic của bạn)
+//            if (isLoadData) { // Biến needReloadData để kiểm soát việc tải lại dữ liệu
+//                getData();
+//                isLoadData = false; // Reset flag sau khi tải dữ liệu
+//            }
+//        } else {
+//            // Fragment B đang được khởi chạy lần đầu
+//            // Không cần tải lại dữ liệu
+//        }
+
+
         ((AppCompatActivity) getActivity()).setSupportActionBar(binding.tbProduct);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
 
@@ -65,7 +83,7 @@ public class ProductFragment extends Fragment {
             startActivity(new Intent(getActivity(), ProductActivity.class));
         });
 
-        token = (String) Helper.getSharedPre(getContext(), "token", String.class);
+        token = "Bearer " + (String) Helper.getSharedPre(getContext(), "token", String.class);
 
         list = new ArrayList<>();
 
@@ -113,7 +131,7 @@ public class ProductFragment extends Fragment {
     }
 
     private void getData() {
-        ApiProduct.apiProduct.getData("Bearer " + token, pageIndex).enqueue(new Callback<ProductResponse>() {
+        ApiProduct.apiProduct.getData(token, pageIndex).enqueue(new Callback<ProductResponse>() {
             @Override
             public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
                 Log.d("onResponse_product", "response_code: " + response.code());
@@ -147,26 +165,59 @@ public class ProductFragment extends Fragment {
     private void onCheckList(ProductResponse productResponse) {
         if (productResponse.getData() != null) {
             List<Product> tempList = Arrays.asList(productResponse.getData()); // hoặc có thể dùng foreach để check từng item
-            list.clear();
+//            for (Product product : tempList) {
+//                ApiProduct.apiProduct.getProductImages("Bearer " + token, product.getId(), product.getImg()).enqueue(new Callback<ImagesResponse>() {
+//                    @Override
+//                    public void onResponse(Call<ImagesResponse> call, Response<ImagesResponse> response) {
+//                        Log.d("getProductImages", "onResponse: " + response);
+//                        Log.d("getProductImages", "onResponse: " + response.code());
+//                        if (response.isSuccessful()) {
+//                            imagesResponse = response.body();
+//                            Log.d("getProductImages", "onResponse: " + response.body());
+//                            Log.d("getProductImages", "onResponse: " + imagesResponse.toString());
+//                            if (imagesResponse != null) {
+//                                if (product.getImg().isEmpty() || product.getImg() == null) {
+//                                    String[] path = imagesResponse.getPaths();
+//                                    if (path != null && path.length > 0) {
+//                                        product.setImg("https://warehouse.sinhvien.io.vn/public"+path[0]);
+//                                        list.add(product);
+//                                    }
+//                                } else {
+//                                    product.setImg(imagesResponse.getImage());
+//                                    list.add(product);
+//                                }
+//                            }
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<ImagesResponse> call, Throwable throwable) {
+//                        Log.d("onFailure", "onFailure: " + throwable.getMessage());
+//                        Toast.makeText(getActivity(), "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//
+//            }
             list.addAll(tempList);
-
-            binding.rcvProduct.setVisibility(View.VISIBLE);
-            binding.layoutTotal.setVisibility(View.VISIBLE);
-            binding.tvEmpty.setVisibility(View.GONE);
-            binding.pbLoading.setVisibility(View.GONE);
-            binding.pbLoadMore.setVisibility(View.GONE);
-            setHasOptionsMenu(true);
-            adapter = new ProductAdapter(getContext(), list);
-            binding.rcvProduct.setAdapter(adapter);
+            if (!list.isEmpty()) {
+                binding.rcvProduct.setVisibility(View.VISIBLE);
+                binding.layoutTotal.setVisibility(View.VISIBLE);
+                binding.tvEmpty.setVisibility(View.GONE);
+                binding.pbLoading.setVisibility(View.GONE);
+                binding.pbLoadMore.setVisibility(View.GONE);
+                setHasOptionsMenu(true);
+                adapter = new ProductAdapter(getContext(), list, token);
+                binding.rcvProduct.setAdapter(adapter);
 //                            adapter.notifyDataSetChanged();
-            pageIndex++;
-        } else {
-            setHasOptionsMenu(false);
-            binding.rcvProduct.setVisibility(View.GONE);
-            binding.layoutTotal.setVisibility(View.GONE);
-            binding.pbLoading.setVisibility(View.GONE);
-            binding.pbLoadMore.setVisibility(View.GONE);
-            binding.tvEmpty.setVisibility(View.VISIBLE);
+                pageIndex++;
+            } else {
+                setHasOptionsMenu(false);
+                binding.rcvProduct.setVisibility(View.GONE);
+                binding.layoutTotal.setVisibility(View.GONE);
+                binding.pbLoading.setVisibility(View.GONE);
+                binding.pbLoadMore.setVisibility(View.GONE);
+                binding.tvEmpty.setVisibility(View.VISIBLE);
+            }
         }
     }
 

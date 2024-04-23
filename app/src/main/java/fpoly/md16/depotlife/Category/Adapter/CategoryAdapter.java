@@ -91,10 +91,4 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
         }
     }
-
-    public void deleteItem(int position) {
-        categoryList.remove(position);
-        notifyItemRemoved(position);
-
-    }
 }

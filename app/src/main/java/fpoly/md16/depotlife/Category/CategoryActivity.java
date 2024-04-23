@@ -3,32 +3,23 @@ package fpoly.md16.depotlife.Category;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.gson.Gson;
-
-import java.io.IOException;
 import java.util.ArrayList;
 
 import fpoly.md16.depotlife.Category.Adapter.CategoryAdapter;
 import fpoly.md16.depotlife.Category.Model.Category;
 import fpoly.md16.depotlife.Category.Model.CategoryResponse;
 import fpoly.md16.depotlife.Helper.Helper;
-import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiCategory;
 import fpoly.md16.depotlife.R;
 import fpoly.md16.depotlife.databinding.ActivityCategoryBinding;
 import fpoly.md16.depotlife.databinding.DialogAddCategoryBinding;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class CategoryActivity extends AppCompatActivity {
     private ActivityCategoryBinding binding;
@@ -83,36 +74,36 @@ public class CategoryActivity extends AppCompatActivity {
     private void getData() {
         String token = (String) Helper.getSharedPre(this, "token", String.class);
 
-        ApiCategory.apiCategory.getData("Bearer " + token).enqueue(new Callback<CategoryResponse>() {
-            @Override
-            public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
-                Log.d("onResponse", "responseCode: " + response.code());
-                Log.d("onResponse", "responseCode: " + response.raw().toString());
-                Log.d("onResponse", "responseCode: " + response.body());
-                if (response.isSuccessful()) {
-                    categoryResponse = response.body();
-                    Log.d("onResponse", "productResponse: " + categoryResponse.toString());
-                } else {
-                    Log.e("onResponse", "responseCode: " + response.code());
-                    try {
-                        String errorBody = response.errorBody().string();
-                        Log.e("onResponse", "errorBody: " + errorBody);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    // Xử lý lỗi cụ thể
-                    Toast.makeText(CategoryActivity.this, "Không thể lấy dữ liệu danh mục", Toast.LENGTH_SHORT).show();
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CategoryResponse> call, Throwable throwable) {
-                Log.d("onFailure", "onFailure: " + throwable.getMessage());
-                Toast.makeText(CategoryActivity.this, "Không thể kết nối đến máy chủ ", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        ApiCategory.apiCategory.getData("Bearer " + token).enqueue(new Callback<CategoryResponse>() {
+//            @Override
+//            public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
+//                Log.d("onResponse", "responseCode: " + response.code());
+//                Log.d("onResponse", "responseCode: " + response.raw().toString());
+//                Log.d("onResponse", "responseCode: " + response.body());
+//                if (response.isSuccessful()) {
+//                    categoryResponse = response.body();
+//                    Log.d("onResponse", "productResponse: " + categoryResponse.toString());
+//                } else {
+//                    Log.e("onResponse", "responseCode: " + response.code());
+//                    try {
+//                        String errorBody = response.errorBody().string();
+//                        Log.e("onResponse", "errorBody: " + errorBody);
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                    // Xử lý lỗi cụ thể
+//                    Toast.makeText(CategoryActivity.this, "Không thể lấy dữ liệu danh mục", Toast.LENGTH_SHORT).show();
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<CategoryResponse> call, Throwable throwable) {
+//                Log.d("onFailure", "onFailure: " + throwable.getMessage());
+//                Toast.makeText(CategoryActivity.this, "Không thể kết nối đến máy chủ ", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 //        ApiCategory.apiCategory.getCategoryList().enqueue(new Callback<ArrayList<Category>>() {
 //            @Override
 //            public void onResponse(Call<ArrayList<Category>> call, Response<ArrayList<Category>> response) {
