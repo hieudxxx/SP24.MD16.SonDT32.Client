@@ -46,7 +46,7 @@ public class ProductEditFragment extends Fragment {
             requireActivity().getSupportFragmentManager().popBackStack();
         });
 
-        token = (String) Helper.getSharedPre(getContext(), "token", String.class);
+        token = "Bearer " + (String) Helper.getSharedPre(getContext(), "token", String.class);
 
         bundle = getArguments();
         if (bundle != null) {
@@ -65,13 +65,6 @@ public class ProductEditFragment extends Fragment {
                 if (product.getImg() == null) product.setImg("null");
 
                 Helper.getImagesProduct(product, token, binding.imgProduct);
-
-//                if (product.getImg() != null) {
-//                    Log.d("tag_kiemTra", "onViewCreated: "+product.getImg());
-//                    Picasso.get().load(product.getImg()).into(binding.imgProduct);
-//                } else {
-//                    binding.imgProduct.setImageResource(R.drawable.img_add);
-//                }
 
                 binding.tvCategory.setOnClickListener(view13 -> {
                     bundle = new Bundle();
@@ -104,7 +97,7 @@ public class ProductEditFragment extends Fragment {
 
                             Product product1 = new Product(2, 2, name, unit, Double.parseDouble(import_price), Double.parseDouble(export_price), Integer.parseInt(inventory));
                             Log.d("tag_kiemTra", "onViewCreated: " + product1.toString());
-                            ApiProduct.apiProduct.update("Bearer " + token, product.getId(), product1).enqueue(new Callback<Product>() {
+                            ApiProduct.apiProduct.update(token, product.getId(), product1).enqueue(new Callback<Product>() {
                                 @Override
                                 public void onResponse(Call<Product> call, Response<Product> response) {
                                     Log.d("tag_kiemTra", "onResponse: " + response.code());
