@@ -18,7 +18,7 @@ import fpoly.md16.depotlife.ForgotPassword.ForgotPasswordActivity;
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiUser;
 import fpoly.md16.depotlife.MainActivity;
-import fpoly.md16.depotlife.Staff.Model.UserResponse;
+import fpoly.md16.depotlife.Login.Model.UserResponse;
 import fpoly.md16.depotlife.databinding.ActivityLoginBinding;
 import fpoly.md16.depotlife.databinding.DialogLoadingBinding;
 import retrofit2.Call;
@@ -34,7 +34,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
 
         boolean isCheck = (boolean) Helper.getSharedPre(LoginActivity.this, "isRemember", Boolean.class);
         if (isCheck) {

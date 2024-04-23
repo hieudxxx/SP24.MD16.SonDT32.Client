@@ -6,27 +6,33 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import fpoly.md16.depotlife.Helper.Interfaces.onClickListener.OnItemClickListener;
-import fpoly.md16.depotlife.Staff.Model.UserResponse;
+import fpoly.md16.depotlife.Login.Model.UserResponse;
+import fpoly.md16.depotlife.Staff.Model.StaffResponse;
 import fpoly.md16.depotlife.databinding.ItemStaffBinding;
 
 public class StaffAdapter extends RecyclerView.Adapter<StaffAdapter.ViewHolder> implements Filterable {
     private Context context;
-    private ArrayList<UserResponse.User> list;
-
-    private OnItemClickListener itemClickListener;
+    private ArrayList<StaffResponse.User> list;
 
 
-    public StaffAdapter(Context context, ArrayList<UserResponse.User> list, OnItemClickListener itemClickListener) {
+
+
+    public StaffAdapter(Context context, ArrayList<StaffResponse.User> list) {
         this.context = context;
         this.list = list;
-        this.itemClickListener = itemClickListener;
+    }
+
+    public void addList(ArrayList<StaffResponse.User> mlist){
+        list.clear();
+        list.addAll(mlist);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -43,6 +49,7 @@ public class StaffAdapter extends RecyclerView.Adapter<StaffAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
         holder.binding.tvName.setText(list.get(position).getName());
         holder.binding.tvEmail.setText(list.get(position).getEmail());
         holder.binding.tvPhone.setText(list.get(position).getPhoneNumber());
@@ -50,9 +57,7 @@ public class StaffAdapter extends RecyclerView.Adapter<StaffAdapter.ViewHolder> 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(itemClickListener !=null){
-                    itemClickListener.onItemClick(position);
-                }
+                Toast.makeText(context,"OK STAFF",Toast.LENGTH_SHORT).show();
             }
         });
     }

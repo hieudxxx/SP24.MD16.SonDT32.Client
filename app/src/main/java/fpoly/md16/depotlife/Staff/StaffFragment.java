@@ -1,6 +1,5 @@
 package fpoly.md16.depotlife.Staff;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,32 +13,41 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import fpoly.md16.depotlife.Helper.Helper;
-import fpoly.md16.depotlife.Helper.Interfaces.onClickListener.OnItemClickListener;
-import fpoly.md16.depotlife.Product.Model.Product;
-import fpoly.md16.depotlife.Product.ProductFilterActivity;
+import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiUser;
 import fpoly.md16.depotlife.R;
 import fpoly.md16.depotlife.Staff.Adapter.StaffAdapter;
-import fpoly.md16.depotlife.Staff.Model.UserResponse;
+import fpoly.md16.depotlife.Staff.Model.StaffResponse;
 import fpoly.md16.depotlife.databinding.BotSheetSortStaffBinding;
 import fpoly.md16.depotlife.databinding.FragmentStaffBinding;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class StaffFragment extends Fragment {
     private FragmentStaffBinding binding;
-    private ArrayList<UserResponse.User> list;
+    private ArrayList<StaffResponse.User> list;
+    private StaffResponse staffResponse;
     private StaffAdapter adapter;
-
+    private String token;
+    private int pageIndex = 1;
+    private int perPage = 0;
     BotSheetSortStaffBinding sortStaffBinding;
 
+
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentStaffBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -51,24 +59,31 @@ public class StaffFragment extends Fragment {
         ((AppCompatActivity) getActivity()).setSupportActionBar(binding.tbStaff);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        list = new ArrayList<>();
 
 
-
-        ArrayList<UserResponse.User> list1 = new ArrayList<>();
-        list1.add(new UserResponse.User("Nguyen Van Sang","0961984330","","abc@gmail.com",1));
-
-        adapter =new StaffAdapter(getContext(), list1, new OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                Helper.onOptionStaff(getContext());
-            }
-        });
         binding.rcvStaff.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        binding.rcvStaff.setAdapter(adapter);
 
-//        list = new ArrayList<>();
-//        getData();
+        token = (String) Helper.getSharedPre(getContext(), "token", String.class);
+
+
+//        binding.nestScroll.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+//            if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
+////                    count++;
+//                //binding.pbLoadMore.setVisibility(View.VISIBLE);
+//                if (pageIndex <= perPage) {
+//                    Log.d("onScrollChange", "onScrollChange: " + pageIndex);
+//                    getData();
+//                    //binding.pbLoadMore.setVisibility(View.GONE);
+//                } else {
+//                    //binding.pbLoadMore.setVisibility(View.GONE);
+//                }
+//            }
+//        });
+
+
+        getData();
 
 
     }
@@ -86,7 +101,7 @@ public class StaffFragment extends Fragment {
 //            Helper.onSearch(item, adapter);
             return true;
         } else if (id == R.id.sortCategory) {
-                Helper.onSortStaff(getContext());
+            Helper.onSortStaff(getContext());
             return true;
         } else {
             return super.onOptionsItemSelected(item);
@@ -94,9 +109,59 @@ public class StaffFragment extends Fragment {
     }
 
 
+    public void getData() {
+        ApiUser.apiUser.getStaffList("Bearer " + token,pageIndex).enqueue(new Callback<StaffResponse>() {
+            @Override
+            public void onResponse(Call<StaffResponse> call, Response<StaffResponse> response) {
+                Log.d("Res_Staff", "res: " + response.code());
+                Log.d("STAFF","RESULT: " + response);
+                if (response.isSuccessful()) {
+                    staffResponse = response.body();
+                    Log.d("STAFF","RESULT: " + staffResponse.toString());
+                    if (staffResponse != null){
+                        perPage = staffResponse.getLast_page();
+                        onCheckList(staffResponse);
+                    }
+                } else {
+                    try {
+                        String errorBody = response.errorBody().string();
+                        Log.e("onResponse", "errorBody: " + errorBody);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Toast.makeText(getActivity(), "Không thể lấy dữ liệu danh mục", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<StaffResponse> call, Throwable throwable) {
+                Log.d("onFailure", "onFailure: " + throwable.getMessage());
+                Toast.makeText(getActivity(), "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
+    }
 
+
+    private void onCheckList(StaffResponse staffResponse) {
+        if (staffResponse.getUser() != null) {
+            List<StaffResponse.User> tempList = Arrays.asList(staffResponse.getUser());// hoặc có thể dùng foreach để check từng item
+            list.clear();
+            list.addAll(tempList);
+            binding.rcvStaff.setVisibility(View.VISIBLE);
+            binding.tvEmpty.setVisibility(View.GONE);
+            setHasOptionsMenu(true);
+            adapter = new StaffAdapter(getContext(), list);
+            adapter.addList(list);
+            binding.rcvStaff.setAdapter(adapter);
+
+        } else {
+            setHasOptionsMenu(false);
+            binding.rcvStaff.setVisibility(View.GONE);
+            binding.tvEmpty.setVisibility(View.VISIBLE);
+        }
+    }
 
 
 //    private void getData() {
