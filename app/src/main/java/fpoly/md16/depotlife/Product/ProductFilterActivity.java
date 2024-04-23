@@ -52,18 +52,18 @@ public class ProductFilterActivity extends AppCompatActivity {
 
     public List<Category> getCategoryList() {
         List<Category> list = new ArrayList<>();
-        list.add(new Category("id1", "Mỹ phẩm", true));
-        list.add(new Category("id2", "Gia dụng", true));
-        list.add(new Category("id3", "Thức ăn", true));
-        list.add(new Category("id4", "Mỹ phẩm", true));
-        list.add(new Category("id1", "Mỹ phẩm", true));
-        list.add(new Category("id2", "Gia dụng", true));
-        list.add(new Category("id3", "Thức ăn", true));
-        list.add(new Category("id4", "Mỹ phẩm", true));
-        list.add(new Category("id1", "Mỹ phẩm", true));
-        list.add(new Category("id2", "Gia dụng", true));
-        list.add(new Category("id3", "Thức ăn", true));
-        list.add(new Category("id4", "Mỹ phẩm", true));
+//        list.add(new Category("id1", "Mỹ phẩm", true));
+//        list.add(new Category("id2", "Gia dụng", true));
+//        list.add(new Category("id3", "Thức ăn", true));
+//        list.add(new Category("id4", "Mỹ phẩm", true));
+//        list.add(new Category("id1", "Mỹ phẩm", true));
+//        list.add(new Category("id2", "Gia dụng", true));
+//        list.add(new Category("id3", "Thức ăn", true));
+//        list.add(new Category("id4", "Mỹ phẩm", true));
+//        list.add(new Category("id1", "Mỹ phẩm", true));
+//        list.add(new Category("id2", "Gia dụng", true));
+//        list.add(new Category("id3", "Thức ăn", true));
+//        list.add(new Category("id4", "Mỹ phẩm", true));
         return list;
     }
 }

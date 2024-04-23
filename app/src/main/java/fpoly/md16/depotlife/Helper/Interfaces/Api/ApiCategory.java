@@ -9,13 +9,14 @@ import fpoly.md16.depotlife.Category.Model.CategoryResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Query;
 
 public interface ApiCategory {
 
     ApiCategory apiCategory = getRetrofit().create(ApiCategory.class);
 
     @GET("category")
-    Call<CategoryResponse> getData(@Header("Authorization") String authToken);
+    Call<CategoryResponse> getData(@Header("Authorization") String authToken, @Query("page") int page_index);
 
     @GET("category")
     Call<ArrayList<Category>> getCategoryList();

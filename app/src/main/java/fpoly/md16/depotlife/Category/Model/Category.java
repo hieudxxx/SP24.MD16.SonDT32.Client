@@ -1,12 +1,19 @@
 package fpoly.md16.depotlife.Category.Model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.util.Comparator;
 
 public class Category implements Serializable {
-    private String id;
+    @SerializedName("id")
+    private int id;
+    @SerializedName("name")
     private String name;
-    private boolean status;
+    @SerializedName("status")
+    private int status;
+    @SerializedName("created_at")
+    private String created_at;
 
     public static Comparator<Category> sortByNameAZ = (t1, t2) -> t1.getName().compareTo(t2.getName());
 
@@ -14,17 +21,18 @@ public class Category implements Serializable {
     public Category() {
     }
 
-    public Category(String id, String name, boolean status) {
+    public Category(int id, String name, int status, String created_at) {
         this.id = id;
         this.name = name;
         this.status = status;
+        this.created_at = created_at;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -36,11 +44,19 @@ public class Category implements Serializable {
         this.name = name;
     }
 
-    public boolean isStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(int status) {
         this.status = status;
+    }
+
+    public String getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
     }
 }

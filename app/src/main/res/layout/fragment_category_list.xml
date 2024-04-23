@@ -1,51 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/custom_bgr_layout"
-    android:background="@color/white"
-    tools:context=".Invoice.Fragment.CategoryListFragment">
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tb_invoice"
-        style="@style/custom_toolbar">
-
-        <ImageView
-            android:id="@+id/img_back"
-            style="@style/custom_img_back_toolbar" />
-
-        <TextView
-            android:id="@+id/tv_toolbar"
-            style="@style/custom_title_toolbar"
-            android:text="Chọn nhóm hàng" />
-
-        <ImageView
-            android:id="@+id/img_add_category"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginRight="10dp"
-            android:src="@drawable/baseline_add_24" />
-    </androidx.appcompat.widget.Toolbar>
-
-    <SearchView
-        android:id="@+id/sv_product"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="@drawable/custom_bgr_edt"
-        android:queryHint="Chọn hàng nhập" />
+    android:layout_width="match_parent"
+    android:id="@+id/nestScoll"
+    android:layout_height="wrap_content"
+    tools:context=".Category.Fragment.CategoryListFragment">
 
     <LinearLayout
         style="@style/custom_bgr_layout"
-        android:paddingTop="20dp">
+        android:background="@color/white">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcv_add_invoice"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tb_supplier"
+            style="@style/custom_toolbar">
+
+            <ImageView
+                android:id="@+id/img_back"
+                style="@style/custom_img_back_toolbar" />
+
+            <TextView
+                android:id="@+id/tv_toolbar"
+                style="@style/custom_title_toolbar"
+                android:text="Chọn loại hàng" />
+
+            <ImageView
+                android:id="@+id/img_add_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/baseline_add_24" />
+        </androidx.appcompat.widget.Toolbar>
+
+        <SearchView
+            android:id="@+id/sv_product"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/bgr_bot_sheet"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_category_invoice" />
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/custom_bgr_edt"
+            android:queryHint="Chọn hàng nhập" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            style="@style/custom_bgr_layout"
+            android:layout_height="759dp"
+            android:paddingTop="20dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv_supplier"
+                style="@style/custom_rcv"
+                tools:listitem="@layout/item_category_list" />
+
+            <ProgressBar
+                android:id="@+id/pbLoadMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rcv_supplier" />
+
+            <ProgressBar
+                android:id="@+id/pbLoading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/tv_empty"
+                style="@style/custom_tv_title"
+                android:text="Bạn chưa có hàng hóa nào"
+                android:visibility="gone" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
-</LinearLayout>
+
+
+</androidx.core.widget.NestedScrollView>

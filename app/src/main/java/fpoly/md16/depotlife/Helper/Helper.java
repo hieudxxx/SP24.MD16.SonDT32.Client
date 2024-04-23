@@ -29,6 +29,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 
+import com.google.android.material.imageview.ShapeableImageView;
+import com.squareup.picasso.Picasso;
+
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -39,10 +42,16 @@ import java.util.Comparator;
 import java.util.Locale;
 import java.util.Map;
 
+import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiProduct;
 import fpoly.md16.depotlife.Helper.Interfaces.onClickListener.CheckdeleteListener;
+import fpoly.md16.depotlife.Product.Model.ImagesResponse;
+import fpoly.md16.depotlife.Product.Model.Product;
 import fpoly.md16.depotlife.R;
 import fpoly.md16.depotlife.databinding.BotSheetSortBinding;
 import fpoly.md16.depotlife.databinding.DialogCheckDeleteBinding;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Helper {
     public static final String SHARE_NAME = "ACC";
@@ -124,6 +133,18 @@ public class Helper {
         } else {
             tv.setVisibility(View.GONE);
             tv.setText("");
+        }
+    }
+
+    public static boolean isNumberValid(String value, TextView tv) {
+        if (value.matches("[1-9][0-9]*")) {
+            tv.setVisibility(View.GONE);
+            tv.setText(null);
+            return true;
+        } else {
+            tv.setVisibility(View.VISIBLE);
+            tv.setText("Giá trị không hợp lệ");
+            return false;
         }
     }
 
@@ -263,6 +284,34 @@ public class Helper {
             adapter.notifyDataSetChanged();
         }));
         Helper.onSettingsBotSheet(context, sortBinding);
+    }
+
+    public static void getImagesProduct(Product product, String token, ShapeableImageView img) {
+        ApiProduct.apiProduct.getProductImages(token, product.getId(), product.getImg()).enqueue(new Callback<ImagesResponse>() {
+            @Override
+            public void onResponse(Call<ImagesResponse> call, Response<ImagesResponse> response) {
+                if (response.isSuccessful()) {
+                    ImagesResponse imagesResponse = response.body();
+                    if (imagesResponse != null) {
+                        if (product.getImg().isEmpty() || product.getImg() == null || product.getImg().equalsIgnoreCase("null")) {
+                            String[] path = imagesResponse.getPaths();
+                            if (path != null || path.length > 0) {
+                                Picasso.get().load("https://warehouse.sinhvien.io.vn/public" + path[0]).into(img);
+                            } else {
+                                img.setImageResource(R.drawable.img_add);
+                            }
+                        } else {
+                            Picasso.get().load(imagesResponse.getImage()).into(img);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ImagesResponse> call, Throwable throwable) {
+                Log.d("onFailure", "onFailure: " + throwable.getMessage());
+            }
+        });
     }
 
 
