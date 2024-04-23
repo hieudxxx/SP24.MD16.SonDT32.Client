@@ -11,12 +11,11 @@ import android.widget.Filterable;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Product.Activity.ProductActivity;
+import fpoly.md16.depotlife.Product.Model.ImagesResponse;
 import fpoly.md16.depotlife.Product.Model.Product;
 import fpoly.md16.depotlife.databinding.ItemProductBinding;
 
@@ -24,11 +23,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     private Context context;
     private ArrayList<Product> list;
     private ArrayList<Product> mlist;
+    private String token;
+    private ImagesResponse imagesResponse;
 
-    public ProductAdapter(Context context, ArrayList<Product> list) {
+    public ProductAdapter(Context context, ArrayList<Product> list, String token) {
         this.context = context;
         this.list = list;
         this.mlist = list;
+        this.token = token;
     }
 
     @NonNull
@@ -40,13 +42,18 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
-        Picasso.get().load(list.get(position).getImg()).into(holder.binding.img);
-        holder.binding.tvName.setText(list.get(position).getProduct_name());
-        holder.binding.tvBarcode.setText(list.get(position).getBarcode());
-        holder.binding.tvBarcode.setText(list.get(position).getBarcode());
-        holder.binding.tvInventory.setText("Tồn kho: "+list.get(position).getInventory());
-        holder.binding.tvExportPrice.setText("Giá bán: "+Helper.formatVND(list.get(position).getExport_price()));
-        holder.binding.tvImportPrice.setText("Giá vốn: "+Helper.formatVND(list.get(position).getImport_price()));
+
+        Product product = list.get(holder.getAdapterPosition());
+        if (product.getImg() == null) product.setImg("null");
+
+        Helper.getImagesProduct(product, token, holder.binding.img);
+
+        holder.binding.tvName.setText(product.getProduct_name());
+        holder.binding.tvBarcode.setText(product.getBarcode());
+        holder.binding.tvBarcode.setText(product.getBarcode());
+        holder.binding.tvInventory.setText("Tồn kho: " + product.getInventory());
+        holder.binding.tvExportPrice.setText("Giá bán: " + Helper.formatVND(product.getExport_price()));
+        holder.binding.tvImportPrice.setText("Giá vốn: " + Helper.formatVND(product.getImport_price()));
 
         holder.itemView.setOnClickListener(view -> {
             Bundle bundle = new Bundle();
@@ -93,7 +100,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         };
     }
 
-    public class ProductViewHolder extends RecyclerView.ViewHolder {
+    public static class ProductViewHolder extends RecyclerView.ViewHolder {
         private ItemProductBinding binding;
 
         public ProductViewHolder(@NonNull ItemProductBinding binding) {

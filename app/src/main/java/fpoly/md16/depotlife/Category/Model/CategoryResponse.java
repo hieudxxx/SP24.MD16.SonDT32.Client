@@ -5,46 +5,30 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Arrays;
 
 public class CategoryResponse {
-//    @SerializedName("current_page")
-//    private int current_page; //trang hien tai
     @SerializedName("data")
-    private Data[] data;
-//    @SerializedName("first_page_url")
-//    private String first_page_url; // url of trang dau tien
-//    @SerializedName("from")
-//    private int from;
-//    @SerializedName("last_page")
-//    private int last_page; //index of trang cuoi cung
-//    @SerializedName("last_page_url")
-//    private String last_page_url; //
-//    @SerializedName("links")
-//    private Links[] links;
-
+    private Category[] data;
     @SerializedName("next_page_url")
     private String next_page_url;
-//    @SerializedName("path")
-//    private String path;
-//    @SerializedName("per_page")
-//    private int per_page;
-    @SerializedName("prev_page_url")
-    private String prev_page_url;
-//    @SerializedName("to")
-//    private int to;
-//    @SerializedName("total")
-//    private int total;
+    @SerializedName("path")
+    private String path;
+    @SerializedName("last_page")
+    private int last_page;
+    @SerializedName("total")
+    private int total;
 
-
-    public CategoryResponse(Data[] data, String next_page_url, String prev_page_url) {
+    public CategoryResponse(Category[] data, String next_page_url, String path, int last_page, int total) {
         this.data = data;
         this.next_page_url = next_page_url;
-        this.prev_page_url = prev_page_url;
+        this.path = path;
+        this.last_page = last_page;
+        this.total = total;
     }
 
-    public Data[] getData() {
+    public Category[] getData() {
         return data;
     }
 
-    public void setData(Data[] data) {
+    public void setData(Category[] data) {
         this.data = data;
     }
 
@@ -56,72 +40,28 @@ public class CategoryResponse {
         this.next_page_url = next_page_url;
     }
 
-    public String getPrev_page_url() {
-        return prev_page_url;
+    public String getPath() {
+        return path;
     }
 
-    public void setPrev_page_url(String prev_page_url) {
-        this.prev_page_url = prev_page_url;
+    public void setPath(String path) {
+        this.path = path;
     }
 
-    public static class Data {
-        @SerializedName("id")
-        private int id;
-        @SerializedName("name")
-        private String name;
-        @SerializedName("status")
-        private int status;
-        @SerializedName("created_at")
-        private String created_at;
+    public int getLast_page() {
+        return last_page;
+    }
 
-        public Data(int id, String name, int status, String created_at) {
-            this.id = id;
-            this.name = name;
-            this.status = status;
-            this.created_at = created_at;
-        }
+    public void setLast_page(int last_page) {
+        this.last_page = last_page;
+    }
 
-        public int getId() {
-            return id;
-        }
+    public int getTotal() {
+        return total;
+    }
 
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public int getStatus() {
-            return status;
-        }
-
-        public void setStatus(int status) {
-            this.status = status;
-        }
-
-        public String getCreated_at() {
-            return created_at;
-        }
-
-        public void setCreated_at(String created_at) {
-            this.created_at = created_at;
-        }
-
-        @Override
-        public String toString() {
-            return "Data{" +
-                    "id=" + id +
-                    ", name='" + name + '\'' +
-                    ", status=" + status +
-                    ", created_at='" + created_at + '\'' +
-                    '}';
-        }
+    public void setTotal(int total) {
+        this.total = total;
     }
 
     @Override
@@ -129,7 +69,9 @@ public class CategoryResponse {
         return "CategoryResponse{" +
                 "data=" + Arrays.toString(data) +
                 ", next_page_url='" + next_page_url + '\'' +
-                ", prev_page_url='" + prev_page_url + '\'' +
+                ", path='" + path + '\'' +
+                ", last_page=" + last_page +
+                ", total=" + total +
                 '}';
     }
 }
