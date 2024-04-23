@@ -52,6 +52,11 @@
                     app:strokeWidth="2dp" />
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/tv_war_name"
+                style="@style/custom_tv_warning"
+                android:visibility="visible" />
+
             <View
                 style="@style/custom_line"
                 android:layout_marginTop="10dp" />
@@ -68,7 +73,11 @@
                     android:id="@+id/edt_id"
                     style="@style/custom_title_product_detail"
                     android:layout_weight="2"
-                    android:backgroundTint="@color/white" />
+                    android:backgroundTint="@color/white"
+                    android:clickable="false"
+                    android:contextClickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false" />
             </LinearLayout>
 
             <View
@@ -88,6 +97,10 @@
                     style="@style/custom_tv_title"
                     android:layout_width="0dp"
                     android:layout_weight="2"
+                    android:clickable="false"
+                    android:contextClickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     app:drawableRightCompat="@drawable/next_forgot_bold" />
             </LinearLayout>
 
@@ -109,6 +122,10 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="2"
+                    android:clickable="false"
+                    android:contextClickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     app:drawableRightCompat="@drawable/next_forgot_bold" />
             </LinearLayout>
 
@@ -131,6 +148,10 @@
                     android:backgroundTint="@color/white" />
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/tv_war_export_price"
+                style="@style/custom_tv_warning" />
+
             <View
                 style="@style/custom_line"
                 android:layout_marginLeft="110dp" />
@@ -149,6 +170,10 @@
                     android:layout_weight="2"
                     android:backgroundTint="@color/white" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_war_import_price"
+                style="@style/custom_tv_warning" />
 
             <View
                 style="@style/custom_line"
@@ -169,6 +194,10 @@
                     android:backgroundTint="@color/white" />
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/tv_war_inventory"
+                style="@style/custom_tv_warning" />
+
             <View
                 style="@style/custom_line"
                 android:layout_marginLeft="110dp" />
@@ -186,12 +215,16 @@
                     android:text="Đơn vị \nđo lường: " />
 
                 <EditText
-                    android:id="@+id/edt_weight"
+                    android:id="@+id/edt_unit"
                     style="@style/custom_title_product_detail"
                     android:layout_height="match_parent"
                     android:layout_weight="2"
                     android:backgroundTint="@color/white" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_war_unit"
+                style="@style/custom_tv_warning" />
         </LinearLayout>
 
         <TextView

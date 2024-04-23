@@ -179,7 +179,7 @@
                     android:text="Đơn vị \nđo lường: " />
 
                 <TextView
-                    android:id="@+id/tv_weight"
+                    android:id="@+id/tv_unit"
                     style="@style/custom_tv_title"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"

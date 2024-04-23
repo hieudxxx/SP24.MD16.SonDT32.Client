@@ -12,8 +12,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import com.squareup.picasso.Picasso;
-
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiProduct;
 import fpoly.md16.depotlife.Product.Model.Product;
@@ -28,6 +26,12 @@ public class ProductDetailFragment extends Fragment {
     private Product product;
     private String token;
     private Bundle bundle;
+//    private OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+//        @Override
+//        public void handleOnBackPressed() {
+//            requireActivity().finish();
+//        }
+//    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,7 +44,7 @@ public class ProductDetailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        token = (String) Helper.getSharedPre(getContext(), "token", String.class);
+        token = "Bearer " + (String) Helper.getSharedPre(getContext(), "token", String.class);
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(binding.tbProduct);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -49,46 +53,16 @@ public class ProductDetailFragment extends Fragment {
             requireActivity().finish();
         });
 
+//        requireActivity().getOnBackPressedDispatcher().addCallback(callback);
+
         bundle = getArguments();
         if (bundle != null) {
             product = (Product) bundle.getSerializable("product");
             if (product != null) {
-
-                binding.tvIdProduct.setText(product.getId() + "");
-                binding.tvBarCode.setText(product.getId()+"");
-                binding.tvName.setText(product.getProduct_name());
-                binding.tvSupplier.setText(product.getSupplier_name());
-                binding.tvCategory.setText(product.getCategory_name());
-                binding.tvExportPrice.setText(Helper.formatVND(product.getExport_price()));
-                binding.tvImportPrice.setText(Helper.formatVND(product.getImport_price()));
-                binding.tvInventory.setText(product.getInventory() + "");
-                binding.tvWeight.setText(product.getUnit());
-
-                if (!product.getImg().isEmpty()) {
-                    Picasso.get().load(product.getImg()).into(binding.imgProduct);
-                } else {
-                    binding.imgProduct.setImageResource(R.drawable.img_add);
-                }
+                getData();
 
                 binding.layoutDelete.setOnClickListener(view12 -> {
-                    Helper.onCheckdeleteDialog(getContext(), () -> {
-                        ApiProduct.apiProduct.delete("Bearer " + token, product.getId()).enqueue(new Callback<Product>() {
-                            @Override
-                            public void onResponse(Call<Product> call, Response<Product> response) {
-                                if (response.isSuccessful() || response.code() == 200) {
-                                    Toast.makeText(getContext(), "Xóa thành công", Toast.LENGTH_SHORT).show();
-                                    requireActivity().finish();
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<Product> call, Throwable throwable) {
-                                Log.d("onFailure", "onFailure: " + throwable.getMessage());
-                                Toast.makeText(getActivity(), "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-
-                    });
+                    delete();
                 });
 
                 binding.imgEdit.setOnClickListener(view13 -> {
@@ -100,14 +74,68 @@ public class ProductDetailFragment extends Fragment {
         }
     }
 
+    private void delete() {
+        Helper.onCheckdeleteDialog(getContext(), () -> {
+            ApiProduct.apiProduct.delete("Bearer " + token, product.getId()).enqueue(new Callback<Product>() {
+                @Override
+                public void onResponse(Call<Product> call, Response<Product> response) {
+                    if (response.isSuccessful() || response.code() == 200) {
+                        Toast.makeText(getContext(), "Xóa thành công", Toast.LENGTH_SHORT).show();
+                        requireActivity().finish();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Product> call, Throwable throwable) {
+                    Log.d("onFailure", "onFailure: " + throwable.getMessage());
+                    Toast.makeText(getActivity(), "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        });
+    }
+
+    private void getData() {
+        ApiProduct.apiProduct.getProductById(token, product.getId()).enqueue(new Callback<Product>() {
+            @Override
+            public void onResponse(Call<Product> call, Response<Product> response) {
+                if (response.isSuccessful()) {
+                    product = response.body();
+                    if (product != null) {
+                        binding.tvIdProduct.setText(product.getId() + "");
+                        binding.tvBarCode.setText(product.getId() + "");
+                        binding.tvName.setText(product.getProduct_name());
+                        binding.tvSupplier.setText(product.getSupplier_name());
+                        binding.tvCategory.setText(product.getCategory_name());
+                        binding.tvExportPrice.setText(Helper.formatVND(product.getExport_price()));
+                        binding.tvImportPrice.setText(Helper.formatVND(product.getImport_price()));
+                        binding.tvInventory.setText(product.getInventory() + "");
+                        binding.tvUnit.setText(product.getUnit());
+
+                        if (product.getImg() == null) product.setImg("null");
+
+                        Helper.getImagesProduct(product, token, binding.imgProduct);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Product> call, Throwable throwable) {
+                Log.d("onFailure", "onFailure: " + throwable.getMessage());
+                Toast.makeText(getActivity(), "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     @Override
     public void onResume() {
         super.onResume();
-
-//        ApiProduct.apiProduct.getProductById("Bearer " + token, product.getId())
+        getData();
     }
 
-
-
-
+    //    @Override
+//    public void onDestroy() {
+//        super.onDestroy();
+//        callback.remove();
+//    }
 }
