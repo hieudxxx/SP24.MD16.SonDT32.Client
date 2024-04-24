@@ -23,6 +23,9 @@ public class Supplier implements Serializable {
     @SerializedName("status")
     private int status;
 
+    public Supplier(int id, String name, String taxCode, String address, double total, int status) {
+    }
+
     public static ArrayList<Supplier> filterByStatus(ArrayList<Supplier> list, boolean status) {
         ArrayList<Supplier> filteredList = new ArrayList<>();
 
@@ -42,11 +45,10 @@ public class Supplier implements Serializable {
     public Supplier() {
     }
 
-    public Supplier(int id, String name, String phone, String email, String tax_code, String address, double total, int status) {
+    public Supplier(int id, String name, String phone, String tax_code, String address, double total, int status) {
         this.id = id;
         this.name = name;
         this.phone = phone;
-        this.email = email;
         this.tax_code = tax_code;
         this.address = address;
         this.total = total;
