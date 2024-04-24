@@ -68,6 +68,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (response.isSuccessful()) {
                             UserResponse userResponse = response.body();
 //                            UserResponse.User user = userResponse.getUser();
+//                            Log.d("token", "onResponse: " + userResponse.getToken());
                             Log.d("onResponse_login", "userResponse: " + userResponse.toString());
 
                             Log.d("token", "token: "+userResponse.getToken());

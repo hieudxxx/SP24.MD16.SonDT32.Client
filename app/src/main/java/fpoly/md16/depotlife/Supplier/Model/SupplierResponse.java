@@ -11,14 +11,22 @@ public class SupplierResponse {
     private String next_page_url;
     @SerializedName("path")
     private String path;
+
+    @SerializedName("last_page")
+    private int last_page;
     @SerializedName("per_page")
     private int per_page;
 
-    public SupplierResponse(Supplier[] data, String next_page_url, String path, int per_page) {
+    @SerializedName("total")
+    private int total;
+
+    public SupplierResponse(Supplier[] data, String next_page_url, String path, int last_page, int per_page, int total) {
         this.data = data;
         this.next_page_url = next_page_url;
         this.path = path;
+        this.last_page = last_page;
         this.per_page = per_page;
+        this.total = total;
     }
 
     public Supplier[] getData() {
@@ -51,6 +59,22 @@ public class SupplierResponse {
 
     public void setPer_page(int per_page) {
         this.per_page = per_page;
+    }
+
+    public int getLast_page() {
+        return last_page;
+    }
+
+    public void setLast_page(int last_page) {
+        this.last_page = last_page;
+    }
+
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
     }
 
     @Override
