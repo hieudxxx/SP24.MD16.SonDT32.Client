@@ -72,7 +72,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcv"
                 style="@style/custom_rcv"
-                tools:listitem="@layout/item_supplier" />
+                tools:listitem="@layout/item_supplier"
+                tools:ignore="MissingConstraints" />
 
             <ProgressBar
                 android:id="@+id/pbLoadMore"
@@ -97,12 +98,14 @@
                 android:id="@+id/tv_empty"
                 style="@style/custom_tv_title"
                 android:text="Bạn chưa có nhà cung cấp nào"
-                android:visibility="gone" />
+                android:visibility="gone"
+                tools:ignore="MissingConstraints" />
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/fab"
                 style="@style/custom_fab"
-                app:icon="@drawable/add" />
+                app:icon="@drawable/add"
+                tools:ignore="MissingConstraints" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
