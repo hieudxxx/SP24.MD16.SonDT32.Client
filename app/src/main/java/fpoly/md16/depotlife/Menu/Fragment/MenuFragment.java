@@ -13,13 +13,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import fpoly.md16.depotlife.ForgotPassword.ConfirmOtpActivity;
-import fpoly.md16.depotlife.ForgotPassword.ForgotPasswordActivity;
 import fpoly.md16.depotlife.Helper.Helper;
-import fpoly.md16.depotlife.Invoice.Fragment.InvoiceImportFragment;
 import fpoly.md16.depotlife.Login.LoginActivity;
-import fpoly.md16.depotlife.Staff.StaffFragment;
-import fpoly.md16.depotlife.Menu.Account.Activity.AccountActivity;
+import fpoly.md16.depotlife.Staff.Fragment.StaffFragment;
 import fpoly.md16.depotlife.Menu.Activity.BaoLoi;
 import fpoly.md16.depotlife.Menu.Activity.CaiDat;
 import fpoly.md16.depotlife.Menu.Activity.DieuKhoan;
@@ -33,7 +29,6 @@ import fpoly.md16.depotlife.Product.Fragment.ProductFragment;
 import fpoly.md16.depotlife.R;
 import fpoly.md16.depotlife.Statistic.StatisticFragment;
 import fpoly.md16.depotlife.databinding.DialogCheckFeatureBinding;
-import fpoly.md16.depotlife.databinding.DialogCheckUsernameBinding;
 import fpoly.md16.depotlife.databinding.FragmentMenuBinding;
 
 

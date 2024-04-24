@@ -3,6 +3,7 @@ package fpoly.md16.depotlife.Helper;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -21,10 +22,11 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Filterable;
 import android.widget.ImageView;
-import android.widget.SearchView;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -48,7 +50,8 @@ import fpoly.md16.depotlife.Helper.Interfaces.onClickListener.CheckdeleteListene
 import fpoly.md16.depotlife.Product.Model.ImagesResponse;
 import fpoly.md16.depotlife.Product.Model.Product;
 import fpoly.md16.depotlife.R;
-import fpoly.md16.depotlife.databinding.BotSheetDetailStaffBinding;
+import fpoly.md16.depotlife.Staff.Activity.StaffDetailActivity;
+import fpoly.md16.depotlife.Staff.Model.StaffResponse;
 import fpoly.md16.depotlife.databinding.BotSheetOptionStaffBinding;
 import fpoly.md16.depotlife.databinding.BotSheetSortBinding;
 import fpoly.md16.depotlife.databinding.BotSheetSortStaffBinding;
@@ -308,23 +311,8 @@ public class Helper {
     }
 
 
-    public static <T> void onOptionStaff(Context context) {
+    public static <T> void onOptionStaff(Context context, StaffResponse.User user) {
         BotSheetOptionStaffBinding optionStaffBinding = BotSheetOptionStaffBinding.inflate(LayoutInflater.from(context));
-        BotSheetDetailStaffBinding detailStaffBinding = BotSheetDetailStaffBinding.inflate(LayoutInflater.from(context));
-//        optionStaffBinding.rdGr.setOnCheckedChangeListener(((radioGroup, i) -> {
-//
-////            if (i == R.id.rd_sort_asc && sortByAsc != null) {
-////                Collections.sort(list, sortByAsc);
-////            } else if (i == R.id.rd_sort_desc && sortByAsc != null) {
-////                Collections.sort(list, Collections.reverseOrder(sortByAsc));
-////            } else if (i == R.id.rd_sort_AZ && sortByAZ != null) {
-////                Collections.sort(list, sortByAZ);
-////            } else if (i == R.id.rd_sort_ZA && sortByAZ != null) {
-////                Collections.sort(list, Collections.reverseOrder(sortByAZ));
-////            }
-////            adapter.notifyDataSetChanged();
-//        }));
-
 
         optionStaffBinding.layoutCall.setOnClickListener(v -> {
             Toast.makeText(v.getContext(), "Ok Call",Toast.LENGTH_SHORT).show();
@@ -336,8 +324,11 @@ public class Helper {
             Toast.makeText(v.getContext(), "Ok SendSms",Toast.LENGTH_SHORT).show();
         });
         optionStaffBinding.layoutDetail.setOnClickListener(v -> {
-            Helper.onSettingsBotSheet(context,detailStaffBinding);
-            //Toast.makeText(v.getContext(), "Ok Detail",Toast.LENGTH_SHORT).show();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("staff",user);
+            context.startActivity(new Intent(context, StaffDetailActivity.class).putExtras(bundle));
+
+
         });
         Helper.onSettingsBotSheet(context,optionStaffBinding );
     }

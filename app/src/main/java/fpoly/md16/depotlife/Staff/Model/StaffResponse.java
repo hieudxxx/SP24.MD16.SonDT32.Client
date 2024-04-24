@@ -2,6 +2,7 @@ package fpoly.md16.depotlife.Staff.Model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -67,7 +68,7 @@ public class StaffResponse {
 
     // Getters and Setters
 
-    public static class User {
+    public static class User implements Serializable {
         @SerializedName("id")
         private int id;
         @SerializedName("name")

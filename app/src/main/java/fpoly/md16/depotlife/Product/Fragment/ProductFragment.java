@@ -86,8 +86,7 @@ public class ProductFragment extends Fragment {
         token = "Bearer " + (String) Helper.getSharedPre(getContext(), "token", String.class);
 
         list = new ArrayList<>();
-
-
+        getData();
 
         binding.nestScoll.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
@@ -102,8 +101,6 @@ public class ProductFragment extends Fragment {
                 }
             }
         });
-
-        getData();
     }
 
     @Override
@@ -139,7 +136,6 @@ public class ProductFragment extends Fragment {
                     productResponse = response.body();
                     if (productResponse != null) {
                         binding.tvTotalProduct.setText(productResponse.getTotal() + "");
-                        Log.d("Products","product_res: "+productResponse);
                         perPage = productResponse.getLast_page();
                         onCheckList(productResponse);
                     }
