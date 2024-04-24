@@ -4,256 +4,243 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="60dp"
+    android:background="@color/bgr_screen"
+    android:fillViewport="true"
     tools:context=".Menu.Fragment.MenuFragment">
 
-    <LinearLayout style="@style/custom_bgr_layout">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/tb_menu"
-            style="@style/custom_toolbar">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cv_account"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:layout_marginHorizontal="10dp"
-                app:cardCornerRadius="30dp">
-
-                <ImageView
-                    android:id="@+id/img_account"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/avt" />
-            </androidx.cardview.widget.CardView>
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/img_account"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/avt"
+                app:shapeAppearanceOverlay="@style/custom_shape_img_circle"
+                app:strokeWidth="2dp" />
 
             <TextView
-                style="@style/custom_title_toolbar"
-                android:text="Ngọc hải" />
-
-            <ImageView
-                android:id="@+id/img_edit"
+                android:id="@+id/txt_nameAccount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginHorizontal="10dp"
-                android:src="@drawable/edit_user" />
+                android:layout_marginStart="30dp"
+                android:fontFamily="@font/nunito_extrabold"
+                android:text="Xuân Hiếu"
+                android:textColor="@color/black"
+                android:textSize="24sp" />
 
+
+            <ImageButton
+                android:id="@+id/imgBtn_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:backgroundTint="@color/white"
+                android:src="@drawable/edit_user" />
         </androidx.appcompat.widget.Toolbar>
 
+
         <LinearLayout
-            style="@style/custom_bgr_layout_menu"
-            android:layout_marginTop="10dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_import"
+                android:id="@+id/btn_invoice"
                 style="@style/custom_bgr_btn_menu"
-                android:drawableLeft="@drawable/invoice_bot_nav"
-                android:text="@string/text_invoice" />
+                android:drawableStart="@drawable/invoice_bot_nav"
+                android:text="Hoá đơn" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_export"
+                android:id="@+id/btn_censor"
                 style="@style/custom_bgr_btn_menu"
-                android:drawableLeft="@drawable/about_us"
+                android:drawableStart="@drawable/about_us"
                 android:text="Kiểm duyệt" />
         </LinearLayout>
 
-        <LinearLayout style="@style/custom_bgr_layout_menu">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_supplier"
                 style="@style/custom_bgr_btn_menu"
-                android:drawableLeft="@drawable/supplier"
-                android:text="@string/text_suppplier" />
+                android:drawableStart="@drawable/supplier"
+                android:text="Nhà cung cấp" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_staff"
                 style="@style/custom_bgr_btn_menu"
-                android:drawableLeft="@drawable/staff"
+                android:drawableStart="@drawable/staff"
                 android:text="Nhân viên" />
         </LinearLayout>
 
-        <LinearLayout style="@style/custom_bgr_layout_menu">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_category"
+                android:id="@+id/btn_categories"
                 style="@style/custom_bgr_btn_menu"
-                android:drawableLeft="@drawable/category"
-                android:text="@string/text_category" />
+                android:drawableStart="@drawable/category"
+                android:text="Loại hàng hoá" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_product"
                 style="@style/custom_bgr_btn_menu"
-                android:drawableLeft="@drawable/product_bot_nav"
-                android:text="@string/text_product" />
+                android:drawableStart="@drawable/product_bot_nav"
+                android:text="Hàng hoá" />
         </LinearLayout>
 
-        <LinearLayout style="@style/custom_bgr_layout_menu">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_statistic"
                 style="@style/custom_bgr_btn_menu"
-                android:drawableLeft="@drawable/statistic_bot_nav"
-                android:text="@string/text_statistic" />
+                android:drawableStart="@drawable/statistic_bot_nav"
+                android:text="Tồng quan" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_ledger"
+                android:id="@+id/btn_treasuryBook"
                 style="@style/custom_bgr_btn_menu"
-                android:drawableLeft="@drawable/ledger"
+                android:drawableStart="@drawable/ledger"
                 android:text="Sổ quỹ" />
         </LinearLayout>
 
         <LinearLayout
-            style="@style/custom_bgr_layout_menu"
-            android:background="@drawable/bgr_btn_menu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bgr_bot_sheet"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/in4_shop"
-                style="@style/custom_bgr_layout_menu"
-                android:layout_marginTop="20dp">
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:drawableStart="@drawable/in4_shop"
+                android:drawablePadding="-160dp"
+                android:padding="10dp"
+                android:text="Thông tin gian hàng"
+                android:textAllCaps="false"
+                android:textSize="17sp" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/in4_shop" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_policy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:drawableStart="@drawable/policy"
+                android:drawablePadding="-160dp"
+                android:padding="10dp"
+                android:text="Chính sách bảo mật"
+                android:textAllCaps="false"
+                android:textSize="17sp" />
 
-                <TextView
-                    style="@style/custom_tv_product_name"
-                    android:layout_marginStart="10dp"
-                    android:text="Thông tin gian hàng" />
-            </LinearLayout>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_about"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:drawableStart="@drawable/about_us"
+                android:drawablePadding="-220dp"
+                android:padding="10dp"
+                android:text="Về chúng tôi"
+                android:textAllCaps="false"
+                android:textSize="17sp" />
 
-            <LinearLayout
-                android:id="@+id/policy"
-                style="@style/custom_bgr_layout_menu"
-                android:layout_marginTop="20dp">
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_report"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:drawableStart="@drawable/report"
+                android:drawablePadding="-260dp"
+                android:padding="10dp"
+                android:text="Báo lỗi"
+                android:textAllCaps="false"
+                android:textSize="17sp" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/policy" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_feedback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:drawableStart="@drawable/help"
+                android:drawablePadding="-160dp"
+                android:padding="10dp"
+                android:text="Trợ giúp và phản hồi"
+                android:textAllCaps="false"
+                android:textSize="17sp" />
 
-                <TextView
-                    style="@style/custom_tv_product_name"
-                    android:layout_marginStart="10dp"
-                    android:text="Chính sách bảo mật" />
-            </LinearLayout>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_setting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:drawableStart="@drawable/settings"
+                android:drawablePadding="-260dp"
+                android:padding="10dp"
+                android:text="Cài đặt"
+                android:textAllCaps="false"
+                android:textSize="17sp" />
 
-            <LinearLayout
-                android:id="@+id/about_us"
-                style="@style/custom_bgr_layout_menu"
-                android:layout_marginTop="20dp">
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_call"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:drawableStart="@drawable/call"
+                android:drawablePadding="-220dp"
+                android:padding="10dp"
+                android:text="Gọi tổng đài"
+                android:textAllCaps="false"
+                android:textSize="17sp" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/about_us" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_clause"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:drawableStart="@drawable/rules"
+                android:drawablePadding="-230dp"
+                android:padding="10dp"
+                android:text="Điều khoản"
+                android:textAllCaps="false"
+                android:textSize="17sp" />
 
-                <TextView
-                    style="@style/custom_tv_product_name"
-                    android:layout_marginStart="10dp"
-                    android:text="Về chúng tôi" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/report"
-                style="@style/custom_bgr_layout_menu"
-                android:layout_marginTop="20dp">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/report" />
-
-                <TextView
-                    style="@style/custom_tv_product_name"
-                    android:layout_marginStart="10dp"
-                    android:text="Báo lỗi" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/help"
-                style="@style/custom_bgr_layout_menu"
-                android:layout_marginTop="20dp">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/help" />
-
-                <TextView
-                    style="@style/custom_tv_product_name"
-                    android:layout_marginStart="10dp"
-                    android:text="Trợ giúp và phản hồi" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/settings"
-                style="@style/custom_bgr_layout_menu"
-                android:layout_marginTop="20dp">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/settings" />
-
-                <TextView
-                    style="@style/custom_tv_product_name"
-                    android:layout_marginStart="10dp"
-                    android:text="Cài đặt" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/hotline"
-                style="@style/custom_bgr_layout_menu"
-                android:layout_marginTop="20dp">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/call" />
-
-                <TextView
-                    style="@style/custom_tv_product_name"
-                    android:layout_marginStart="10dp"
-                    android:text="Gọi 1900 1282" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/rules"
-                style="@style/custom_bgr_layout_menu"
-                android:layout_marginTop="20dp">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/rules" />
-
-                <TextView
-                    style="@style/custom_tv_product_name"
-                    android:layout_marginStart="10dp"
-                    android:text="Điều khoản" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/logout"
-                style="@style/custom_bgr_layout_menu"
-                android:layout_marginTop="20dp">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/logout" />
-
-                <TextView
-                    style="@style/custom_tv_product_name"
-                    android:layout_marginStart="10dp"
-                    android:text="Đăng xuất" />
-            </LinearLayout>
-
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_logout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:drawableStart="@drawable/logout"
+                android:drawablePadding="-240dp"
+                android:padding="10dp"
+                android:text="Đăng xuất"
+                android:textAllCaps="false"
+                android:textSize="17sp" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

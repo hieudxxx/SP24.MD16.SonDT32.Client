@@ -18,7 +18,7 @@ import fpoly.md16.depotlife.ForgotPassword.ForgotPasswordActivity;
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiUser;
 import fpoly.md16.depotlife.MainActivity;
-import fpoly.md16.depotlife.Staff.Model.UserResponse;
+import fpoly.md16.depotlife.Login.Model.UserResponse;
 import fpoly.md16.depotlife.databinding.ActivityLoginBinding;
 import fpoly.md16.depotlife.databinding.DialogLoadingBinding;
 import retrofit2.Call;
@@ -95,7 +95,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<UserResponse> call, Throwable throwable) {
                         Log.d("onFailure_login", "connect_failed: " + throwable.getMessage());
-                        Toast.makeText(LoginActivity.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Không thể kết nối", Toast.LENGTH_SHORT).show();
                     }
                 });
 

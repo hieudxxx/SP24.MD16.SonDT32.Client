@@ -26,7 +26,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     private String token;
     private ImagesResponse imagesResponse;
 
-    public ProductAdapter(Context context, ArrayList<Product> list, String token) {
+    public ProductAdapter(Context context, ArrayList<Product> list,String token) {
         this.context = context;
         this.list = list;
         this.mlist = list;
