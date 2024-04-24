@@ -204,7 +204,7 @@ public class ProductFragment extends Fragment {
                 setHasOptionsMenu(true);
                 adapter = new ProductAdapter(getContext(), list, token);
                 binding.rcvProduct.setAdapter(adapter);
-//                            adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
                 pageIndex++;
             } else {
                 setHasOptionsMenu(false);

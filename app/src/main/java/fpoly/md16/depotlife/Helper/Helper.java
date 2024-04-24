@@ -295,7 +295,7 @@ public class Helper {
                     if (imagesResponse != null) {
                         if (product.getImg().isEmpty() || product.getImg() == null || product.getImg().equalsIgnoreCase("null")) {
                             String[] path = imagesResponse.getPaths();
-                            if (path != null || path.length > 0) {
+                            if (path != null && path.length > 0) {
                                 Picasso.get().load("https://warehouse.sinhvien.io.vn/public" + path[0]).into(img);
                             } else {
                                 img.setImageResource(R.drawable.img_add);
