@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/custom_rd_sort_filter"
+    android:orientation="vertical"
+    android:background="@drawable/bgr_bot_sheet">
+
+
+    <TextView
+        android:text="Tuỳ chọn"
+        style="@style/custom_tv_title_bot_sheet"/>
+
+    <View
+        style="@style/custom_line"
+        android:background="@color/black" />
+
+
+    <LinearLayout
+        android:background="@drawable/btn_option_staff"
+        android:id="@+id/layoutCall"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:padding="10dp"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:src="@drawable/ring_phone"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+             />
+
+        <TextView
+            style="@style/custom_rd_sort_filter"
+            android:layout_marginStart="10dp"
+            android:text="Gọi điện"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:background="@drawable/btn_option_staff"
+        android:id="@+id/layoutEmail"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:padding="10dp"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:src="@drawable/email2"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            />
+
+        <TextView
+            style="@style/custom_rd_sort_filter"
+            android:layout_marginStart="10dp"
+            android:text="Gửi email"/>
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:background="@drawable/btn_option_staff"
+        android:id="@+id/layoutSendSms"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:padding="10dp"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:src="@drawable/phone_sms"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            />
+
+        <TextView
+            style="@style/custom_rd_sort_filter"
+            android:layout_marginStart="10dp"
+            android:text="Gọi điện"/>
+
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:background="@drawable/btn_option_staff"
+        android:id="@+id/layoutDetail"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:padding="10dp"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:src="@drawable/detail"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            />
+
+        <TextView
+            style="@style/custom_rd_sort_filter"
+            android:layout_marginStart="10dp"
+            android:text="Chi tiết"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>

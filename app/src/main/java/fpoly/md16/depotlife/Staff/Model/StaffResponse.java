@@ -2,72 +2,73 @@ package fpoly.md16.depotlife.Staff.Model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
-public class UserResponse {
-    @SerializedName("user")
-    private User user;
-    @SerializedName("token")
-    private String token;
-    @SerializedName("email")
-    private String email;
-    @SerializedName("password")
-    private String password;
-    @SerializedName("device_imei")
-    private String device_imei;
+public class StaffResponse {
+    @SerializedName("data")
+    private User[] user;
+    @SerializedName("next_page_url")
+    private String next_page_url;
+    @SerializedName("path")
+    private String path;
+    @SerializedName("last_page")
+    private int last_page;
+    @SerializedName("total")
+    private int total;
 
-    public UserResponse(String email, String password, String device_imei) {
-        this.email = email;
-        this.password = password;
-        this.device_imei = device_imei;
-    }
 
-    public String getDevice_imei() {
-        return device_imei;
-    }
 
-    public void setDevice_imei(String device_imei) {
-        this.device_imei = device_imei;
-    }
 
-    public UserResponse() {
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
+    public StaffResponse(User[] user) {
         this.user = user;
     }
 
-    public String getToken() {
-        return token;
+    public User[] getUser() {
+        return user;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setUser(User[] user) {
+        this.user = user;
     }
 
-    public String getEmail() {
-        return email;
+    public String getNext_page_url() {
+        return next_page_url;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setNext_page_url(String next_page_url) {
+        this.next_page_url = next_page_url;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPath() {
+        return path;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public int getLast_page() {
+        return last_page;
+    }
+
+    public void setLast_page(int last_page) {
+        this.last_page = last_page;
+    }
+
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
     }
 
     // Getters and Setters
 
-    public static class User {
+    public static class User implements Serializable {
         @SerializedName("id")
         private int id;
         @SerializedName("name")
@@ -82,18 +83,15 @@ public class UserResponse {
         private String email;
         @SerializedName("email_verified_at")
         private Date emailVerifiedAt; // Chú ý: JSON phải có định dạng ngày thích hợp
-        //        @SerializedName("password")
-//        private String password; // Chú ý: Mật khẩu thường không được truyền qua API
         @SerializedName("birthday")
         private String birthday;
         @SerializedName("address")
         private String address;
         @SerializedName("status")
         private int status;
-        @SerializedName("device_imei")
-        private String deviceImei;
 
-        public User(int id, String name, String phoneNumber, int role, String avatar, String email, Date emailVerifiedAt, String birthday, String address, int status, String deviceImei) {
+
+        public User(int id, String name, String phoneNumber, int role, String avatar, String email, Date emailVerifiedAt, String birthday, String address, int status) {
             this.id = id;
             this.name = name;
             this.phoneNumber = phoneNumber;
@@ -104,7 +102,7 @@ public class UserResponse {
             this.birthday = birthday;
             this.address = address;
             this.status = status;
-            this.deviceImei = deviceImei;
+
         }
 
         public int getId() {
@@ -187,13 +185,6 @@ public class UserResponse {
             this.status = status;
         }
 
-        public String getDeviceImei() {
-            return deviceImei;
-        }
-
-        public void setDeviceImei(String deviceImei) {
-            this.deviceImei = deviceImei;
-        }
 
         @Override
         public String toString() {
@@ -208,7 +199,7 @@ public class UserResponse {
                     ", birthday='" + birthday + '\'' +
                     ", address='" + address + '\'' +
                     ", status='" + status + '\'' +
-                    ", deviceImei='" + deviceImei + '\'' +
+
                     '}';
         }
     }
@@ -217,11 +208,12 @@ public class UserResponse {
 
     @Override
     public String toString() {
-        return "UserResponse{" +
-                "user=" + user +
-                ", token='" + token + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
+        return "StaffResponse{" +
+                "user=" + Arrays.toString(user) +
+                ", next_page_url='" + next_page_url + '\'' +
+                ", path='" + path + '\'' +
+                ", last_page=" + last_page +
+                ", total=" + total +
                 '}';
     }
 }
