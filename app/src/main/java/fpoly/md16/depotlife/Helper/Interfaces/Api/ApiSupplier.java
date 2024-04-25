@@ -31,6 +31,6 @@ public interface ApiSupplier {
     Call<Supplier> delete(@Header("Authorization") String authToken, @Path("id") int id);
 
     @POST("suppliers/update/{id}")
-    Call<Supplier> update(@Header("Authorization") String authToken, @Query("id") int id, @Body Supplier data);
+    Call<Supplier> update(@Header("Authorization") String authToken, @Path("id") int id, @Body Supplier data);
 
 }

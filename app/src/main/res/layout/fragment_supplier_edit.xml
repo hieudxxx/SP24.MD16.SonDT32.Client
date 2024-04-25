@@ -144,6 +144,28 @@
             android:id="@+id/tv_war_taxCode"
             style="@style/custom_tv_warning" />
 
+        <View style="@style/custom_line" />
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
+
+            <RadioButton
+                android:id="@+id/radioButtonOption1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Đang hợp tác" />
+
+            <RadioButton
+                android:id="@+id/radioButtonOption2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ngừng hợp tác" />
+        </RadioGroup>
+
         <View
             style="@style/custom_line"
             android:layout_marginBottom="20dp" />

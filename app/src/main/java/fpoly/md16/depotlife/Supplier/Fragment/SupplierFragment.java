@@ -80,11 +80,10 @@ public class SupplierFragment extends Fragment {
 
         binding.nestScoll.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
-//                    count++;
                 binding.pbLoadMore.setVisibility(View.VISIBLE);
                 if (pageIndex <= perPage) {
-                    Log.d("onScrollChange", "onScrollChange: " + pageIndex);
                     getData();
+                    binding.pbLoadMore.setVisibility(View.GONE);
                 } else {
                     binding.pbLoadMore.setVisibility(View.GONE);
                 }
