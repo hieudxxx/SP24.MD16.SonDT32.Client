@@ -58,6 +58,7 @@ public class SupplierDetailFragment extends Fragment {
         binding.imgBack.setOnClickListener(view1 -> {
             requireActivity().getSupportFragmentManager().popBackStack();
 //            requireActivity().finish();
+            getActivity().onBackPressed();
         });
 
         bundle = getArguments();

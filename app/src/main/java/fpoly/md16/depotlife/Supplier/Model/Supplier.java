@@ -23,8 +23,7 @@ public class Supplier implements Serializable {
     @SerializedName("status")
     private int status;
 
-    public Supplier(int id, String name, String taxCode, String address, double total, int status) {
-    }
+
 
     public static ArrayList<Supplier> filterByStatus(ArrayList<Supplier> list, boolean status) {
         ArrayList<Supplier> filteredList = new ArrayList<>();
