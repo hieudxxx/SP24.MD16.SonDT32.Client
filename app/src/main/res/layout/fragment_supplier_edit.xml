@@ -84,21 +84,21 @@
             android:id="@+id/tv_war_phone"
             style="@style/custom_tv_warning" />
 
-        <View style="@style/custom_line" />
+<!--        <View style="@style/custom_line" />-->
 
-        <LinearLayout style="@style/custom_tv_supplier">
+<!--        <LinearLayout style="@style/custom_tv_supplier">-->
 
-            <TextView
-                style="@style/custom_title_product_detail"
-                android:layout_weight="1"
-                android:text="Email" />
+<!--            <TextView-->
+<!--                style="@style/custom_title_product_detail"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="Email" />-->
 
-            <EditText
-                android:id="@+id/edt_email"
-                style="@style/custom_title_product_detail"
-                android:layout_weight="2.5"
-                android:hint="email" />
-        </LinearLayout>
+<!--            <EditText-->
+<!--                android:id="@+id/edt_email"-->
+<!--                style="@style/custom_title_product_detail"-->
+<!--                android:layout_weight="2.5"-->
+<!--                android:hint="email" />-->
+<!--        </LinearLayout>-->
 
         <TextView
             android:id="@+id/tv_war_email"
@@ -143,6 +143,28 @@
         <TextView
             android:id="@+id/tv_war_taxCode"
             style="@style/custom_tv_warning" />
+
+        <View style="@style/custom_line" />
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
+
+            <RadioButton
+                android:id="@+id/radioButtonOption1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Đang hợp tác" />
+
+            <RadioButton
+                android:id="@+id/radioButtonOption2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ngừng hợp tác" />
+        </RadioGroup>
 
         <View
             style="@style/custom_line"

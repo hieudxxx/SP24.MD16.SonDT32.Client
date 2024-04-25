@@ -4,6 +4,8 @@ import static fpoly.md16.depotlife.Helper.Interfaces.Api.RetrofitRequest.getRetr
 
 import java.util.ArrayList;
 
+import fpoly.md16.depotlife.Product.Model.Product;
+import fpoly.md16.depotlife.Product.Model.ProductResponse;
 import fpoly.md16.depotlife.Supplier.Model.Supplier;
 import fpoly.md16.depotlife.Supplier.Model.SupplierResponse;
 import retrofit2.Call;
@@ -20,22 +22,15 @@ public interface ApiSupplier {
     ApiSupplier apiSupplier = getRetrofit().create(ApiSupplier.class);
 
     @GET("suppliers")
-    Call<ArrayList<Supplier>> getSupplierList();
-    @GET("suppliers")
     Call<SupplierResponse> getData(@Header("Authorization") String authToken, @Query("page") int page_index);
 
-    @GET("Supplier/{id}")
-    Call<Supplier> getSupplier(@Path("id") String id);
+    @GET("suppliers/get-id/{id}")
+    Call<Supplier> getSupplier(@Header("Authorization") String authToken, @Path("id") int id);
 
-    @DELETE("Supplier/{id}")
-    Call<Supplier> delete(@Path("id") String id);
+    @GET("suppliers/delete/{id}")
+    Call<Supplier> delete(@Header("Authorization") String authToken, @Path("id") int id);
 
-    @PUT("Supplier/edit/{id}")
-    Call<Supplier> editById(@Path("id") String id, @Body Supplier data);
+    @POST("suppliers/update/{id}")
+    Call<Supplier> update(@Header("Authorization") String authToken, @Path("id") int id, @Body Supplier data);
 
-    @PUT("Supplier/edit/status{id}")
-    Call<Supplier> editByStatus(@Path("id") String id, @Body boolean status);
-
-    @POST("Supplier")
-    Call<Supplier> addSupplier(@Body Supplier data);
 }

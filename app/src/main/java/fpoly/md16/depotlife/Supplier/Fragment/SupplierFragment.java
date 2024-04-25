@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,6 +24,9 @@ import java.util.List;
 
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiSupplier;
+import fpoly.md16.depotlife.Product.Adapter.ProductAdapter;
+import fpoly.md16.depotlife.Product.Model.Product;
+import fpoly.md16.depotlife.Product.Model.ProductResponse;
 import fpoly.md16.depotlife.R;
 import fpoly.md16.depotlife.Supplier.Adapter.SupplierAdapter;
 import fpoly.md16.depotlife.Supplier.Model.Supplier;
@@ -40,7 +44,8 @@ public class SupplierFragment extends Fragment {
     private SupplierResponse supplierResponse;
     private int pageIndex = 1;
     private int count = 0;
-    int per_page;
+    private int perPage = 0;
+    private String token;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,11 +57,12 @@ public class SupplierFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setHasOptionsMenu(true);
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(binding.tbSupplier);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        binding.imgBack.setOnClickListener(view1 -> {
+        binding.btnBack.setOnClickListener(view1 -> {
             requireActivity().finish();
         });
 
@@ -64,25 +70,29 @@ public class SupplierFragment extends Fragment {
             Helper.loadFragment(getParentFragmentManager(), new SupplierAddFragment(), null, R.id.frag_container_supplier);
         });
 
+        token = (String) Helper.getSharedPre(getContext(), "token", String.class);
+
+        list = new ArrayList<>();
+        LinearLayoutManager manager = new LinearLayoutManager(view.getContext());
+        binding.rcv.setLayoutManager(manager);
+        adapter = new SupplierAdapter(getContext(), getParentFragmentManager());
         getData();
 
-        binding.nestScoll.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(@NonNull NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
-                    count++;
-                    binding.pbLoadMore.setVisibility(View.VISIBLE);
-                    if (count < per_page) {
-                        getData();
-                    }
+        binding.nestScoll.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
+                binding.pbLoadMore.setVisibility(View.VISIBLE);
+                if (pageIndex <= perPage) {
+                    getData();
+                    binding.pbLoadMore.setVisibility(View.GONE);
+                } else {
+                    binding.pbLoadMore.setVisibility(View.GONE);
                 }
             }
         });
     }
 
     private void getData() {
-        list = new ArrayList<>();
-        String token = (String) Helper.getSharedPre(getContext(), "token", String.class);
+        list.clear();
         ApiSupplier.apiSupplier.getData("Bearer " + token, pageIndex).enqueue(new Callback<SupplierResponse>() {
             @Override
             public void onResponse(Call<SupplierResponse> call, Response<SupplierResponse> response) {
@@ -90,40 +100,19 @@ public class SupplierFragment extends Fragment {
                 if (response.isSuccessful()) {
                     supplierResponse = response.body();
                     if (supplierResponse != null) {
-                        per_page = supplierResponse.getPer_page();
-                        if (supplierResponse.getData() != null) {
-                            List<Supplier> tempList = Arrays.asList(supplierResponse.getData()); // hoặc có thể dùng foreach để check từng item
-                            list.addAll(tempList);
-
-                            binding.rcv.setVisibility(View.VISIBLE);
-                            binding.layoutTotal.setVisibility(View.VISIBLE);
-                            binding.tvEmpty.setVisibility(View.GONE);
-                            binding.pbLoading.setVisibility(View.GONE);
-                            binding.pbLoadMore.setVisibility(View.GONE);
-                            setHasOptionsMenu(true);
-                            adapter = new SupplierAdapter(getContext(), list, getParentFragmentManager());
-                            binding.rcv.setAdapter(adapter);
-//                            adapter.notifyDataSetChanged();
-                            pageIndex++;
-                        } else {
-                            setHasOptionsMenu(false);
-                            binding.rcv.setVisibility(View.GONE);
-                            binding.layoutTotal.setVisibility(View.GONE);
-                            binding.pbLoading.setVisibility(View.GONE);
-                            binding.tvEmpty.setVisibility(View.VISIBLE);
-                        }
+                        binding.tvTotalInvoice.setText(supplierResponse.getTotal()+"");
+                        perPage = supplierResponse.getLast_page();
+                        onCheckList(supplierResponse);
                     }
+//
                 } else {
                     try {
                         String errorBody = response.errorBody().string();
-                        Log.d("onResponse", "errorBody: " + errorBody);
+                        Log.e("onResponse", "errorBody: " + errorBody);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-
-                    // Xử lý lỗi cụ thể
                     Toast.makeText(getActivity(), "Không thể lấy dữ liệu danh mục", Toast.LENGTH_SHORT).show();
-
                 }
             }
 
@@ -133,39 +122,30 @@ public class SupplierFragment extends Fragment {
                 Toast.makeText(getActivity(), "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
             }
         });
-//        ApiSupplier.apiSupplier.getSupplierList().enqueue(new Callback<ArrayList<Supplier>>() {
-//            @Override
-//            public void onResponse(Call<ArrayList<Supplier>> call, Response<ArrayList<Supplier>> response) {
-////                Log.d("tag_kiemTra", "onResponse: " + response.code());
-//
-//                if (response.isSuccessful()) {
-//                    list = response.body();
-////                    Log.d("tag_kiemTra", "onResponse: " + response);
-//                }
-//                if (list != null && !list.isEmpty()) {
-//                    binding.rcvInvoice.setVisibility(View.VISIBLE);
-//                    binding.layoutTotal.setVisibility(View.VISIBLE);
-//                    binding.tvTotalInvoice.setText(list.size() + "");
-//                    binding.tvEmpty.setVisibility(View.GONE);
-//                    setHasOptionsMenu(true);
-//                } else {
-//                    binding.rcvInvoice.setVisibility(View.GONE);
-//                    binding.layoutTotal.setVisibility(View.GONE);
-//                    binding.tvEmpty.setVisibility(View.VISIBLE);
-//                    setHasOptionsMenu(false);
-//                }
-//                adapter = new SupplierAdapter(getContext(), list, getParentFragmentManager());
-//                binding.rcvInvoice.setAdapter(adapter);
-//                adapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ArrayList<Supplier>> call, Throwable t) {
-//                Log.d("tag_kiemTra", "onFailure: " + t.getMessage());
-//                Toast.makeText(getContext(), "thất bại", Toast.LENGTH_SHORT).show();
-//            }
-//        });
+    }
 
+
+    private void onCheckList(SupplierResponse supplierResponse) {
+        if (supplierResponse.getData() != null) {
+            List<Supplier> tempList = Arrays.asList(supplierResponse.getData()); // hoặc có thể dùng foreach để check từng item
+            list.addAll(tempList);
+            binding.rcv.setVisibility(View.VISIBLE);
+            binding.layoutTotal.setVisibility(View.VISIBLE);
+            binding.tvEmpty.setVisibility(View.GONE);
+            binding.pbLoading.setVisibility(View.GONE);
+            binding.pbLoadMore.setVisibility(View.GONE);
+            setHasOptionsMenu(true);
+            adapter.setData(list);
+            binding.rcv.setAdapter(adapter);
+            adapter.setData(list);
+            pageIndex++;
+        } else {
+            setHasOptionsMenu(false);
+            binding.rcv.setVisibility(View.GONE);
+            binding.layoutTotal.setVisibility(View.GONE);
+            binding.pbLoading.setVisibility(View.GONE);
+            binding.tvEmpty.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -195,11 +175,11 @@ public class SupplierFragment extends Fragment {
         BotSheetFilterSupplierBinding filterBinding = BotSheetFilterSupplierBinding.inflate(LayoutInflater.from(getActivity()));
         filterBinding.rdGr.setOnCheckedChangeListener((radioGroup, i) -> {
             if (i == R.id.rd_filter_active) {
-                adapter = new SupplierAdapter(getContext(), Supplier.filterByStatus(list, true), getParentFragmentManager());
+                adapter.setData(Supplier.filterByStatus(list, true));
             } else if (i == R.id.rd_filter_inactive) {
-                adapter = new SupplierAdapter(getContext(), Supplier.filterByStatus(list, false), getParentFragmentManager());
+                adapter.setData(Supplier.filterByStatus(list, true));
             } else if (i == R.id.rd_filter_all) {
-                adapter = new SupplierAdapter(getContext(), list, getParentFragmentManager());
+                adapter.setData(list);
             }
             binding.rcv.setAdapter(adapter);
             adapter.notifyDataSetChanged();
