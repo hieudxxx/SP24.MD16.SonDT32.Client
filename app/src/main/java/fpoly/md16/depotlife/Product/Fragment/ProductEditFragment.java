@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import fpoly.md16.depotlife.Category.Fragment.CategoryListFragment;
 import fpoly.md16.depotlife.Category.Model.Category;
@@ -18,6 +19,7 @@ import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiProduct;
 import fpoly.md16.depotlife.Product.Model.Product;
 import fpoly.md16.depotlife.R;
+import fpoly.md16.depotlife.ViewModel.ShareViewModel;
 import fpoly.md16.depotlife.databinding.FragmentProductEditBinding;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -138,10 +140,10 @@ public class ProductEditFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-//        ShareViewModel viewModel = new ViewModelProvider(requireActivity()).get(ShareViewModel.class);
-//        viewModel.get().observe(getViewLifecycleOwner(), category1 -> {
-//            binding.tvCategory.setText(category1.getName());
-//            category = category1;
-//        });
+        ShareViewModel<Category> viewModel = new ViewModelProvider(requireActivity()).get(ShareViewModel.class);
+        viewModel.get().observe(getViewLifecycleOwner(), category1 -> {
+            binding.tvCategory.setText(category1.getName());
+            category = category1;
+        });
     }
 }
