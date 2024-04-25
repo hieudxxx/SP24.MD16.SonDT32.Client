@@ -12,20 +12,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import fpoly.md16.depotlife.Category.Model.Category;
-import fpoly.md16.depotlife.databinding.ItemCategoryListBinding;
+import fpoly.md16.depotlife.Helper.Interfaces.onClickListener.onItemRcvClick;
+import fpoly.md16.depotlife.databinding.ItemSelectListBinding;
 
-public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.ViewHolder> implements Filterable {
-
+public class CategoryListSelectAdapter extends RecyclerView.Adapter<CategoryListSelectAdapter.ViewHolder> implements Filterable {
     private Context context;
     private ArrayList<Category> list;
     private ArrayList<Category> mlist;
-    private int cat_id;
+    private int index = -1;
+    private onItemRcvClick onItemRcvClick;
 
-    public CategoryListAdapter(Context context, ArrayList<Category> list, int cat_id) {
+
+    public CategoryListSelectAdapter(Context context, ArrayList<Category> list, onItemRcvClick onItemRcvClick) {
         this.context = context;
         this.list = list;
         this.mlist = list;
-        this.cat_id = cat_id;
+        this.onItemRcvClick = onItemRcvClick;
     }
 
     @Override
@@ -61,18 +63,22 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemCategoryListBinding binding = ItemCategoryListBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        ItemSelectListBinding binding = ItemSelectListBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         return new ViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.binding.tvName.setText(list.get(position).getName());
-        for (Category cat : list) {
-            if (cat.getId() == cat_id) {
-                holder.binding.cbCategopry.setChecked(true);
+        holder.binding.rdSelect.setChecked(position == index);
+
+        holder.binding.rdSelect.setOnClickListener(view -> {
+            index = holder.getAdapterPosition();
+            if (onItemRcvClick != null) {
+                onItemRcvClick.onClick(list.get(holder.getAdapterPosition()));
             }
-        }
+            notifyDataSetChanged();
+        });
     }
 
     @Override
@@ -83,10 +89,10 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         return 0;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        ItemCategoryListBinding binding;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        ItemSelectListBinding binding;
 
-        public ViewHolder(@NonNull ItemCategoryListBinding binding) {
+        public ViewHolder(@NonNull ItemSelectListBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

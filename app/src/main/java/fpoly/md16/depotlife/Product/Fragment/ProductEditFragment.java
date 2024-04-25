@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import fpoly.md16.depotlife.Category.Fragment.CategoryListFragment;
+import fpoly.md16.depotlife.Category.Model.Category;
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiProduct;
 import fpoly.md16.depotlife.Product.Model.Product;
@@ -26,6 +27,7 @@ public class ProductEditFragment extends Fragment {
     private FragmentProductEditBinding binding;
     private String token;
     private Product product;
+    private Category category;
     private Bundle bundle;
 
     @Override
@@ -51,8 +53,9 @@ public class ProductEditFragment extends Fragment {
         bundle = getArguments();
         if (bundle != null) {
             product = (Product) bundle.getSerializable("product");
-            if (product != null) {
+//            category = (Category) bundle.getSerializable("category");
 
+            if (product != null) {
                 binding.edtName.setText(product.getProduct_name());
                 binding.edtId.setText(product.getId() + "");
                 binding.tvCategory.setText(product.getCategory_name());
@@ -94,6 +97,9 @@ public class ProductEditFragment extends Fragment {
                                 binding.tvWarInventory.getText().toString().isEmpty() &&
                                 binding.tvWarUnit.getText().toString().isEmpty()
                         ) {
+                            if (category != null) {
+//                                product = new Product(category.getId(), );
+                            }
 
                             Product product1 = new Product(2, 2, name, unit, Double.parseDouble(import_price), Double.parseDouble(export_price), Integer.parseInt(inventory));
                             Log.d("tag_kiemTra", "onViewCreated: " + product1.toString());
@@ -124,6 +130,18 @@ public class ProductEditFragment extends Fragment {
                 });
 
             }
+
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+//        ShareViewModel viewModel = new ViewModelProvider(requireActivity()).get(ShareViewModel.class);
+//        viewModel.get().observe(getViewLifecycleOwner(), category1 -> {
+//            binding.tvCategory.setText(category1.getName());
+//            category = category1;
+//        });
     }
 }
