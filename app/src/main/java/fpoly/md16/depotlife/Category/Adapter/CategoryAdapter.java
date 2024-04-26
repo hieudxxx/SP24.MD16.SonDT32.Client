@@ -20,10 +20,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     List<Category> categoryList;
     List<Category> oldCategoryList;
 
-    public CategoryAdapter(Context context, List<Category> categoryList) {
+    private String token;
+
+    public CategoryAdapter(Context context, List<Category> categoryList,String token) {
         this.context = context;
         this.categoryList = categoryList;
         this.oldCategoryList = categoryList;
+        this.token = token;
     }
 
 
@@ -37,8 +40,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     @Override
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
         Category category = categoryList.get(position);
-        holder.categoryBinding.tvCategoryId.setText(category.getId());
         holder.categoryBinding.tvCategoryName.setText(category.getName());
+        holder.categoryBinding.tvStatus.setText(category.getStatus() == 1 ? "Đang sử dụng" : "Ngưng sử dụng");
     }
 
     @Override
@@ -75,7 +78,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 categoryList = (List<Category>) results.values;
-                // Thông báo thay đổi
                 notifyDataSetChanged();
             }
         };

@@ -3,23 +3,38 @@ package fpoly.md16.depotlife.Category;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.NestedScrollView;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import fpoly.md16.depotlife.Category.Adapter.CategoryAdapter;
 import fpoly.md16.depotlife.Category.Model.Category;
 import fpoly.md16.depotlife.Category.Model.CategoryResponse;
 import fpoly.md16.depotlife.Helper.Helper;
+import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiCategory;
+import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiSupplier;
+import fpoly.md16.depotlife.Product.Adapter.ProductAdapter;
 import fpoly.md16.depotlife.R;
+import fpoly.md16.depotlife.Supplier.Model.Supplier;
+import fpoly.md16.depotlife.Supplier.Model.SupplierResponse;
 import fpoly.md16.depotlife.databinding.ActivityCategoryBinding;
 import fpoly.md16.depotlife.databinding.DialogAddCategoryBinding;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CategoryActivity extends AppCompatActivity {
     private ActivityCategoryBinding binding;
@@ -27,14 +42,24 @@ public class CategoryActivity extends AppCompatActivity {
     private CategoryAdapter adapter;
     private CategoryResponse categoryResponse;
 
+    private int pageIndex = 1;
+    private int count = 0;
+    private int perPage = 0;
+    private String token;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityCategoryBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+//        setHasOptionsMenu(true);
+
+        token = (String) Helper.getSharedPre(getApplicationContext(), "token", String.class);
+
         list = new ArrayList<>();
         getData();
+
         binding.imgBack.setOnClickListener(v -> {
             finish();
         });
@@ -44,6 +69,20 @@ public class CategoryActivity extends AppCompatActivity {
 
         binding.fab.setOnClickListener(v -> {
             onAddCategory();
+        });
+
+        binding.nestScoll.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
+//                    count++;
+                binding.pbLoadMore.setVisibility(View.VISIBLE);
+                if (pageIndex <= perPage) {
+                    Log.d("onScrollChange", "onScrollChange: " + pageIndex);
+                    getData();
+                    binding.pbLoadMore.setVisibility(View.GONE);
+                } else {
+                    binding.pbLoadMore.setVisibility(View.GONE);
+                }
+            }
         });
 
     }
@@ -72,66 +111,57 @@ public class CategoryActivity extends AppCompatActivity {
     }
 
     private void getData() {
-        String token = (String) Helper.getSharedPre(this, "token", String.class);
+        list.clear();
+        ApiCategory.apiCategory.getData("Bearer " + token, pageIndex).enqueue(new Callback<CategoryResponse>() {
+            @Override
+            public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
+                Log.d("onResponse_supplier", "response_code: " + response.code());
+                if (response.isSuccessful()) {
+                    categoryResponse = response.body();
+                    if (categoryResponse != null) {
+                        perPage = categoryResponse.getLast_page();
+                        onCheckList(categoryResponse);
+                    }
+//
+                } else {
+                    try {
+                        String errorBody = response.errorBody().string();
+                        Log.e("onResponse", "errorBody: " + errorBody);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Toast.makeText(CategoryActivity.this, "Không thể lấy dữ liệu danh mục", Toast.LENGTH_SHORT).show();
+                }
+            }
 
-//        ApiCategory.apiCategory.getData("Bearer " + token).enqueue(new Callback<CategoryResponse>() {
-//            @Override
-//            public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
-//                Log.d("onResponse", "responseCode: " + response.code());
-//                Log.d("onResponse", "responseCode: " + response.raw().toString());
-//                Log.d("onResponse", "responseCode: " + response.body());
-//                if (response.isSuccessful()) {
-//                    categoryResponse = response.body();
-//                    Log.d("onResponse", "productResponse: " + categoryResponse.toString());
-//                } else {
-//                    Log.e("onResponse", "responseCode: " + response.code());
-//                    try {
-//                        String errorBody = response.errorBody().string();
-//                        Log.e("onResponse", "errorBody: " + errorBody);
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                    // Xử lý lỗi cụ thể
-//                    Toast.makeText(CategoryActivity.this, "Không thể lấy dữ liệu danh mục", Toast.LENGTH_SHORT).show();
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<CategoryResponse> call, Throwable throwable) {
-//                Log.d("onFailure", "onFailure: " + throwable.getMessage());
-//                Toast.makeText(CategoryActivity.this, "Không thể kết nối đến máy chủ ", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        ApiCategory.apiCategory.getCategoryList().enqueue(new Callback<ArrayList<Category>>() {
-//            @Override
-//            public void onResponse(Call<ArrayList<Category>> call, Response<ArrayList<Category>> response) {
-////                Log.d("tag_kiemTra", "onResponse: " + response.code());
-//
-//                if (response.isSuccessful()) {
-//                    list = response.body();
-////                    Log.d("tag_kiemTra", "onResponse: " + response);
-//                }
-//                if (list.isEmpty()) {
-//                    binding.rcvCategory.setVisibility(View.GONE);
-//                    binding.tvEmpty.setVisibility(View.VISIBLE);
-//                } else {
-//                    binding.rcvCategory.setVisibility(View.VISIBLE);
-//                    binding.tvEmpty.setVisibility(View.GONE);
-//                }
-//                adapter = new CategoryAdapter(CategoryActivity.this, list);
-//                binding.rcvCategory.setAdapter(adapter);
-//                adapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ArrayList<Category>> call, Throwable t) {
-//                Log.d("tag_kiemTra", "onFailure: " + t.getMessage());
-//                Toast.makeText(CategoryActivity.this, "thất bại", Toast.LENGTH_SHORT).show();
-//            }
-//        });
+            @Override
+            public void onFailure(Call<CategoryResponse> call, Throwable throwable) {
+                Log.d("onFailure", "onFailure: " + throwable.getMessage());
+                Toast.makeText(CategoryActivity.this, "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
+
+    private void onCheckList(CategoryResponse categoryResponse) {
+        if (categoryResponse.getData() != null) {
+            List<Category> tempList = Arrays.asList(categoryResponse.getData()); // hoặc có thể dùng foreach để check từng item
+            list.addAll(tempList);
+            binding.rcvCategory.setVisibility(View.VISIBLE);
+            binding.tvEmpty.setVisibility(View.GONE);
+            binding.pbLoading.setVisibility(View.GONE);
+            binding.pbLoadMore.setVisibility(View.GONE);
+//            setHasOptionsMenu(true);
+            adapter = new CategoryAdapter(getApplicationContext(), list, token);
+            binding.rcvCategory.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+            pageIndex++;
+        } else {
+//            setHasOptionsMenu(false);
+            binding.rcvCategory.setVisibility(View.GONE);
+            binding.pbLoading.setVisibility(View.GONE);
+            binding.tvEmpty.setVisibility(View.VISIBLE);
+        }
     }
 
 
@@ -142,7 +172,7 @@ public class CategoryActivity extends AppCompatActivity {
 //        sortMenuItem = binding.tbCategory.getMenu().findItem(R.id.sortCategory);
 //        return super.onPrepareOptionsMenu(menu);
 //    }
-
+//
 //    private void searchCategory(MenuItem menuItem) {
 //        SearchView searchView = (SearchView) menuItem.getActionView();
 //        searchView.setQueryHint("Tìm kiếm loại hàng hoá");
@@ -172,21 +202,41 @@ public class CategoryActivity extends AppCompatActivity {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
 
-//        addBinding.btnAddCateogry.setOnClickListener(v -> {
-//            String name = addBinding.edtAddCategory.getText().toString().trim();
-//            if (!name.isEmpty()) {
-//                Category newCategory = new Category(UUID.randomUUID().toString(), name, true);
-//                categoryList.add(newCategory);
-//                categoryAdapter.notifyDataSetChanged();
-//                addBinding.edtAddCategory.setText("");
-//                Toast.makeText(CategoryActivity.this, "Đã thêm loại hàng hoá mới!", Toast.LENGTH_SHORT).show();
-//                dialog.dismiss();
-//                // Cập nhật trạng thái của danh sách sau khi thêm mục mới
-//                checkEmptyList();
-//            } else {
-//                Toast.makeText(CategoryActivity.this, "Vui lòng nhập tên loại hàng hoá!", Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        addBinding.btnAddCateogry.setOnClickListener(v -> {
+            String name = addBinding.edtAddCategory.getText().toString().trim();
+            if (name.isEmpty()){
+                Toast.makeText(CategoryActivity.this, "Vui lòng nhập tên loại hàng hoá!", Toast.LENGTH_SHORT).show();
+            }else {
+                Helper.isContainSpace(name, addBinding.tvWarName);
+
+                if (addBinding.tvWarName.getText().toString().isEmpty()){
+                    Category cate = new Category();
+                    cate.setName(name);
+                    cate.setStatus(1);
+                    Log.d("modelll", "modelll: " + cate.toString());
+                    ApiCategory.apiCategory.create(token, cate).enqueue(new Callback<Category>() {
+                        @Override
+                        public void onResponse(Call<Category> call, Response<Category> response) {
+                            Log.d("tag_kiemTra", "onResponse: " + response.code());
+                            Log.d("tag_kiemTra", "onResponse: " + response);
+                            if (response.isSuccessful()) {
+                                Toast.makeText(CategoryActivity.this, "Thêm loại hàng hoá thành công!", Toast.LENGTH_SHORT).show();
+                                addBinding.edtAddCategory.setText("");
+                                dialog.dismiss();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Category> call, Throwable throwable) {
+                            Log.d("onFailure", "onFailure: " + throwable.getMessage());
+                            Toast.makeText(CategoryActivity.this, "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }else {
+                    Toast.makeText(CategoryActivity.this, "Thêm loại hàng hoá thất bại!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         addBinding.imgClose.setOnClickListener(v -> {
             dialog.cancel();

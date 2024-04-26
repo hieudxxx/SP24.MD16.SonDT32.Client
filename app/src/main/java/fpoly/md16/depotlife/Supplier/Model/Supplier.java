@@ -13,7 +13,6 @@ public class Supplier implements Serializable {
     private String name;
     @SerializedName("supplier_phone")
     private String phone;
-    private String email;
     @SerializedName("tax")
     private String tax_code;
     @SerializedName("address")
@@ -54,6 +53,14 @@ public class Supplier implements Serializable {
         this.status = status;
     }
 
+    public Supplier(String name, String phone, String tax_code, String address, int status) {
+        this.name = name;
+        this.phone = phone;
+        this.tax_code = tax_code;
+        this.address = address;
+        this.status = status;
+    }
+
     public int getId() {
         return id;
     }
@@ -78,13 +85,7 @@ public class Supplier implements Serializable {
         this.phone = phone;
     }
 
-    public String getEmail() {
-        return email;
-    }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public String getTax_code() {
         return tax_code;
@@ -132,5 +133,16 @@ public class Supplier implements Serializable {
 
     public static void setSortByNameAZ(Comparator<Supplier> sortByNameAZ) {
         Supplier.sortByNameAZ = sortByNameAZ;
+    }
+
+    @Override
+    public String toString() {
+        return "Supplier{" +
+                "name='" + name + '\'' +
+                ", phone='" + phone + '\'' +
+                ", tax_code='" + tax_code + '\'' +
+                ", address='" + address + '\'' +
+                ", status=" + status +
+                '}';
     }
 }
