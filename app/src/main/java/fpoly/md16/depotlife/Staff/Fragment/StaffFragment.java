@@ -27,9 +27,12 @@ import java.util.List;
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiUser;
 import fpoly.md16.depotlife.Helper.Interfaces.onClickListener.onMenuClick;
+import fpoly.md16.depotlife.Product.Adapter.ProductAdapter;
+import fpoly.md16.depotlife.Product.Model.ImagesResponse;
 import fpoly.md16.depotlife.R;
 import fpoly.md16.depotlife.Staff.Adapter.StaffAdapter;
 import fpoly.md16.depotlife.Staff.Model.StaffResponse;
+import fpoly.md16.depotlife.Supplier.Model.Supplier;
 import fpoly.md16.depotlife.databinding.BotSheetSortStaffBinding;
 import fpoly.md16.depotlife.databinding.FragmentStaffBinding;
 import retrofit2.Call;
@@ -40,11 +43,13 @@ public class StaffFragment extends Fragment {
     private FragmentStaffBinding binding;
     private ArrayList<StaffResponse.User> userList;
     private StaffAdapter adapter;
-    private String token;
     private StaffResponse staffResponse;
-    private  int currentPage = 1;
-    private boolean isLoading = false;
-    private boolean isLastPage = false;
+    private ImagesResponse imagesResponse;
+    private int pageIndex = 1;
+    private int perPage = 0;
+    private int count = 0;
+    private String token;
+    private boolean isLoadData = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,37 +64,28 @@ public class StaffFragment extends Fragment {
         ((AppCompatActivity) getActivity()).setSupportActionBar(binding.tbStaff);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        binding.imgBack.setOnClickListener(view1 -> requireActivity().getSupportFragmentManager().popBackStack());
+
+        token = "Bearer " + (String) Helper.getSharedPre(getContext(), "token", String.class);
+
         userList = new ArrayList<>();
-        adapter = new StaffAdapter(getContext(), userList, new onMenuClick() {
-            @Override
-            public void onMenu(StaffResponse.User user) {
-                Helper.onOptionStaff(getContext(),user);
-            }
-        });
-
-
-        binding.rcvStaff.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.rcvStaff.setAdapter(adapter);
+        getData();
 
         token = (String) Helper.getSharedPre(getContext(), "token", String.class);
 
-        binding.rcvStaff.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                int visibleItemCount = layoutManager.getChildCount();
-                int totalItemCount = layoutManager.getItemCount();
-                int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
 
-                // Kiểm tra nếu người dùng đã cuộn đến đầu trang và không có quá trình tải dữ liệu đang diễn ra và không phải là trang cuối cùng
-                if (!isLoading && !isLastPage && (firstVisibleItemPosition + visibleItemCount) >= totalItemCount) {
-                    // Tải dữ liệu mới
-                    getData(currentPage);
+        binding.nestScoll.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
+                binding.pbLoadMore.setVisibility(View.VISIBLE);
+                if (pageIndex <= perPage) {
+                    Log.d("onScrollChange", "onScrollChange: " + pageIndex);
+                    getData();
+                    binding.pbLoadMore.setVisibility(View.GONE);
+                } else {
+                    binding.pbLoadMore.setVisibility(View.GONE);
                 }
             }
         });
-        getData(currentPage);
 
 
     }
@@ -115,23 +111,14 @@ public class StaffFragment extends Fragment {
     }
 
 
-    public void getData(int page) {
-        // Kiểm tra xem có đang loading dữ liệu không
-        if (isLoading) {
-            return;
-        }
-        // Đánh dấu là đang loading
-        isLoading = true;
-
-        ApiUser.apiUser.getStaffList("Bearer " + token, page).enqueue(new Callback<StaffResponse>() {
+    public void getData() {
+        ApiUser.apiUser.getStaffList( token, pageIndex).enqueue(new Callback<StaffResponse>() {
             @Override
             public void onResponse(Call<StaffResponse> call, Response<StaffResponse> response) {
-                Log.d("Res_Staff", "res: " + response.code());
-                Log.d("STAFF", "RESULT: " + response);
                 if (response.isSuccessful()) {
-                     staffResponse = response.body();
-                    Log.d("STAFF", "RESULT: " + staffResponse.toString());
+                    staffResponse = response.body();
                     if (staffResponse != null) {
+                        perPage = staffResponse.getLast_page();
                         onCheckList(staffResponse);
                     }
                 } else {
@@ -142,16 +129,12 @@ public class StaffFragment extends Fragment {
                         e.printStackTrace();
                     }
                     Toast.makeText(getActivity(), "Không thể lấy dữ liệu danh mục", Toast.LENGTH_SHORT).show();
-
                 }
             }
-
             @Override
             public void onFailure(Call<StaffResponse> call, Throwable throwable) {
                 Log.d("onFailure", "onFailure: " + throwable.getMessage());
                 Toast.makeText(getActivity(), "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
-                // Đánh dấu là không còn loading nữa
-                isLoading = false;
             }
         });
     }
@@ -159,19 +142,22 @@ public class StaffFragment extends Fragment {
 
     private void onCheckList(StaffResponse staffResponse) {
         if (staffResponse.getUser() != null) {
-            userList.addAll(Arrays.asList(staffResponse.getUser()));
-            adapter.notifyDataSetChanged();
-            currentPage++;
-            isLoading = false;
-            if (currentPage > staffResponse.getLast_page()) {
-                isLastPage = true;
-            }
-            setHasOptionsMenu(true);
+            List<StaffResponse.User> tempList = Arrays.asList(staffResponse.getUser()); // hoặc có thể dùng foreach để check từng item
+            userList.addAll(tempList);
             binding.rcvStaff.setVisibility(View.VISIBLE);
             binding.tvEmpty.setVisibility(View.GONE);
+            binding.pbLoading.setVisibility(View.GONE);
+            binding.pbLoadMore.setVisibility(View.GONE);
+            setHasOptionsMenu(true);
+            adapter = new StaffAdapter(getContext(), userList, token);
+            binding.rcvStaff.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+            pageIndex++;
         } else {
             setHasOptionsMenu(false);
             binding.rcvStaff.setVisibility(View.GONE);
+            binding.pbLoading.setVisibility(View.GONE);
+            binding.pbLoadMore.setVisibility(View.GONE);
             binding.tvEmpty.setVisibility(View.VISIBLE);
         }
     }

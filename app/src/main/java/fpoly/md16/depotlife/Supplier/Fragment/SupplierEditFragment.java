@@ -102,8 +102,6 @@ public class SupplierEditFragment extends Fragment {
                                     if (response.isSuccessful()) {
                                         Toast.makeText(getContext(), "Thành công", Toast.LENGTH_SHORT).show();
                                         requireActivity().getSupportFragmentManager().popBackStack();
-//                                        getActivity().onBackPressed();
-//                                        requireActivity().finish();
                                     }
                                 }
 

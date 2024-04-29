@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 import fpoly.md16.depotlife.Helper.Interfaces.onClickListener.onMenuClick;
 import fpoly.md16.depotlife.Login.Model.UserResponse;
+import fpoly.md16.depotlife.Product.Activity.ProductActivity;
 import fpoly.md16.depotlife.R;
 import fpoly.md16.depotlife.Staff.Activity.StaffDetailActivity;
 import fpoly.md16.depotlife.Staff.Model.StaffResponse;
@@ -31,13 +32,14 @@ public class StaffAdapter extends RecyclerView.Adapter<StaffAdapter.ViewHolder> 
     private final Context context;
     private ArrayList<StaffResponse.User> list;
     private final ArrayList<StaffResponse.User> mlist;
-    private final onMenuClick onMenuClick;
 
-    public StaffAdapter(Context context, ArrayList<StaffResponse.User> list, onMenuClick onMenuClick) {
+    private String token;
+
+    public StaffAdapter(Context context, ArrayList<StaffResponse.User> list, String token) {
         this.context = context;
         this.list = list;
         this.mlist = list;
-        this.onMenuClick = onMenuClick;
+        this.token = token;
     }
 
 
@@ -76,10 +78,9 @@ public class StaffAdapter extends RecyclerView.Adapter<StaffAdapter.ViewHolder> 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (onMenuClick != null) {
-                    onMenuClick.onMenu(user);
-                }
-
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("staff", list.get(holder.getAdapterPosition()));
+                context.startActivity(new Intent(context, StaffDetailActivity.class).putExtras(bundle));
             }
         });
     }

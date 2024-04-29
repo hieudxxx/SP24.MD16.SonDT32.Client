@@ -55,7 +55,7 @@ public class CategoryActivity extends AppCompatActivity {
 
 //        setHasOptionsMenu(true);
 
-        token = (String) Helper.getSharedPre(getApplicationContext(), "token", String.class);
+        token = "Bearer " +(String) Helper.getSharedPre(getApplicationContext(), "token", String.class);
 
         list = new ArrayList<>();
         getData();
@@ -112,7 +112,7 @@ public class CategoryActivity extends AppCompatActivity {
 
     private void getData() {
         list.clear();
-        ApiCategory.apiCategory.getData("Bearer " + token, pageIndex).enqueue(new Callback<CategoryResponse>() {
+        ApiCategory.apiCategory.getData(token, pageIndex).enqueue(new Callback<CategoryResponse>() {
             @Override
             public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
                 Log.d("onResponse_supplier", "response_code: " + response.code());
@@ -152,7 +152,7 @@ public class CategoryActivity extends AppCompatActivity {
             binding.pbLoading.setVisibility(View.GONE);
             binding.pbLoadMore.setVisibility(View.GONE);
 //            setHasOptionsMenu(true);
-            adapter = new CategoryAdapter(getApplicationContext(), list, token);
+            adapter = new CategoryAdapter(this, list, token);
             binding.rcvCategory.setAdapter(adapter);
             adapter.notifyDataSetChanged();
             pageIndex++;
@@ -213,7 +213,6 @@ public class CategoryActivity extends AppCompatActivity {
                     Category cate = new Category();
                     cate.setName(name);
                     cate.setStatus(1);
-                    Log.d("modelll", "modelll: " + cate.toString());
                     ApiCategory.apiCategory.create(token, cate).enqueue(new Callback<Category>() {
                         @Override
                         public void onResponse(Call<Category> call, Response<Category> response) {

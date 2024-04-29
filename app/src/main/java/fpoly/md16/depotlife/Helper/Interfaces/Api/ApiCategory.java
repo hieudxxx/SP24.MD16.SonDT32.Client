@@ -27,6 +27,8 @@ public interface ApiCategory {
 
     @POST("category/create")
     Call<Category> create(@Header("Authorization") String authToken, @Body Category data);
+    @POST("category/update/{id}")
+    Call<Category> update(@Header("Authorization") String authToken, @Path("id") int id, @Body Category data);
 
     @GET("category/delete/{id}")
     Call<Category> delete(@Header("Authorization") String authToken, @Path("id") int id);

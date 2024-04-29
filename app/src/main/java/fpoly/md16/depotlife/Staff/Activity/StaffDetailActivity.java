@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat;
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiProduct;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiUser;
+import fpoly.md16.depotlife.Product.Fragment.ProductEditFragment;
 import fpoly.md16.depotlife.Product.Model.Product;
 import fpoly.md16.depotlife.R;
 import fpoly.md16.depotlife.Staff.Model.StaffResponse;
@@ -26,6 +27,9 @@ public class StaffDetailActivity extends AppCompatActivity {
     private ActivityStaffDetailBinding binding;
     private Bundle bundle;
     private String roleText;
+    private StaffResponse.User staff;
+    private String token;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,28 +38,72 @@ public class StaffDetailActivity extends AppCompatActivity {
         setSupportActionBar(binding.tbStaffDetail);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        token = "Bearer " + (String) Helper.getSharedPre(this, "token", String.class);
+
         binding.imgBack.setOnClickListener(v -> {
             finish();
         });
 
-        bundle = getIntent().getExtras();
 
+        bundle = getIntent().getExtras();
         if (bundle != null) {
-            StaffResponse.User user = (StaffResponse.User) bundle.getSerializable("staff");
-            if (user != null) {
-                binding.tvName.setText(user.getName());
-                binding.tvEmail.setText(user.getEmail());
-                if (user.getRole() == 0){
-                    roleText = "Nhân viên";
-                }else if (user.getRole()== 1){
-                    roleText = "Quản lý";
-                }else {
-                    roleText = "Không xác định";
-                }
-                binding.tvRole.setText(roleText);
-                binding.tvPhone.setText(String.valueOf(user.getPhoneNumber()));
+            staff = (StaffResponse.User) bundle.getSerializable("staff");
+            if (staff != null) {
+                getData();
+
+                binding.layoutDelete.setOnClickListener(view12 -> {
+//                    delete();
+                });
+
+                binding.imgEdit.setOnClickListener(view13 -> {
+//                    bundle = new Bundle();
+//                    bundle.putSerializable("product", product);
+//                    Helper.loadFragment(getActivity().getSupportFragmentManager(), new ProductEditFragment(), bundle, R.id.frag_container_product);
+                });
             }
         }
+    }
+
+
+    private void getData() {
+        ApiUser.apiUser.getStaffById(token, staff.getId()).enqueue(new Callback<StaffResponse.User>() {
+            @Override
+            public void onResponse(Call<StaffResponse.User> call, Response<StaffResponse.User> response) {
+                Log.d("onResponse_staff", "response_code: " + response.code());
+                Log.d("onResponse_staff", "response_code: " + response);
+                if (response.isSuccessful()) {
+                    staff = response.body();
+                    Log.d("staff", "staff: "+staff);
+
+                    if (staff != null) {
+                        binding.tvId.setText(staff.getId() + "");
+                        binding.tvName.setText(staff.getName());
+                        binding.tvEmail.setText(staff.getEmail());
+                        if (staff.getRole() == 0) {
+                            roleText = "Nhân viên";
+                        } else if (staff.getRole() == 1) {
+                            roleText = "Quản lý";
+                        } else {
+                            roleText = "Không xác định";
+                        }
+                        binding.tvRole.setText(roleText);
+                        binding.tvPhone.setText(String.valueOf(staff.getPhoneNumber()));
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<StaffResponse.User> call, Throwable throwable) {
+                Log.d("onFailure", "onFailure: " + throwable.getMessage());
+                Toast.makeText(StaffDetailActivity.this, "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getData();
     }
 
 }
