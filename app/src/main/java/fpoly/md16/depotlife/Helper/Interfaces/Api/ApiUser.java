@@ -23,6 +23,6 @@ public interface ApiUser {
     @GET("staff")
     Call<StaffResponse> getStaffList(@Header("Authorization") String authToken,@Query("page") int page_index);
 
-    @GET("staff/get-id/{id}")
+    @GET("get-staff/{id}")
     Call<StaffResponse.User> getStaffById(@Header("Authorization") String authToken, @Path("id") int id);
 }

@@ -82,12 +82,11 @@ public class SupplierEditFragment extends Fragment {
                     } else {
                         Helper.isContainSpace(name, binding.tvWarName);
                         Helper.isPhoneValid(phone, binding.tvWarPhone);
-//                        Helper.isContainSpace(address, binding.tvWarAddress);
+                        Helper.isContainSpace(address, binding.tvWarAddress);
                         Helper.isContainSpace(taxCode, binding.tvWarTaxCode);
 
                         if (binding.tvWarName.getText().toString().isEmpty() &&
                                 binding.tvWarPhone.getText().toString().isEmpty() &&
-                                binding.tvWarEmail.getText().toString().isEmpty() &&
                                 binding.tvWarAddress.getText().toString().isEmpty() &&
                                 binding.tvWarTaxCode.getText().toString().isEmpty()
                         ){
@@ -97,17 +96,12 @@ public class SupplierEditFragment extends Fragment {
                             sup.setAddress(address);
                             sup.setTax_code(taxCode);
                             sup.setStatus(status);
-                            Log.d("modell", "modell: " + status);
                             ApiSupplier.apiSupplier.update(token, supplier.getId(), sup).enqueue(new Callback<Supplier>() {
                                 @Override
                                 public void onResponse(Call<Supplier> call, Response<Supplier> response) {
-                                    Log.d("tag_kiemTra", "onResponse: " + response.code());
-                                    Log.d("tag_kiemTra", "onResponse: " + response);
                                     if (response.isSuccessful()) {
                                         Toast.makeText(getContext(), "Thành công", Toast.LENGTH_SHORT).show();
                                         requireActivity().getSupportFragmentManager().popBackStack();
-//                                        getActivity().onBackPressed();
-//                                        requireActivity().finish();
                                     }
                                 }
 

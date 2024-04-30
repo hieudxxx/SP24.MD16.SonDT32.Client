@@ -127,6 +127,19 @@ public class Helper {
         }
     }
 
+    public static void isTaxValid(String value, TextView tv) {
+        if (value.length() < 10 || value.length() > 13) {
+            tv.setVisibility(View.VISIBLE);
+            tv.setText("Mã số thuế phải từ 10-13 số");
+        } else if (!TextUtils.isDigitsOnly(value)) {
+            tv.setVisibility(View.VISIBLE);
+            tv.setText("Không được nhập chữ");
+        } else {
+            tv.setVisibility(View.GONE);
+            tv.setText("");
+        }
+    }
+
     public static void isPhoneValid(String value, TextView tv) {
         if (value.length() < 10 || value.length() > 10) {
             tv.setVisibility(View.VISIBLE);

@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Login.LoginActivity;
+import fpoly.md16.depotlife.Menu.Account.Fragment.AccountFragment;
 import fpoly.md16.depotlife.Staff.Fragment.StaffFragment;
 import fpoly.md16.depotlife.Menu.Activity.BaoLoi;
 import fpoly.md16.depotlife.Menu.Activity.CaiDat;
@@ -49,8 +50,10 @@ public class MenuFragment extends Fragment {
         ((AppCompatActivity) getActivity()).setSupportActionBar(binding.tbMenu);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        binding.txtNameAccount.setText((String)Helper.getSharedPre(getContext(), "name", String.class));
+
         binding.imgBtnEdit.setOnClickListener(v -> {
-            Toast.makeText(getActivity(),"Đang phát triển",Toast.LENGTH_SHORT).show();
+            Helper.loadFragment(getActivity().getSupportFragmentManager(), new AccountFragment(), null, R.id.frag_container_main);
         });
 
         binding.btnInvoice.setOnClickListener(v -> {

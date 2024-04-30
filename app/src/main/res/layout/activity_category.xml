@@ -1,44 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/custom_bgr_layout"
+    android:layout_width="match_parent"
+    android:id="@+id/nest_scoll"
+    android:layout_height="match_parent"
     tools:context=".Category.CategoryActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tb_category"
-        style="@style/custom_toolbar">
-
-        <ImageView
-            android:id="@+id/img_back"
-            style="@style/custom_img_back_toolbar" />
-
-        <TextView
-            style="@style/custom_title_toolbar"
-            android:text="@string/text_category" />
-    </androidx.appcompat.widget.Toolbar>
-
-    <View style="@style/custom_line" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        style="@style/custom_bgr_layout">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcv_category"
-            style="@style/custom_rcv"
-            tools:listitem="@layout/item_category" />
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tb_category"
+            style="@style/custom_toolbar">
 
-        <TextView
-            android:id="@+id/tv_empty"
-            style="@style/custom_tv_title"
-            android:text="Bạn chưa có loại hàng hóa nào"
-            android:visibility="visible" />
+            <ImageView
+                android:id="@+id/img_back"
+                style="@style/custom_img_back_toolbar" />
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/fab"
-            style="@style/custom_fab"
-            app:icon="@drawable/add" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                style="@style/custom_title_toolbar"
+                android:text="@string/text_category" />
+        </androidx.appcompat.widget.Toolbar>
 
-</LinearLayout>
+        <View style="@style/custom_line" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="823dp"
+            android:layout_weight="1">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv_category"
+                style="@style/custom_rcv"
+                android:layout_marginHorizontal="10dp"
+                tools:listitem="@layout/item_category"
+                tools:ignore="MissingConstraints" />
+
+            <ProgressBar
+                android:id="@+id/pbLoadMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rcv_category" />
+
+            <ProgressBar
+                android:id="@+id/pbLoading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_empty"
+                style="@style/custom_tv_title"
+                android:text="Bạn chưa có loại hàng hóa nào"
+                android:visibility="gone"
+                tools:ignore="MissingConstraints" />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/fab"
+                style="@style/custom_fab"
+                app:icon="@drawable/add"
+                tools:ignore="MissingConstraints" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

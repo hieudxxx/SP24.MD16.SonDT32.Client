@@ -84,26 +84,6 @@
             android:id="@+id/tv_war_phone"
             style="@style/custom_tv_warning" />
 
-<!--        <View style="@style/custom_line" />-->
-
-<!--        <LinearLayout style="@style/custom_tv_supplier">-->
-
-<!--            <TextView-->
-<!--                style="@style/custom_title_product_detail"-->
-<!--                android:layout_weight="1"-->
-<!--                android:text="Email" />-->
-
-<!--            <EditText-->
-<!--                android:id="@+id/edt_email"-->
-<!--                style="@style/custom_title_product_detail"-->
-<!--                android:layout_weight="2.5"-->
-<!--                android:hint="email" />-->
-<!--        </LinearLayout>-->
-
-        <TextView
-            android:id="@+id/tv_war_email"
-            style="@style/custom_tv_warning" />
-
         <View style="@style/custom_line" />
 
         <LinearLayout style="@style/custom_tv_supplier">
