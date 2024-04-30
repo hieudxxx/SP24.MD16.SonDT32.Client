@@ -320,6 +320,19 @@ public class Helper {
         Helper.onSettingsBotSheet(context, sortBinding);
     }
 
+    public static void isTaxValid(String value, TextView tv) {
+        if (value.length() < 10 || value.length() > 13) {
+            tv.setVisibility(View.VISIBLE);
+            tv.setText("Mã số thuế phải từ 10-13 số");
+        } else if (!TextUtils.isDigitsOnly(value)) {
+            tv.setVisibility(View.VISIBLE);
+            tv.setText("Không được nhập chữ");
+        } else {
+            tv.setVisibility(View.GONE);
+            tv.setText("");
+        }
+    }
+
     public static <T> void onSortStaff(Context context) {
         BotSheetSortStaffBinding sortStaffBinding = BotSheetSortStaffBinding.inflate(LayoutInflater.from(context));
         sortStaffBinding.rdGr.setOnCheckedChangeListener(((radioGroup, i) -> {
