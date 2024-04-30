@@ -20,16 +20,31 @@
             android:layout_height="wrap_content"
             android:background="@color/white">
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/img_account"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/avt"
-                app:shapeAppearanceOverlay="@style/custom_shape_img_circle"
-                app:strokeWidth="2dp" />
+<!--            <com.google.android.material.imageview.ShapeableImageView-->
+<!--                android:id="@+id/img_account"-->
+<!--                android:layout_width="70dp"-->
+<!--                android:layout_height="70dp"-->
+<!--                android:layout_alignParentStart="true"-->
+<!--                android:layout_centerVertical="true"-->
+<!--                android:layout_gravity="center_vertical"-->
+<!--                android:src="@drawable/avatar"-->
+<!--                app:shapeAppearanceOverlay="@style/custom_shape_img_circle"-->
+<!--                app:strokeWidth="2dp" />-->
+
+            <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginVertical="5dp"
+                app:cardCornerRadius="60dp">
+
+                <ImageView
+                    android:id="@+id/img_avt"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/avatar" />
+            </androidx.cardview.widget.CardView>
 
             <TextView
                 android:id="@+id/txt_nameAccount"
@@ -39,7 +54,7 @@
                 android:fontFamily="@font/nunito_extrabold"
                 android:text="Xuân Hiếu"
                 android:textColor="@color/black"
-                android:textSize="24sp" />
+                android:textSize="20sp" />
 
             <ImageButton
                 android:id="@+id/imgBtn_edit"

@@ -33,4 +33,7 @@ public interface ApiSupplier {
     @POST("suppliers/update/{id}")
     Call<Supplier> update(@Header("Authorization") String authToken, @Path("id") int id, @Body Supplier data);
 
+    @POST("suppliers/create")
+    Call<Supplier> create(@Header("Authorization") String authToken, @Body Supplier data);
+
 }

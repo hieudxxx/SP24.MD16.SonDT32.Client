@@ -21,11 +21,10 @@ public class Category implements Serializable {
     public Category() {
     }
 
-    public Category(int id, String name, int status, String created_at) {
+    public Category(int id, String name, int status) {
         this.id = id;
         this.name = name;
         this.status = status;
-        this.created_at = created_at;
     }
 
     public int getId() {
@@ -58,5 +57,15 @@ public class Category implements Serializable {
 
     public void setCreated_at(String created_at) {
         this.created_at = created_at;
+    }
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", status=" + status +
+                ", created_at='" + created_at + '\'' +
+                '}';
     }
 }

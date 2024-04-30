@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
+    style="@style/custom_bgr_layout"
     android:layout_height="match_parent"
     tools:context=".Staff.Activity.StaffDetailActivity">
 
@@ -26,147 +27,184 @@
             android:text="Chi tiết nhân viên" />
     </androidx.appcompat.widget.Toolbar>
 
-    <View
-        android:id="@+id/view2"
-        style="@style/custom_line"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tb_staff_detail" />
-
     <LinearLayout
-        style="@style/custom_rd_sort_filter"
-        android:layout_height="0dp"
-        android:background="@drawable/bgr_bot_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bgr_btn_menu"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view2"
-        app:layout_constraintVertical_bias="0.0">
+        android:paddingHorizontal="20dp"
+        android:layout_below="@id/tb_staff_detail"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="5dp"
+        android:paddingTop="15dp">
 
-
-        <LinearLayout
-            android:id="@+id/layoutCall"
-            android:layout_width="match_parent"
+        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/btn_option_staff"
-            android:orientation="horizontal"
-            android:padding="10dp">
+            android:layout_gravity="center"
+            android:layout_marginBottom="30dp"
+            app:cardCornerRadius="60dp">
+
+            <ImageView
+                android:id="@+id/img_avt"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/avatar" />
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout style="@style/custom_tv_supplier">
+
+
 
             <TextView
+                style="@style/custom_tv_title"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Tên nhân viên "
-                android:layout_weight="1.5"
-                android:fontFamily="@font/nunito_semibold"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:layout_weight="1"
+                android:text="Mã NV" />
 
             <TextView
-                android:textSize="18sp"
-                android:textColor="@color/black"
-                android:fontFamily="@font/nunito_bold"
+                android:id="@+id/tv_id"
+                style="@style/custom_tv_title"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="NV004" />
+        </LinearLayout>
+
+        <View style="@style/custom_line" />
+
+        <LinearLayout style="@style/custom_tv_supplier">
+
+            <TextView
+                style="@style/custom_tv_title"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="Tên NV" />
+
+            <TextView
                 android:id="@+id/tv_name"
+                style="@style/custom_tv_title"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2.5"
-                android:text="Vân Anh" />
-
-
+                android:layout_weight="1"
+                android:text="NTH" />
         </LinearLayout>
 
+        <View style="@style/custom_line" />
 
-        <LinearLayout
-            android:id="@+id/layoutEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/btn_option_staff"
-            android:orientation="horizontal"
-            android:padding="10dp">
+        <LinearLayout style="@style/custom_tv_supplier">
 
             <TextView
+                style="@style/custom_tv_title"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.5"
-                android:fontFamily="@font/nunito_semibold"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:text="Tài khoản " />
+                android:layout_weight="1"
+                android:text="Điện thoại" />
 
             <TextView
-                android:textSize="18sp"
-                android:textColor="@color/black"
-                android:fontFamily="@font/nunito_bold"
-                android:id="@+id/tv_email"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2.5"
-                android:text="abc@gmail.com" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layoutSendSms"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/btn_option_staff"
-            android:orientation="horizontal"
-            android:padding="10dp">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.5"
-                android:fontFamily="@font/nunito_semibold"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:text="Chức vụ " />
-
-            <TextView
-                android:textSize="18sp"
-                android:textColor="@color/black"
-                android:fontFamily="@font/nunito_bold"
-                android:id="@+id/tv_role"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2.5"
-                android:text="Nhân viên" />
-
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/layoutDetail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/btn_option_staff"
-            android:orientation="horizontal"
-            android:padding="10dp">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.5"
-                android:fontFamily="@font/nunito_semibold"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:text="Số điện thoại " />
-
-            <TextView
-                android:textSize="18sp"
-                android:textColor="@color/black"
-                android:fontFamily="@font/nunito_bold"
                 android:id="@+id/tv_phone"
+                style="@style/custom_tv_title"
                 android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="0973967774" />
+
+
+        </LinearLayout>
+
+        <View style="@style/custom_line" />
+
+        <LinearLayout style="@style/custom_tv_supplier">
+
+            <TextView
+                style="@style/custom_tv_title"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="Email" />
+
+            <TextView
+                android:id="@+id/tv_email"
+                style="@style/custom_tv_title"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="" />
+
+
+        </LinearLayout>
+
+        <View style="@style/custom_line" />
+
+        <LinearLayout style="@style/custom_tv_supplier">
+
+            <TextView
+                style="@style/custom_tv_title"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="Chức vụ" />
+
+            <TextView
+                android:id="@+id/tv_role"
+                style="@style/custom_tv_title"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="" />
+
+
+        </LinearLayout>
+
+        <View
+            style="@style/custom_line"
+            android:layout_marginBottom="20dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/custom_tv_title"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="Ghi chú" />
+
+            <TextView
+                android:id="@+id/tv_note"
+                style="@style/custom_tv_title"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="" />
+        </LinearLayout>
+
+        <View
+            style="@style/custom_line"
+            android:layout_marginBottom="20dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="center">
+            <Button
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2.5"
-                android:text="0961984330" />
-
-
+                android:id="@+id/layout_delete"
+                android:text="Xóa"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:textColor="#FF0000"
+                android:background="@drawable/vien_bo_goc"
+                android:shadowColor="@color/black"/>
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/img_edit"
+                android:layout_marginLeft="60dp"
+                android:text="Chỉnh sửa"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/vien_bo_goc"
+                android:shadowColor="@color/black"/>
         </LinearLayout>
 
     </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

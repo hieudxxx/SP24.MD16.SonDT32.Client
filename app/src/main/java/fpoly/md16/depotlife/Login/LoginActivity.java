@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         binding.btnLogin.setOnClickListener(view -> {
             Map<String, Object> data = new HashMap<>();
 
-            String username = binding.edtPass.getText().toString().trim();
+            String username = binding.edtUsername.getText().toString().trim();
             String pass = binding.edtPass.getText().toString().trim();
 
             data.put("isRemember", binding.cbRemember.isChecked());
@@ -59,7 +59,8 @@ public class LoginActivity extends AppCompatActivity {
             if (username.isEmpty() || pass.isEmpty()) {
                 Toast.makeText(this, "Hãy nhập đủ dữ liệu", Toast.LENGTH_SHORT).show();
             } else {
-                userResponse = new UserResponse("doxuanhieu13012003@gmail.com", "Hieudeptrai102", "12121212");
+//                userResponse = new UserResponse("doxuanhieu13012003@gmail.com", "Hieudeptrai102", "12121212");
+                userResponse = new UserResponse(username, pass, "12121212");
 
                 ApiUser.apiUser.login(userResponse).enqueue(new Callback<UserResponse>() {
                     @Override
@@ -67,11 +68,9 @@ public class LoginActivity extends AppCompatActivity {
                         Log.d("onResponse_login", "response_code: " + response.code());
                         if (response.isSuccessful()) {
                             UserResponse userResponse = response.body();
-//                            UserResponse.User user = userResponse.getUser();
-//                            Log.d("token", "onResponse: " + userResponse.getToken());
                             Log.d("onResponse_login", "userResponse: " + userResponse.toString());
-
                             Log.d("token", "token: "+userResponse.getToken());
+
                             data.put("token",userResponse.getToken());
                             data.put("id", userResponse.getUser().getId());
                             data.put("name", userResponse.getUser().getName());
@@ -79,9 +78,9 @@ public class LoginActivity extends AppCompatActivity {
                             data.put("role", userResponse.getUser().getRole());
                             data.put("avatar", userResponse.getUser().getAvatar());
                             data.put("email", userResponse.getUser().getEmail());
-//                            data.put("password", pass);
-                            data.put("password", "Duylam@2003");
+                            data.put("password", pass);
                             data.put("birthday", userResponse.getUser().getBirthday());
+                            data.put("address", userResponse.getUser().getAddress());
                             data.put("status", userResponse.getUser().getStatus());
 
                             Helper.saveSharedPre(getApplicationContext(), data);

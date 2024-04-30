@@ -23,6 +23,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Filterable;
 import android.widget.ImageView;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -354,9 +355,15 @@ public class Helper {
             Bundle bundle = new Bundle();
             bundle.putSerializable("staff", user);
             context.startActivity(new Intent(context, StaffDetailActivity.class).putExtras(bundle));
+
+
         });
         Helper.onSettingsBotSheet(context, optionStaffBinding);
     }
+
+
+
+
 
     public static void getImagesProduct(Product product, String token, ShapeableImageView img) {
         ApiProduct.apiProduct.getProductImages(token, product.getId(), product.getImg()).enqueue(new Callback<ImagesResponse>() {

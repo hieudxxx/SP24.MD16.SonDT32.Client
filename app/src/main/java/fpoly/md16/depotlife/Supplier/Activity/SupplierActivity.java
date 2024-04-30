@@ -25,14 +25,6 @@ public class SupplierActivity extends AppCompatActivity {
         binding = ActivitySupplierBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-//        Bundle bundle = getIntent().getExtras();
-//        if (bundle != null) {
-//            Supplier supplier = (Supplier) bundle.getSerializable("supplier");
-//            bundle.putSerializable("supplier", supplier);
-//            Helper.loadFragment(getSupportFragmentManager(), new SupplierDetailFragment(), null, R.id.frag_container_supplier);
-//            Helper.loadFragment(getSupportFragmentManager(), new DetailTabFragment(), bundle, R.id.frag_container_supplier);
-//        } else {
-            Helper.loadFragment(getSupportFragmentManager(), new SupplierFragment(), null, R.id.frag_container_supplier);
-//        }
+        Helper.loadFragment(getSupportFragmentManager(), new SupplierFragment(), null, R.id.frag_container_supplier);
     }
 }

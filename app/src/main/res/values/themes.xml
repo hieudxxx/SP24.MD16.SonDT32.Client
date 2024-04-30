@@ -385,6 +385,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:backgroundTint">@color/bgr_btn</item>
+        <item name="iconTint">@color/white</item>
         <item name="shapeAppearanceOverlay">@style/fabRounded</item>
     </style>
 

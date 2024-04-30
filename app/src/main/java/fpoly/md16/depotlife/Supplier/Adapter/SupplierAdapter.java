@@ -56,7 +56,6 @@ public class SupplierAdapter extends RecyclerView.Adapter<SupplierAdapter.ViewHo
             Bundle bundle = new Bundle();
             bundle.putSerializable("supplier", list.get(holder.getAdapterPosition()));
             Helper.loadFragment(fragmentManager, new SupplierDetailFragment(), bundle, R.id.frag_container_supplier);
-//            context.startActivity(new Intent(context, SupplierActivity.class).putExtras(bundle));
         });
     }
 

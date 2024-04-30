@@ -58,7 +58,7 @@ public class SupplierDetailFragment extends Fragment {
         binding.imgBack.setOnClickListener(view1 -> {
             requireActivity().getSupportFragmentManager().popBackStack();
 //            requireActivity().finish();
-            getActivity().onBackPressed();
+//            getActivity().onBackPressed();
         });
 
         bundle = getArguments();
@@ -130,5 +130,7 @@ public class SupplierDetailFragment extends Fragment {
             item_inactive.setTitle("Tái hợp tác");
         }
     }
+
+
 
 }
