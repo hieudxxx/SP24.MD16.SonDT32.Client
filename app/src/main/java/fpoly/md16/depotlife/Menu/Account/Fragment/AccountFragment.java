@@ -34,9 +34,7 @@ public class AccountFragment extends Fragment {
         ((AppCompatActivity) getActivity()).setSupportActionBar(binding.tbAccount);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        binding.imgBack.setOnClickListener(view1 -> {
-            requireActivity().finish();
-        });
+        binding.imgBack.setOnClickListener(view1 -> requireActivity().getSupportFragmentManager().popBackStack());
 
         binding.imgEdit.setOnClickListener(view12 -> {
             Helper.loadFragment(getParentFragmentManager(), new EditAccountFragment(), null, R.id.frag_container_account);
@@ -51,17 +49,21 @@ public class AccountFragment extends Fragment {
             String email = (String) Helper.getSharedPre(getContext(), "email", String.class);
             String dob = (String) Helper.getSharedPre(getContext(), "birthday", String.class);
             String avt = (String) Helper.getSharedPre(getContext(), "avatar", String.class);
+            String phone = (String) Helper.getSharedPre(getContext(), "phone_number", String.class);
+            String address = (String) Helper.getSharedPre(getContext(), "address", String.class);
 
             binding.tvName.setText(name);
             binding.tvFullname.setText(name);
             binding.tvEmail.setText(email);
             binding.tvDob.setText(dob);
-            binding.tvDob.setText(dob);
+            binding.tvPhone.setText(phone);
+            binding.tvAddress.setText(address);
 
             if (avt.isEmpty()) {
                 binding.imgAvt.setImageResource(R.drawable.unknow_avt);
             } else {
-                Picasso.get().load(avt).into(binding.imgAvt);
+//                Picasso.get().load(avt).into(binding.imgAvt);
+                binding.imgAvt.setImageResource(R.drawable.unknow_avt);
 
             }
 
