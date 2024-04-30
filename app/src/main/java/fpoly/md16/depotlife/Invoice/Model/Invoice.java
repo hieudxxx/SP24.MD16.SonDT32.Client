@@ -12,7 +12,7 @@ public class Invoice implements Serializable {
     private String id;
     private String user_id;
     private String date_created;
-    private double total;
+    private int total;
     private int type;
     private int status;
 
@@ -58,7 +58,7 @@ public class Invoice implements Serializable {
     public Invoice() {
     }
 
-    public Invoice(String id, String user_id, String date_created, double total, int type, int status) {
+    public Invoice(String id, String user_id, String date_created, int total, int type, int status) {
         this.id = id;
         this.user_id = user_id;
         this.date_created = date_created;
@@ -91,11 +91,11 @@ public class Invoice implements Serializable {
         this.date_created = date_created;
     }
 
-    public double getTotal() {
+    public int getTotal() {
         return total;
     }
 
-    public void setTotal(double total) {
+    public void setTotal(int total) {
         this.total = total;
     }
 

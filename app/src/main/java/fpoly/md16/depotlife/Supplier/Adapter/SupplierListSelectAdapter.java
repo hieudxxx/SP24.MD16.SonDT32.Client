@@ -51,6 +51,9 @@ public class SupplierListSelectAdapter extends RecyclerView.Adapter<SupplierList
 
     @Override
     public int getItemCount() {
+        if (list != null) {
+            return list.size();
+        }
         return 0;
     }
 

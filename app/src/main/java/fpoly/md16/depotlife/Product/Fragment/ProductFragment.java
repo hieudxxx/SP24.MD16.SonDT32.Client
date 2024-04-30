@@ -87,7 +87,6 @@ public class ProductFragment extends Fragment {
             if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
                 binding.pbLoadMore.setVisibility(View.VISIBLE);
                 if (pageIndex <= perPage) {
-                    Log.d("onScrollChange", "onScrollChange: " + pageIndex);
                     getData();
                     binding.pbLoadMore.setVisibility(View.GONE);
                 } else {
@@ -125,7 +124,6 @@ public class ProductFragment extends Fragment {
         ApiProduct.apiProduct.getData(token, pageIndex).enqueue(new Callback<ProductResponse>() {
             @Override
             public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
-                Log.d("onResponse_product", "response_code: " + response.code());
                 if (response.isSuccessful()) {
                     productResponse = response.body();
                     if (productResponse != null) {

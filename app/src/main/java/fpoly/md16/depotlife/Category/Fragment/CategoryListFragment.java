@@ -16,7 +16,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import fpoly.md16.depotlife.Category.Adapter.CategoryListSelectAdapter;
 import fpoly.md16.depotlife.Category.Model.Category;
@@ -40,8 +39,6 @@ public class CategoryListFragment extends Fragment implements onItemRcvClick<Cat
     private String token;
     private CategoryResponse categoryResponse;
     private Category categorySelected;
-    private Bundle bundle;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -68,35 +65,25 @@ public class CategoryListFragment extends Fragment implements onItemRcvClick<Cat
         token = "Bearer " + (String) Helper.getSharedPre(getContext(), "token", String.class);
         list = new ArrayList<>();
 
-        bundle = getArguments();
-        if (bundle != null) {
+        getData();
 
-            getData();
-
-            binding.nestScoll.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-                if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
-                    binding.pbLoadMore.setVisibility(View.VISIBLE);
-                    if (pageIndex <= perPage) {
-                        getData();
-                        binding.pbLoadMore.setVisibility(View.GONE);
-                    } else {
-                        binding.pbLoadMore.setVisibility(View.GONE);
-                    }
+        binding.nestScoll.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
+                binding.pbLoadMore.setVisibility(View.VISIBLE);
+                if (pageIndex <= perPage) {
+                    getData();
+                    binding.pbLoadMore.setVisibility(View.GONE);
+                } else {
+                    binding.pbLoadMore.setVisibility(View.GONE);
                 }
-            });
+            }
+        });
 
-            binding.tvSave.setOnClickListener(view13 -> {
-//                bundle = new Bundle();
-//                bundle.putSerializable("category",categorySelected);
-//                Helper.loadFragment(getParentFragmentManager(), new ProductEditFragment(), bundle, R.id.frag_container_product);
-
-                ShareViewModel viewModel = new ViewModelProvider(requireActivity()).get(ShareViewModel.class);
-                viewModel.select(categorySelected);
-                requireActivity().getSupportFragmentManager().popBackStack();
-
-            });
-
-        }
+        binding.tvSave.setOnClickListener(view13 -> {
+            ShareViewModel viewModel = new ViewModelProvider(requireActivity()).get(ShareViewModel.class);
+            viewModel.select(categorySelected);
+            requireActivity().getSupportFragmentManager().popBackStack();
+        });
 
 
     }
@@ -124,8 +111,7 @@ public class CategoryListFragment extends Fragment implements onItemRcvClick<Cat
 
     private void onCheckList(CategoryResponse categoryResponse) {
         if (categoryResponse.getData() != null) {
-            List<Category> tempList = Arrays.asList(categoryResponse.getData()); // hoặc có thể dùng foreach để check từng item
-            list.addAll(tempList);
+            list.addAll(Arrays.asList(categoryResponse.getData()));
             if (!list.isEmpty()) {
                 binding.rcv.setVisibility(View.VISIBLE);
                 binding.pbLoading.setVisibility(View.GONE);

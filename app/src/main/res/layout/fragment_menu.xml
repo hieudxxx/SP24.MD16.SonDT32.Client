@@ -41,7 +41,6 @@
                 android:textColor="@color/black"
                 android:textSize="24sp" />
 
-
             <ImageButton
                 android:id="@+id/imgBtn_edit"
                 android:layout_width="wrap_content"

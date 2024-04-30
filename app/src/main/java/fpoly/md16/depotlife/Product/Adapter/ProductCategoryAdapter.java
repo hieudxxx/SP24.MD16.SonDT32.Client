@@ -13,7 +13,6 @@ import fpoly.md16.depotlife.Category.Model.Category;
 import fpoly.md16.depotlife.databinding.ItemCategoryProductFilterBinding;
 
 public class ProductCategoryAdapter extends RecyclerView.Adapter<ProductCategoryAdapter.CategoryViewHolder> {
-
     Context context;
     List<Category> categoryList;
 
@@ -33,7 +32,6 @@ public class ProductCategoryAdapter extends RecyclerView.Adapter<ProductCategory
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
         Category category = categoryList.get(position);
         holder.categoryBinding.textView.setText(category.getName());
-
     }
 
     @Override

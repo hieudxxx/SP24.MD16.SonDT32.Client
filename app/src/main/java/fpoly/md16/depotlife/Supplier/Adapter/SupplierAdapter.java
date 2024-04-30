@@ -1,7 +1,6 @@
 package fpoly.md16.depotlife.Supplier.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -16,9 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fpoly.md16.depotlife.Helper.Helper;
-import fpoly.md16.depotlife.Product.Activity.ProductActivity;
 import fpoly.md16.depotlife.R;
-import fpoly.md16.depotlife.Supplier.Activity.SupplierActivity;
 import fpoly.md16.depotlife.Supplier.Fragment.SupplierDetailFragment;
 import fpoly.md16.depotlife.Supplier.Model.Supplier;
 import fpoly.md16.depotlife.databinding.ItemSupplierBinding;
@@ -53,7 +50,7 @@ public class SupplierAdapter extends RecyclerView.Adapter<SupplierAdapter.ViewHo
 
         holder.binding.tvStatus.setText(list.get(position).getStatus() == 1 ? "Đang hợp tác" : "Đã ngừng hợp tác");
 
-        holder.binding.tvTotal.setText(Helper.formatVND(list.get(position).getTotal()));
+//        holder.binding.tvTotal.setText(Helper.formatVND(list.get(position).getTotal()));
 
         holder.itemView.setOnClickListener(view -> {
             Bundle bundle = new Bundle();
