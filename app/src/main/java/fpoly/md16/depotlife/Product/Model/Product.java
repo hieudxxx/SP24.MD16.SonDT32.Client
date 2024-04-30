@@ -21,9 +21,9 @@ public class Product implements Serializable {
     @SerializedName("unit")
     private String unit;
     @SerializedName("import_price")
-    private double import_price;
+    private int import_price;
     @SerializedName("sell_price")
-    private double export_price;
+    private int export_price;
     @SerializedName("total_quantity")
     private int inventory;
     @SerializedName("status")
@@ -41,7 +41,7 @@ public class Product implements Serializable {
     }
 
 
-    public Product(int id, int supplier_id, int category_id, String product_name, String img, String barcode, String unit, double import_price, double export_price, int inventory, int status, String category_name, String supplier_name) {
+    public Product(int id, int supplier_id, int category_id, String product_name, String img, String barcode, String unit, int import_price, int export_price, int inventory, int status, String category_name, String supplier_name) {
         this.id = id;
         this.supplier_id = supplier_id;
         this.category_id = category_id;
@@ -57,7 +57,7 @@ public class Product implements Serializable {
         this.supplier_name = supplier_name;
     }
 
-    public Product(int supplier_id, int category_id, String product_name, String unit, double import_price, double export_price, int inventory) {
+    public Product(int supplier_id, int category_id, String product_name, String unit, int import_price, int export_price, int inventory) {
         this.supplier_id = supplier_id;
         this.category_id = category_id;
         this.product_name = product_name;
@@ -123,19 +123,19 @@ public class Product implements Serializable {
         this.unit = unit;
     }
 
-    public double getImport_price() {
+    public int getImport_price() {
         return import_price;
     }
 
-    public void setImport_price(double import_price) {
+    public void setImport_price(int import_price) {
         this.import_price = import_price;
     }
 
-    public double getExport_price() {
+    public int getExport_price() {
         return export_price;
     }
 
-    public void setExport_price(double export_price) {
+    public void setExport_price(int export_price) {
         this.export_price = export_price;
     }
 

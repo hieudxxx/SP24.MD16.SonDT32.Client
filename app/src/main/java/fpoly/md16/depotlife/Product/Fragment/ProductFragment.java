@@ -20,13 +20,11 @@ import androidx.fragment.app.Fragment;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiProduct;
 import fpoly.md16.depotlife.Product.Activity.ProductActivity;
 import fpoly.md16.depotlife.Product.Adapter.ProductAdapter;
-import fpoly.md16.depotlife.Product.Model.ImagesResponse;
 import fpoly.md16.depotlife.Product.Model.Product;
 import fpoly.md16.depotlife.Product.Model.ProductResponse;
 import fpoly.md16.depotlife.Product.ProductFilterActivity;
@@ -41,12 +39,9 @@ public class ProductFragment extends Fragment {
     private ProductAdapter adapter;
     private ArrayList<Product> list;
     private ProductResponse productResponse;
-    private ImagesResponse imagesResponse;
     private int pageIndex = 1;
     private int perPage = 0;
-    private int count = 0;
     private String token;
-    private boolean isLoadData = true;
 
 
     @Override
@@ -90,10 +85,8 @@ public class ProductFragment extends Fragment {
 
         binding.nestScoll.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
-//                    count++;
                 binding.pbLoadMore.setVisibility(View.VISIBLE);
                 if (pageIndex <= perPage) {
-                    Log.d("onScrollChange", "onScrollChange: " + pageIndex);
                     getData();
                     binding.pbLoadMore.setVisibility(View.GONE);
                 } else {
@@ -131,7 +124,6 @@ public class ProductFragment extends Fragment {
         ApiProduct.apiProduct.getData(token, pageIndex).enqueue(new Callback<ProductResponse>() {
             @Override
             public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
-                Log.d("onResponse_product", "response_code: " + response.code());
                 if (response.isSuccessful()) {
                     productResponse = response.body();
                     if (productResponse != null) {
@@ -160,41 +152,7 @@ public class ProductFragment extends Fragment {
 
     private void onCheckList(ProductResponse productResponse) {
         if (productResponse.getData() != null) {
-            List<Product> tempList = Arrays.asList(productResponse.getData()); // hoặc có thể dùng foreach để check từng item
-//            for (Product product : tempList) {
-//                ApiProduct.apiProduct.getProductImages("Bearer " + token, product.getId(), product.getImg()).enqueue(new Callback<ImagesResponse>() {
-//                    @Override
-//                    public void onResponse(Call<ImagesResponse> call, Response<ImagesResponse> response) {
-//                        Log.d("getProductImages", "onResponse: " + response);
-//                        Log.d("getProductImages", "onResponse: " + response.code());
-//                        if (response.isSuccessful()) {
-//                            imagesResponse = response.body();
-//                            Log.d("getProductImages", "onResponse: " + response.body());
-//                            Log.d("getProductImages", "onResponse: " + imagesResponse.toString());
-//                            if (imagesResponse != null) {
-//                                if (product.getImg().isEmpty() || product.getImg() == null) {
-//                                    String[] path = imagesResponse.getPaths();
-//                                    if (path != null && path.length > 0) {
-//                                        product.setImg("https://warehouse.sinhvien.io.vn/public"+path[0]);
-//                                        list.add(product);
-//                                    }
-//                                } else {
-//                                    product.setImg(imagesResponse.getImage());
-//                                    list.add(product);
-//                                }
-//                            }
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<ImagesResponse> call, Throwable throwable) {
-//                        Log.d("onFailure", "onFailure: " + throwable.getMessage());
-//                        Toast.makeText(getActivity(), "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//
-//            }
-            list.addAll(tempList);
+            list.addAll(Arrays.asList(productResponse.getData()));
             if (!list.isEmpty()) {
                 binding.rcvProduct.setVisibility(View.VISIBLE);
                 binding.layoutTotal.setVisibility(View.VISIBLE);

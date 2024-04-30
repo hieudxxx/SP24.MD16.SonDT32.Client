@@ -1,4 +1,4 @@
-package fpoly.md16.depotlife.Category.Fragment;
+package fpoly.md16.depotlife.Supplier.Fragment;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -17,32 +17,33 @@ import androidx.lifecycle.ViewModelProvider;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import fpoly.md16.depotlife.Category.Adapter.CategoryListSelectAdapter;
-import fpoly.md16.depotlife.Category.Model.Category;
-import fpoly.md16.depotlife.Category.Model.CategoryResponse;
 import fpoly.md16.depotlife.Helper.Helper;
-import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiCategory;
+import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiSupplier;
 import fpoly.md16.depotlife.Helper.Interfaces.onClickListener.onItemRcvClick;
+import fpoly.md16.depotlife.R;
+import fpoly.md16.depotlife.Supplier.Adapter.SupplierListSelectAdapter;
+import fpoly.md16.depotlife.Supplier.Model.Supplier;
+import fpoly.md16.depotlife.Supplier.Model.SupplierResponse;
 import fpoly.md16.depotlife.ViewModel.ShareViewModel;
-import fpoly.md16.depotlife.databinding.FragmentCategoryListBinding;
+import fpoly.md16.depotlife.databinding.FragmentSupplierListSelectBinding;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
-public class CategoryListFragment extends Fragment implements onItemRcvClick<Category> {
-    private FragmentCategoryListBinding binding;
-    private CategoryListSelectAdapter adapter;
-    private ArrayList<Category> list;
+public class SupplierListSelectFragment extends Fragment implements onItemRcvClick<Supplier> {
+    private FragmentSupplierListSelectBinding binding;
+    private SupplierListSelectAdapter adapter;
+    private ArrayList<Supplier> list;
     private int pageIndex = 1;
     private int perPage = 0;
     private String token;
-    private CategoryResponse categoryResponse;
-    private Category categorySelected;
+    private SupplierResponse supplierResponse;
+    private Supplier supplierSelected;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentCategoryListBinding.inflate(inflater, container, false);
+        binding = FragmentSupplierListSelectBinding.inflate(inflater, container, false);
         setHasOptionsMenu(true);
         return binding.getRoot();
     }
@@ -51,15 +52,15 @@ public class CategoryListFragment extends Fragment implements onItemRcvClick<Cat
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ((AppCompatActivity) getActivity()).setSupportActionBar(binding.tb);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(binding.tbSupplier);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        binding.imgAddSupplider.setOnClickListener(view1 -> {
+            Helper.loadFragment(getParentFragmentManager(), new SupplierAddFragment(), null, R.id.frag_container_product);
+        });
 
         binding.imgBack.setOnClickListener(view12 -> {
             requireActivity().getSupportFragmentManager().popBackStack();
-        });
-
-        binding.imgAddCategory.setOnClickListener(view14 -> {
-
         });
 
         token = "Bearer " + (String) Helper.getSharedPre(getContext(), "token", String.class);
@@ -81,43 +82,42 @@ public class CategoryListFragment extends Fragment implements onItemRcvClick<Cat
 
         binding.tvSave.setOnClickListener(view13 -> {
             ShareViewModel viewModel = new ViewModelProvider(requireActivity()).get(ShareViewModel.class);
-            viewModel.select(categorySelected);
+            viewModel.select(supplierSelected);
             requireActivity().getSupportFragmentManager().popBackStack();
+
         });
-
-
     }
 
     private void getData() {
-        ApiCategory.apiCategory.getData(token, pageIndex).enqueue(new Callback<CategoryResponse>() {
+        ApiSupplier.apiSupplier.getData(token, pageIndex).enqueue(new Callback<SupplierResponse>() {
             @Override
-            public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
+            public void onResponse(Call<SupplierResponse> call, Response<SupplierResponse> response) {
                 if (response.isSuccessful()) {
-                    categoryResponse = response.body();
-                    if (categoryResponse != null) {
-                        perPage = categoryResponse.getLast_page();
-                        onCheckList(categoryResponse);
+                    supplierResponse = response.body();
+                    if (supplierResponse != null) {
+                        perPage = supplierResponse.getLast_page();
+                        onCheckList(supplierResponse);
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<CategoryResponse> call, Throwable throwable) {
+            public void onFailure(Call<SupplierResponse> call, Throwable throwable) {
                 Log.d("onFailure", "onFailure: " + throwable.getMessage());
                 Toast.makeText(getActivity(), "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void onCheckList(CategoryResponse categoryResponse) {
-        if (categoryResponse.getData() != null) {
-            list.addAll(Arrays.asList(categoryResponse.getData()));
+    private void onCheckList(SupplierResponse supplierResponse) {
+        if (supplierResponse.getData() != null) {
+            list.addAll(Arrays.asList(supplierResponse.getData()));
             if (!list.isEmpty()) {
                 binding.rcv.setVisibility(View.VISIBLE);
                 binding.pbLoading.setVisibility(View.GONE);
                 binding.pbLoadMore.setVisibility(View.GONE);
                 setHasOptionsMenu(true);
-                adapter = new CategoryListSelectAdapter(getContext(), list, this);
+                adapter = new SupplierListSelectAdapter(getContext(), list, this);
                 binding.rcv.setAdapter(adapter);
 //                            adapter.notifyDataSetChanged();
                 pageIndex++;
@@ -131,7 +131,7 @@ public class CategoryListFragment extends Fragment implements onItemRcvClick<Cat
     }
 
     @Override
-    public void onClick(Category category) {
-        categorySelected = category;
+    public void onClick(Supplier item) {
+        supplierSelected = item;
     }
 }
