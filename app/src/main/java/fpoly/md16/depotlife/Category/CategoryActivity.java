@@ -28,6 +28,7 @@ import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiCategory;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiSupplier;
 import fpoly.md16.depotlife.Product.Adapter.ProductAdapter;
 import fpoly.md16.depotlife.R;
+import fpoly.md16.depotlife.Supplier.Fragment.SupplierFragment;
 import fpoly.md16.depotlife.Supplier.Model.Supplier;
 import fpoly.md16.depotlife.Supplier.Model.SupplierResponse;
 import fpoly.md16.depotlife.databinding.ActivityCategoryBinding;
@@ -47,13 +48,13 @@ public class CategoryActivity extends AppCompatActivity {
     private int perPage = 0;
     private String token;
 
+    public static boolean isLoadData = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityCategoryBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-//        setHasOptionsMenu(true);
 
         token = "Bearer " +(String) Helper.getSharedPre(getApplicationContext(), "token", String.class);
 
@@ -73,7 +74,6 @@ public class CategoryActivity extends AppCompatActivity {
 
         binding.nestScoll.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
-//                    count++;
                 binding.pbLoadMore.setVisibility(View.VISIBLE);
                 if (pageIndex <= perPage) {
                     Log.d("onScrollChange", "onScrollChange: " + pageIndex);
@@ -111,7 +111,6 @@ public class CategoryActivity extends AppCompatActivity {
     }
 
     private void getData() {
-        list.clear();
         ApiCategory.apiCategory.getData(token, pageIndex).enqueue(new Callback<CategoryResponse>() {
             @Override
             public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
@@ -122,7 +121,6 @@ public class CategoryActivity extends AppCompatActivity {
                         perPage = categoryResponse.getLast_page();
                         onCheckList(categoryResponse);
                     }
-//
                 } else {
                     try {
                         String errorBody = response.errorBody().string();
@@ -151,7 +149,6 @@ public class CategoryActivity extends AppCompatActivity {
             binding.tvEmpty.setVisibility(View.GONE);
             binding.pbLoading.setVisibility(View.GONE);
             binding.pbLoadMore.setVisibility(View.GONE);
-//            setHasOptionsMenu(true);
             adapter = new CategoryAdapter(this, list, token);
             binding.rcvCategory.setAdapter(adapter);
             adapter.notifyDataSetChanged();
@@ -216,12 +213,11 @@ public class CategoryActivity extends AppCompatActivity {
                     ApiCategory.apiCategory.create(token, cate).enqueue(new Callback<Category>() {
                         @Override
                         public void onResponse(Call<Category> call, Response<Category> response) {
-                            Log.d("tag_kiemTra", "onResponse: " + response.code());
-                            Log.d("tag_kiemTra", "onResponse: " + response);
                             if (response.isSuccessful()) {
                                 Toast.makeText(CategoryActivity.this, "Thêm loại hàng hoá thành công!", Toast.LENGTH_SHORT).show();
                                 addBinding.edtAddCategory.setText("");
                                 dialog.dismiss();
+                                isLoadData = true;
                             }
                         }
 
@@ -242,22 +238,16 @@ public class CategoryActivity extends AppCompatActivity {
         });
     }
 
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        // Đóng ô tìm kiếm nếu nó đang mở khi Activity mất focus
-//        if (searchMenuItem != null && searchMenuItem.isActionViewExpanded()) {
-//            searchMenuItem.collapseActionView();
-//        }
-//    }
+    @Override
+    public void onResume() {
+        super.onResume();
 
-//    @Override
-//    public void onBackPressed() {
-//        // Đóng ô tìm kiếm khi người dùng bấm nút Back
-//        if (searchMenuItem != null && searchMenuItem.isActionViewExpanded()) {
-//            searchMenuItem.collapseActionView();
-//        } else {
-//            super.onBackPressed();
-//        }
-//    }
+        if (isLoadData) {
+            pageIndex = 1;
+            list.clear();
+            adapter.notifyDataSetChanged();
+            getData();
+            isLoadData = false;
+        }
+    }
 }

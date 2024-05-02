@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiSupplier;
+import fpoly.md16.depotlife.Product.Fragment.ProductFragment;
 import fpoly.md16.depotlife.Supplier.Model.Supplier;
 import fpoly.md16.depotlife.databinding.FragmentSupplierAddBinding;
 import retrofit2.Call;
@@ -77,6 +78,7 @@ public class SupplierAddFragment extends Fragment {
                             Log.d("tag_kiemTra", "onResponse: " + response);
                             if (response.isSuccessful()) {
                                 Toast.makeText(getContext(), "Thêm ncc thành công", Toast.LENGTH_SHORT).show();
+                                SupplierFragment.isLoadData = true;
                                 requireActivity().getSupportFragmentManager().popBackStack();
                             }
                         }

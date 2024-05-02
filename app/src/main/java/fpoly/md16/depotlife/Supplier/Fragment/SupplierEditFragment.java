@@ -101,6 +101,7 @@ public class SupplierEditFragment extends Fragment {
                                 public void onResponse(Call<Supplier> call, Response<Supplier> response) {
                                     if (response.isSuccessful()) {
                                         Toast.makeText(getContext(), "Thành công", Toast.LENGTH_SHORT).show();
+                                        SupplierFragment.isLoadData = true;
                                         requireActivity().getSupportFragmentManager().popBackStack();
                                     }
                                 }

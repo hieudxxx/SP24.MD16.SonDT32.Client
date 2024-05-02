@@ -1,5 +1,6 @@
 package fpoly.md16.depotlife.Supplier.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiSupplier;
 import fpoly.md16.depotlife.Product.Adapter.ProductAdapter;
 import fpoly.md16.depotlife.Product.Model.Product;
 import fpoly.md16.depotlife.Product.Model.ProductResponse;
+import fpoly.md16.depotlife.Product.ProductFilterActivity;
 import fpoly.md16.depotlife.R;
 import fpoly.md16.depotlife.Supplier.Adapter.SupplierAdapter;
 import fpoly.md16.depotlife.Supplier.Model.Supplier;
@@ -46,6 +48,8 @@ public class SupplierFragment extends Fragment {
     private int count = 0;
     private int perPage = 0;
     private String token;
+
+    public static boolean isLoadData = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -92,7 +96,6 @@ public class SupplierFragment extends Fragment {
     }
 
     private void getData() {
-        list.clear();
         ApiSupplier.apiSupplier.getData("Bearer " + token, pageIndex).enqueue(new Callback<SupplierResponse>() {
             @Override
             public void onResponse(Call<SupplierResponse> call, Response<SupplierResponse> response) {
@@ -135,7 +138,6 @@ public class SupplierFragment extends Fragment {
             binding.pbLoading.setVisibility(View.GONE);
             binding.pbLoadMore.setVisibility(View.GONE);
             setHasOptionsMenu(true);
-            adapter.setData(list);
             binding.rcv.setAdapter(adapter);
             adapter.setData(list);
             pageIndex++;
@@ -164,7 +166,8 @@ public class SupplierFragment extends Fragment {
             Helper.onSort(getContext(), list, adapter, Supplier.sortByAsc, Supplier.sortByNameAZ);
             return true;
         } else if (id == R.id.item_filter) {
-            onFilter();
+//            Intent intent = new Intent(getActivity(), ProductFilterActivity.class);
+//            startActivity(intent);
             return true;
         } else {
             return super.onOptionsItemSelected(item);
@@ -185,5 +188,18 @@ public class SupplierFragment extends Fragment {
             adapter.notifyDataSetChanged();
         });
         Helper.onSettingsBotSheet(getContext(), filterBinding);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (isLoadData) {
+            pageIndex = 1;
+            list.clear();
+            adapter.notifyDataSetChanged();
+            getData();
+            isLoadData = false;
+        }
     }
 }
