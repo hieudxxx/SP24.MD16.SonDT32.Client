@@ -49,6 +49,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiProduct;
+import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiUser;
 import fpoly.md16.depotlife.Helper.Interfaces.onClickListener.CheckdeleteListener;
 import fpoly.md16.depotlife.Product.Model.ImagesResponse;
 import fpoly.md16.depotlife.Product.Model.Product;
@@ -406,6 +407,7 @@ public class Helper {
             }
         });
     }
+
 
     public static List<String> getListImages(List<String> list) {
         return list;

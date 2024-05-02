@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bgr_screen"
+    android:background="#19957B"
     android:orientation="vertical"
     tools:context=".Statistic.StatisticFragment">
 
@@ -70,6 +70,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="10dp"
+                android:layout_marginHorizontal="10dp"
                 app:cardElevation="10dp">
 
                 <LinearLayout
@@ -132,6 +133,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 app:cardCornerRadius="10dp"
+                android:layout_marginHorizontal="10dp"
                 app:cardElevation="10dp">
 
                 <LinearLayout
@@ -209,10 +211,12 @@
 
                     <TextView
                         style="@style/custom_tv_title_edt"
-                        android:layout_marginTop="15dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginStart="5dp"
                         android:text="Biểu đồ" />
 
                     <com.github.mikephil.charting.charts.PieChart
+                        android:id="@+id/pieChart"
                         android:layout_width="300dp"
                         android:layout_height="300dp"
                         android:layout_gravity="center" />
@@ -223,6 +227,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="10dp"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="10dp">
 
@@ -260,6 +265,7 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
                 android:layout_marginTop="20dp"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="10dp">

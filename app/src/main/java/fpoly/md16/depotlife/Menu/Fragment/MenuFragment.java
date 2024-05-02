@@ -13,8 +13,13 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.squareup.picasso.Picasso;
+
 import fpoly.md16.depotlife.Helper.Helper;
+import fpoly.md16.depotlife.Invoice.Fragment.InvoiceFragment;
 import fpoly.md16.depotlife.Login.LoginActivity;
+import fpoly.md16.depotlife.MainActivity;
+import fpoly.md16.depotlife.Menu.Account.Activity.AccountActivity;
 import fpoly.md16.depotlife.Menu.Account.Fragment.AccountFragment;
 import fpoly.md16.depotlife.Staff.Fragment.StaffFragment;
 import fpoly.md16.depotlife.Menu.Activity.BaoLoi;
@@ -51,13 +56,22 @@ public class MenuFragment extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         binding.txtNameAccount.setText((String)Helper.getSharedPre(getContext(), "name", String.class));
+        String avt = (String) Helper.getSharedPre(getContext(), "avatar", String.class);
+        String ava = avt.replace("public","storage");
+        if (avt.isEmpty()) {
+            binding.imgAvt.setImageResource(R.drawable.unknow_avt);
+        } else {
+            Picasso.get().load("https://warehouse.sinhvien.io.vn/public/" +ava).into(binding.imgAvt);
+        }
 
         binding.imgBtnEdit.setOnClickListener(v -> {
-            Helper.loadFragment(getActivity().getSupportFragmentManager(), new AccountFragment(), null, R.id.frag_container_main);
+            startActivity(new Intent(getContext(), AccountActivity.class));
+//            Helper.loadFragment(getActivity().getSupportFragmentManager(), new AccountFragment(), null, R.id.frag_container_main);
         });
 
         binding.btnInvoice.setOnClickListener(v -> {
-            Toast.makeText(getActivity(),"Đang phát triển",Toast.LENGTH_SHORT).show();
+            Helper.loadFragment(getActivity().getSupportFragmentManager(), new InvoiceFragment(), null, R.id.frag_container_main);
+            MainActivity.binding.bottomNav.show(2,true);
         });
 
         binding.btnCensor.setOnClickListener(v -> {
@@ -81,9 +95,13 @@ public class MenuFragment extends Fragment {
 
         binding.btnProduct.setOnClickListener(v -> {
             Helper.loadFragment(getActivity().getSupportFragmentManager(), new ProductFragment(), null, R.id.frag_container_main);
+            MainActivity.binding.bottomNav.show(4,true);
         });
 
-        binding.btnStatistic.setOnClickListener(v -> Helper.loadFragment(getActivity().getSupportFragmentManager(), new StatisticFragment(), null, R.id.frag_container_main));
+        binding.btnStatistic.setOnClickListener(v -> {
+            Helper.loadFragment(getActivity().getSupportFragmentManager(), new StatisticFragment(), null, R.id.frag_container_main);
+            MainActivity.binding.bottomNav.show(1, true);
+        });
         binding.btnTreasuryBook.setOnClickListener(v -> Toast.makeText(getContext(), "Đang phát triển", Toast.LENGTH_SHORT).show());
 
         binding.btnInfo.setOnClickListener(v -> {

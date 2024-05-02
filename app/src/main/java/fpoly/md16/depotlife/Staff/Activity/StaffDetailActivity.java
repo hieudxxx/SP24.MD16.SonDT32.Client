@@ -10,6 +10,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.squareup.picasso.Picasso;
+
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiProduct;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiUser;
@@ -50,16 +52,6 @@ public class StaffDetailActivity extends AppCompatActivity {
             staff = (StaffResponse.User) bundle.getSerializable("staff");
             if (staff != null) {
                 getData();
-
-                binding.layoutDelete.setOnClickListener(view12 -> {
-//                    delete();
-                });
-
-                binding.imgEdit.setOnClickListener(view13 -> {
-//                    bundle = new Bundle();
-//                    bundle.putSerializable("product", product);
-//                    Helper.loadFragment(getActivity().getSupportFragmentManager(), new ProductEditFragment(), bundle, R.id.frag_container_product);
-                });
             }
         }
     }
@@ -69,8 +61,6 @@ public class StaffDetailActivity extends AppCompatActivity {
         ApiUser.apiUser.getStaffById(token, staff.getId()).enqueue(new Callback<StaffResponse.User>() {
             @Override
             public void onResponse(Call<StaffResponse.User> call, Response<StaffResponse.User> response) {
-                Log.d("onResponse_staff", "response_code: " + response.code());
-                Log.d("onResponse_staff", "response_code: " + response);
                 if (response.isSuccessful()) {
                     staff = response.body();
                     Log.d("staff", "staff: "+staff);
@@ -88,6 +78,13 @@ public class StaffDetailActivity extends AppCompatActivity {
                         }
                         binding.tvRole.setText(roleText);
                         binding.tvPhone.setText(String.valueOf(staff.getPhoneNumber()));
+
+                        String ava = staff.getAvatar().replace("public","storage");
+                        if (ava.isEmpty()) {
+                            binding.imgAvt.setImageResource(R.drawable.unknow_avt);
+                        } else {
+                            Picasso.get().load("https://warehouse.sinhvien.io.vn/public/" +ava).into(binding.imgAvt);
+                        }
                     }
                 }
             }

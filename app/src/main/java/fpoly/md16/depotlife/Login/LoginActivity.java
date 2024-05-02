@@ -59,7 +59,6 @@ public class LoginActivity extends AppCompatActivity {
             if (username.isEmpty() || pass.isEmpty()) {
                 Toast.makeText(this, "Hãy nhập đủ dữ liệu", Toast.LENGTH_SHORT).show();
             } else {
-//                userResponse = new UserResponse("doxuanhieu13012003@gmail.com", "Hieudeptrai102", "12121212");
                 userResponse = new UserResponse(username, pass, "12121212");
 
                 ApiUser.apiUser.login(userResponse).enqueue(new Callback<UserResponse>() {
