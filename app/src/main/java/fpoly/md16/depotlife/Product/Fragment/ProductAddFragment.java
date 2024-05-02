@@ -20,34 +20,34 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
 
-import java.io.File;
-
 import fpoly.md16.depotlife.Category.Fragment.CategoryListFragment;
 import fpoly.md16.depotlife.Category.Model.Category;
 import fpoly.md16.depotlife.Helper.Helper;
-import fpoly.md16.depotlife.Helper.RealPathUtil;
+import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiProduct;
 import fpoly.md16.depotlife.Product.Model.Product;
 import fpoly.md16.depotlife.R;
 import fpoly.md16.depotlife.Supplier.Fragment.SupplierListSelectFragment;
 import fpoly.md16.depotlife.Supplier.Model.Supplier;
 import fpoly.md16.depotlife.ViewModel.ShareViewModel;
 import fpoly.md16.depotlife.databinding.FragmentProductAddBinding;
-import okhttp3.MediaType;
 import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class ProductAddFragment extends Fragment {
     private FragmentProductAddBinding binding;
     private String token;
     private Product product;
-    private Category category;
-    private Supplier supplier;
+    private Category category = new Category();
+    private Supplier supplier = new Supplier();
     private Bundle bundle;
     private int id_product;
     private ShareViewModel<Object> viewModel;
     private Uri uri;
-    private MultipartBody.Part multipartBody;
+    private Uri mUri;
+    private MultipartBody.Part[] listMultipartBody;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,9 +67,24 @@ public class ProductAddFragment extends Fragment {
             requireActivity().finish();
         });
 
-        token = "Bearer " + (String) Helper.getSharedPre(getContext(), "token", String.class);
-
+        token = "Bearer " + Helper.getSharedPre(getContext(), "token", String.class);
         viewModel = new ViewModelProvider(requireActivity()).get(ShareViewModel.class);
+
+        if (category == null) {
+            binding.tvCategory.setText("");
+        } else {
+            binding.tvCategory.setText(category.getName());
+        }
+
+        if (supplier == null) {
+            binding.tvSupplier.setText("");
+        } else {
+            binding.tvSupplier.setText(supplier.getName());
+        }
+
+//        if (uri != null) {
+//            binding.imgProduct.setImageURI(uri);
+//        }
 
         binding.imgProduct.setOnClickListener(view14 -> {
             onRequestPermission();
@@ -92,7 +107,7 @@ public class ProductAddFragment extends Fragment {
             String inventory = binding.edtInventory.getText().toString().trim();
             String unit = binding.edtUnit.getText().toString().trim();
 
-            if (name.isEmpty() || tvcategory.isEmpty() || tvcategory.isEmpty() || export_price.isEmpty() || import_price.isEmpty() || inventory.isEmpty() || unit.isEmpty()) {
+            if (name.isEmpty() || tvcategory.isEmpty() || tvsupplier.isEmpty() || export_price.isEmpty() || import_price.isEmpty() || inventory.isEmpty() || unit.isEmpty()) {
                 Toast.makeText(getContext(), "Hãy nhập đủ dữ liệu", Toast.LENGTH_SHORT).show();
             } else {
                 Helper.isContainSpace(name, binding.tvWarName);
@@ -105,32 +120,49 @@ public class ProductAddFragment extends Fragment {
 
                 if (binding.tvWarName.getText().toString().isEmpty() &&
                         binding.tvWarCat.getText().toString().isEmpty() &&
-                        binding.tvSupplier.getText().toString().isEmpty() &&
+                        binding.tvWarSup.getText().toString().isEmpty() &&
                         binding.tvWarExportPrice.getText().toString().isEmpty() &&
                         binding.tvWarImportPrice.getText().toString().isEmpty() &&
                         binding.tvWarInventory.getText().toString().isEmpty() &&
                         binding.tvWarUnit.getText().toString().isEmpty()
                 ) {
-                    if (category == null || supplier != null) {
+                    if (uri != null) {
+                        listMultipartBody = new MultipartBody.Part[]{Helper.getRealPathFile(getContext(), uri)};
+                    }
+
+                    if (category == null || supplier == null) {
                         Toast.makeText(getContext(), "Hãy nhập đủ dữ liệu", Toast.LENGTH_SHORT).show();
                     } else {
-                        if (uri != null) {
-//                            RequestBody requestBoy = RequestBody.create(MediaType.parse("multipart/form-data"), product);
-                            String realPath = RealPathUtil.getRealPath(getContext(), uri);
-                            File file = new File(realPath);
-                            RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-                            multipartBody = MultipartBody.Part.createFormData("images", file.getName(), requestBody);
-                            Log.d("tag_kiemTra", "onViewCreated: " + multipartBody);
-                        }
 
-//                        product = new Product(supplier.getId(), category.getId(), name, unit, Double.parseDouble(import_price), Double.parseDouble(export_price), Integer.parseInt(inventory));
+                        product = new Product(supplier.getId(), category.getId(), name, unit, Integer.parseInt(import_price), Integer.parseInt(export_price), Integer.parseInt(inventory));
+                        ApiProduct.apiProduct.add(token,
+                                Helper.createStringPart(product.getProduct_name()),
+                                Helper.createIntPart(product.getExport_price()),
+                                Helper.createIntPart(product.getImport_price()),
+                                Helper.createIntPart(product.getInventory()),
+                                Helper.createStringPart(product.getUnit()),
+                                Helper.createIntPart(product.getSupplier_id()),
+                                Helper.createIntPart(product.getCategory_id()),
+                                listMultipartBody).enqueue(new Callback<Product>() {
+                            @Override
+                            public void onResponse(Call<Product> call, Response<Product> response) {
+                                if (response.isSuccessful()) {
+                                    Toast.makeText(getContext(), "Thành công", Toast.LENGTH_SHORT).show();
+                                    ProductFragment.isLoadData = true;
+                                    requireActivity().finish();
 
+                                }
+                            }
 
+                            @Override
+                            public void onFailure(Call<Product> call, Throwable throwable) {
+                                Log.d("onFailure", "onFailure: " + throwable.getMessage());
+                                Toast.makeText(getActivity(), "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
+                            }
+                        });
 
 
                     }
-
-
                 }
             }
         });
@@ -170,12 +202,14 @@ public class ProductAddFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+//        Log.d("tag_kiemTra", "data: "+data);
 
-        uri = data.getData();
-        Log.d("tag_kiemTra", "o/nActivityResult: " + uri);
-        if (uri != null) {
-            binding.imgProduct.setImageURI(uri);
-            product.setImg(String.valueOf(uri));
+        if (data != null) {
+            uri = data.getData();
+//            Log.d("tag_kiemTra", "onActivityResult: "+uri);
+            if (uri != null) {
+                binding.imgProduct.setImageURI(uri);
+            }
         }
     }
 
@@ -184,20 +218,14 @@ public class ProductAddFragment extends Fragment {
         super.onResume();
 
         viewModel.get().observe(getViewLifecycleOwner(), item -> {
-            Log.d("tag_kiemTra", "onResume: "+item.toString());
             if (item instanceof Category) {
                 category = (Category) item;
                 binding.tvCategory.setText(category.getName());
-//                product.setCategory_name(category.getName());
-//                product.setCategory_id(category.getId());
             }
             if (item instanceof Supplier) {
                 supplier = (Supplier) item;
                 binding.tvSupplier.setText(supplier.getName());
-//                product.setSupplier_name(supplier.getName());
-//                product.setSupplier_id(supplier.getId());
             }
-
         });
     }
 

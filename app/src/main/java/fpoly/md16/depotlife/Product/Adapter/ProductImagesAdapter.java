@@ -13,17 +13,20 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import fpoly.md16.depotlife.Helper.Interfaces.onClickListener.onItemRcvClick;
 import fpoly.md16.depotlife.databinding.ItemImagesProductBinding;
 
 public class ProductImagesAdapter extends RecyclerView.Adapter<ProductImagesAdapter.ViewHolder> {
     private Context context;
     private List<String> list;
     private int index;
+    private onItemRcvClick onItemRcvClick;
 
-    public ProductImagesAdapter(Context context, List<String> list, int index) {
+    public ProductImagesAdapter(Context context, List<String> list, int index, onItemRcvClick onItemRcvClick) {
         this.context = context;
         this.list = list;
         this.index = index;
+        this.onItemRcvClick = onItemRcvClick;
     }
 
     @NonNull
@@ -36,8 +39,8 @@ public class ProductImagesAdapter extends RecyclerView.Adapter<ProductImagesAdap
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (index != -1) {
-            if (index == position){
-                holder.binding.imgProduct.setStrokeColor(ColorStateList.valueOf(Color.RED));
+            if (index == position) {
+                holder.binding.imgProduct.setStrokeColor(ColorStateList.valueOf(Color.GRAY));
             } else {
                 holder.binding.imgProduct.setStrokeColor(ColorStateList.valueOf(Color.TRANSPARENT));
             }
@@ -46,6 +49,9 @@ public class ProductImagesAdapter extends RecyclerView.Adapter<ProductImagesAdap
 
         holder.itemView.setOnClickListener(view -> {
             index = holder.getAdapterPosition();
+            if (onItemRcvClick != null) {
+                onItemRcvClick.onClick(holder.getAdapterPosition());
+            }
 //            holder.binding.imgProduct.setStrokeColor(ColorStateList.valueOf(Color.RED));
             notifyDataSetChanged();
         });

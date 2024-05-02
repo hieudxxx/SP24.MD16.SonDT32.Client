@@ -10,6 +10,6 @@
         android:layout_height="100dp"
         android:src="@drawable/img_add"
         app:shapeAppearanceOverlay="@style/custom_shape_img"
-        app:strokeColor="@color/bgr_screen"
-        app:strokeWidth="2dp" />
+        app:strokeColor="@color/gray60"
+        app:strokeWidth="3dp" />
 </LinearLayout>
