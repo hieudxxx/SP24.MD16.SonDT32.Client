@@ -90,6 +90,8 @@ public class StaffResponse {
         @SerializedName("status")
         private int status;
 
+        public User() {
+        }
 
         public User(int id, String name, String phoneNumber, int role, String avatar, String email, Date emailVerifiedAt, String birthday, String address, int status) {
             this.id = id;

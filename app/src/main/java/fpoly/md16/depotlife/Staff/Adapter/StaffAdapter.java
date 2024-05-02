@@ -20,6 +20,7 @@ import com.squareup.picasso.Picasso;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Helper.Interfaces.onClickListener.onMenuClick;
 import fpoly.md16.depotlife.Login.Model.UserResponse;
 import fpoly.md16.depotlife.Product.Activity.ProductActivity;
@@ -54,8 +55,8 @@ public class StaffAdapter extends RecyclerView.Adapter<StaffAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         StaffResponse.User user = list.get(position);
-
-        Picasso.get().load(user.getAvatar()).into(holder.binding.imgAvatar);
+        String ava = user.getAvatar().replace("public","storage");
+        Picasso.get().load("https://warehouse.sinhvien.io.vn/public/" +ava).into(holder.binding.imgAvt);
         holder.binding.tvName.setText(user.getName());
         holder.binding.tvEmail.setText(user.getEmail());
         holder.binding.tvPhone.setText(user.getPhoneNumber());
@@ -66,12 +67,12 @@ public class StaffAdapter extends RecyclerView.Adapter<StaffAdapter.ViewHolder> 
                     // Nếu SwitchCompat được bật
                     user.setStatus(1); // Cập nhật status là
                     holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.bgr_screen));
-                    Toast.makeText(context, "Chặn thành công.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Bạn đã vô hiệu hoá tài khoản này!", Toast.LENGTH_SHORT).show();
                 } else {
                     // Nếu SwitchCompat được tắt
                     user.setStatus(0); // Cập nhật status là 0
                     holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.white));
-                    Toast.makeText(context, "Bỏ chặn thành công.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Bạn đã bỏ vô hiệu hoá tài khoản này!", Toast.LENGTH_SHORT).show();
                 }
             }
         });

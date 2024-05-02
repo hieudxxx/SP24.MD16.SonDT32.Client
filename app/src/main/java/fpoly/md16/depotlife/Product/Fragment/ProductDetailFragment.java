@@ -26,12 +26,7 @@ public class ProductDetailFragment extends Fragment {
     private Product product;
     private String token;
     private Bundle bundle;
-//    private OnBackPressedCallback callback = new OnBackPressedCallback(true) {
-//        @Override
-//        public void handleOnBackPressed() {
-//            requireActivity().finish();
-//        }
-//    };
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,7 +48,6 @@ public class ProductDetailFragment extends Fragment {
             requireActivity().finish();
         });
 
-//        requireActivity().getOnBackPressedDispatcher().addCallback(callback);
 
         bundle = getArguments();
         if (bundle != null) {
