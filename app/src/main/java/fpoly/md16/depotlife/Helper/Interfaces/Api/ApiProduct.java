@@ -2,8 +2,6 @@ package fpoly.md16.depotlife.Helper.Interfaces.Api;
 
 import static fpoly.md16.depotlife.Helper.Interfaces.Api.RetrofitRequest.getRetrofit;
 
-import java.util.List;
-
 import fpoly.md16.depotlife.Product.Model.ImagesResponse;
 import fpoly.md16.depotlife.Product.Model.Product;
 import fpoly.md16.depotlife.Product.Model.ProductResponse;
@@ -30,23 +28,6 @@ public interface ApiProduct {
     @GET("products/get-images/{id}/{pin_image}")
     Call<ImagesResponse> getProductImages(@Header("Authorization") String authToken, @Path("id") int id, @Path("pin_image") String pin_image);
 
-//    @Multipart
-//    @POST("products/update/{id}")
-//    Call<Product> update(@Header("Authorization") String authToken, @Path("id") int id, @Body Product product, @Part MultipartBody.Part images);
-
-    @Multipart
-    @POST("products/create")
-    Call<Product> add(@Header("Authorization") String authToken,
-                      @Part("product_name") RequestBody name,
-                      @Part("sell_price") RequestBody export_price,
-                      @Part("import_price") RequestBody import_price,
-                      @Part("total_quantity") RequestBody inventory,
-                      @Part("unit") RequestBody unit,
-                      @Part("supplier_id") RequestBody supplier_id,
-                      @Part("categories_id") RequestBody categories_id,
-                      @Part List<MultipartBody.Part> images
-    );
-
     @Multipart
     @POST("products/update/{id}")
     Call<Product> update(@Header("Authorization") String authToken,
@@ -58,23 +39,38 @@ public interface ApiProduct {
                          @Part("unit") RequestBody unit,
                          @Part("supplier_id") RequestBody supplier_id,
                          @Part("categories_id") RequestBody categories_id,
+                         @Part("pin_image") RequestBody pin_image,
                          @Part MultipartBody.Part[] images
     );
 
-//    @Multipart
-//    @POST("products/update/{id}")
-//    Call<Product> update(@Header("Authorization") String authToken,
-//                         @Path("id") int id,
-//                         @Part("product_name") RequestBody name,
-//                         @Part("sell_price") RequestBody export_price,
-//                         @Part("import_price") RequestBody import_price,
-//                         @Part("total_quantity") RequestBody inventory,  );
+    @Multipart
+    @POST("products/create")
+    Call<Product> add(@Header("Authorization") String authToken,
+                      @Part("product_name") RequestBody name,
+                      @Part("sell_price") RequestBody export_price,
+                      @Part("import_price") RequestBody import_price,
+                      @Part("total_quantity") RequestBody inventory,
+                      @Part("unit") RequestBody unit,
+                      @Part("supplier_id") RequestBody supplier_id,
+                      @Part("categories_id") RequestBody categories_id,
+                      @Part MultipartBody.Part[] images
+    );
 
-//    @POST("products/update/{id}")
-//    Call<Product> update(@Header("Authorization") String authToken, @Path("id") int id, @Body Product data);
+    @Multipart
+    @POST("products/create")
+    Call<Product> update(@Header("Authorization") String authToken,
+                         @Part("product_name") RequestBody name,
+                         @Part("sell_price") RequestBody export_price,
+                         @Part("import_price") RequestBody import_price,
+                         @Part("total_quantity") RequestBody inventory,
+                         @Part("unit") RequestBody unit,
+                         @Part("supplier_id") RequestBody supplier_id,
+                         @Part("categories_id") RequestBody categories_id,
+                         @Part("pin_image") RequestBody pin_image,
+                         @Part MultipartBody.Part[] images
+    );
 
     @GET("products/delete/{id}")
     Call<Product> delete(@Header("Authorization") String authToken, @Path("id") int id);
-
 
 }

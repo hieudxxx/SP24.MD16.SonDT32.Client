@@ -57,6 +57,17 @@ public class Product implements Serializable {
         this.supplier_name = supplier_name;
     }
 
+    public Product(int supplier_id, int category_id, String product_name, String unit, int import_price, int export_price, int inventory, String img) {
+        this.supplier_id = supplier_id;
+        this.category_id = category_id;
+        this.product_name = product_name;
+        this.unit = unit;
+        this.import_price = import_price;
+        this.export_price = export_price;
+        this.inventory = inventory;
+        this.img = img;
+    }
+
     public Product(int supplier_id, int category_id, String product_name, String unit, int import_price, int export_price, int inventory) {
         this.supplier_id = supplier_id;
         this.category_id = category_id;
