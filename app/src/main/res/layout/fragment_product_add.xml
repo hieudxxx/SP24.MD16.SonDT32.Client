@@ -47,8 +47,8 @@
 
                     <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/img_product"
-                        android:layout_width="150dp"
-                        android:layout_height="150dp"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
                         android:padding="5dp"
                         android:src="@drawable/img_add"
                         app:shapeAppearanceOverlay="@style/custom_shape_img"

@@ -30,6 +30,7 @@ import fpoly.md16.depotlife.Category.Fragment.CategoryListFragment;
 import fpoly.md16.depotlife.Category.Model.Category;
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiProduct;
+import fpoly.md16.depotlife.Helper.Interfaces.onClickListener.onItemRcvClick;
 import fpoly.md16.depotlife.Product.Adapter.ProductImagesAdapter;
 import fpoly.md16.depotlife.Product.Model.ImagesResponse;
 import fpoly.md16.depotlife.Product.Model.Product;
@@ -43,7 +44,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProductEditFragment extends Fragment {
+public class ProductEditFragment extends Fragment implements onItemRcvClick<Integer> {
     private FragmentProductEditBinding binding;
     private String token;
     private Product product;
@@ -55,38 +56,9 @@ public class ProductEditFragment extends Fragment {
     private Uri uri;
     private MultipartBody.Part[] listMultipartBody;
     private List<String> listImages;
-
-
-//    @Override
-//    public void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//
-//        ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-//            @Override
-//            public void onActivityResult(ActivityResult o) {
-//                Intent data = o.getData();
-//                if (data != null) {
-//                    return;
-//                }
-//                Uri uri = data.getData();
-//                mUri = uri;
-//                binding.imgProduct.setImageURI(uri);
-//                Log.d("tag_kiemTra", "onActivityResult1: "+uri);
-//                product.setImg(String.valueOf(uri));
-//                if (o.getResultCode() == Activity.RESULT_OK) {
-//
-//                }
-//            }
-//        });
-//        resultLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
-//            @Override
-//            public void onActivityResult(Uri uri) {
-//                if (uri != null) {
-//                    binding.imgProduct.setImageURI(uri);
-//                }
-//            }
-//        });
-//}
+    private List<String> listNames;
+    private int index = -1;
+    private String img;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -102,18 +74,14 @@ public class ProductEditFragment extends Fragment {
         ((AppCompatActivity) getActivity()).setSupportActionBar(binding.tbProduct);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        binding.imgBack.setOnClickListener(view1 -> {
-            requireActivity().getSupportFragmentManager().popBackStack();
-        });
+        binding.imgBack.setOnClickListener(view1 -> { requireActivity().getSupportFragmentManager().popBackStack();});
 
-        token = "Bearer " + (String) Helper.getSharedPre(getContext(), "token", String.class);
+        token = "Bearer " + Helper.getSharedPre(getContext(), "token", String.class);
         viewModel = new ViewModelProvider(requireActivity()).get(ShareViewModel.class);
 
         bundle = getArguments();
         if (bundle != null) {
             product = (Product) bundle.getSerializable("product");
-
-//            category = (Category) bundle.getSerializable("category");
 
             if (product != null) {
                 id_product = product.getId();
@@ -130,6 +98,7 @@ public class ProductEditFragment extends Fragment {
                 Helper.getImagesProduct(product, token, binding.imgProduct);
 
                 listImages = new ArrayList<>();
+                listNames = new ArrayList<>();
                 ApiProduct.apiProduct.getProductImages(token, product.getId(), product.getImg()).enqueue(new Callback<ImagesResponse>() {
                     @Override
                     public void onResponse(Call<ImagesResponse> call, Response<ImagesResponse> response) {
@@ -137,23 +106,19 @@ public class ProductEditFragment extends Fragment {
                             ImagesResponse imagesResponse = response.body();
                             if (imagesResponse != null) {
                                 String[] path = imagesResponse.getPaths();
+                                String [] names = imagesResponse.getNames();
                                 if (path.length > 0) {
                                     if (listImages != null) {
                                         listImages.addAll(Arrays.asList(path));
-                                        Log.d("tag_kiemTra", "onResponse: "+listImages.toString());
-
-                                        int index = -1;
-                                        Log.d("tag_kiemTra", "imagesResponse: "+imagesResponse.getImage());
-                                        if (imagesResponse.getImage() != null || !imagesResponse.getImage().isEmpty()) {
-                                            for (int i = 0; i < listImages.size(); i++){
-                                                if (imagesResponse.getImage().equalsIgnoreCase(listImages.get(i))){
+                                        listNames.addAll(Arrays.asList(names));
+                                        if (imagesResponse.getImage() != null) {
+                                            for (int i = 0; i < listImages.size(); i++) {
+                                                if (imagesResponse.getImage().equalsIgnoreCase(listImages.get(i))) {
                                                     index = i;
-                                                    Log.d("tag_kiemTra", "onResponse: "+index);
                                                 }
                                             }
-
                                         }
-                                        ProductImagesAdapter imagesAdapter = new ProductImagesAdapter(getContext(), listImages, index);
+                                        ProductImagesAdapter imagesAdapter = new ProductImagesAdapter(getContext(), listImages, index, ProductEditFragment.this);
                                         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
                                         binding.rcvImages.setLayoutManager(layoutManager);
                                         binding.rcvImages.setAdapter(imagesAdapter);
@@ -169,17 +134,11 @@ public class ProductEditFragment extends Fragment {
                     }
                 });
 
-                binding.imgProduct.setOnClickListener(view14 -> {
-                    onRequestPermission();
-                });
+                binding.imgProduct.setOnClickListener(view14 -> { onRequestPermission();});
 
-                binding.tvCategory.setOnClickListener(view13 -> {
-                    Helper.loadFragment(getParentFragmentManager(), new CategoryListFragment(), bundle, R.id.frag_container_product);
-                });
+                binding.tvCategory.setOnClickListener(view13 -> {Helper.loadFragment(getParentFragmentManager(), new CategoryListFragment(), bundle, R.id.frag_container_product);});
 
-                binding.tvSupplier.setOnClickListener(view13 -> {
-                    Helper.loadFragment(getParentFragmentManager(), new SupplierListSelectFragment(), bundle, R.id.frag_container_product);
-                });
+                binding.tvSupplier.setOnClickListener(view13 -> {Helper.loadFragment(getParentFragmentManager(), new SupplierListSelectFragment(), bundle, R.id.frag_container_product);});
 
                 binding.tvSave.setOnClickListener(view12 -> {
                     String name = binding.edtName.getText().toString().trim();
@@ -216,7 +175,10 @@ public class ProductEditFragment extends Fragment {
                                 listMultipartBody = new MultipartBody.Part[]{Helper.getRealPathFile(getContext(), uri)};
                             }
 
-                            product = new Product(supplier.getId(), category.getId(), name, unit, Integer.parseInt(import_price), Integer.parseInt(export_price), Integer.parseInt(inventory));
+                            if (img == null){
+                                img = product.getImg();
+                            }
+                            product = new Product(supplier.getId(), category.getId(), name, unit, Integer.parseInt(import_price), Integer.parseInt(export_price), Integer.parseInt(inventory), img);
                             ApiProduct.apiProduct.update(token, id_product,
                                     Helper.createStringPart(product.getProduct_name()),
                                     Helper.createIntPart(product.getExport_price()),
@@ -224,12 +186,17 @@ public class ProductEditFragment extends Fragment {
                                     Helper.createIntPart(product.getInventory()),
                                     Helper.createStringPart(product.getUnit()),
                                     Helper.createIntPart(product.getSupplier_id()),
-                                    Helper.createIntPart(product.getCategory_id()), listMultipartBody).enqueue(new Callback<Product>() {
+                                    Helper.createIntPart(product.getCategory_id()),
+                                    Helper.createStringPart(product.getImg()),
+                                    listMultipartBody).enqueue(new Callback<Product>() {
                                 @Override
                                 public void onResponse(Call<Product> call, Response<Product> response) {
                                     if (response.isSuccessful()) {
                                         Toast.makeText(getContext(), "Thành công", Toast.LENGTH_SHORT).show();
+//                                        Helper.loadFragment(getParentFragmentManager(), new ProductFragment(), null, R.id.frag_container_product);
+
                                         requireActivity().getSupportFragmentManager().popBackStack();
+
                                     }
                                 }
 
@@ -293,7 +260,6 @@ public class ProductEditFragment extends Fragment {
                 product.setSupplier_name(supplier.getName());
                 product.setSupplier_id(supplier.getId());
             }
-
         });
     }
 
@@ -315,5 +281,13 @@ public class ProductEditFragment extends Fragment {
         uri = data.getData();
         binding.imgProduct.setImageURI(uri);
         product.setImg(String.valueOf(uri));
+    }
+
+    @Override
+    public void onClick(Integer position) {
+        if (position > -1 ) {
+            product.setImg(listNames.get(position));
+            img = listNames.get(position);
+        }
     }
 }

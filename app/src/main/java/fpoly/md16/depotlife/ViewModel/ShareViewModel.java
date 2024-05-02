@@ -9,7 +9,6 @@ public class ShareViewModel<T> extends ViewModel {
     public void select(T item){
         selected.setValue(item);
     }
-
     public LiveData<T> get(){
         return selected;
     }

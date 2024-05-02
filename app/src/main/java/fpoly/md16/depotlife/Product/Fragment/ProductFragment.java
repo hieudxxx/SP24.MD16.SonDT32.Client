@@ -37,11 +37,12 @@ import retrofit2.Response;
 public class ProductFragment extends Fragment {
     private FragmentProductBinding binding;
     private ProductAdapter adapter;
-    private ArrayList<Product> list;
+    private ArrayList<Product> list = new ArrayList<>();
     private ProductResponse productResponse;
     private int pageIndex = 1;
     private int perPage = 0;
     private String token;
+    public static boolean isLoadData = false;
 
 
     @Override
@@ -56,21 +57,6 @@ public class ProductFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true); // Bật hiển thị menu
 
-//        getLifecycle().addObserver((LifecycleObserver) this);
-//
-//        if (savedInstanceState != null) {
-//            // Fragment B đã được khởi chạy trước đó
-//            // Kiểm tra xem có cần tải lại dữ liệu không (tùy theo logic của bạn)
-//            if (isLoadData) { // Biến needReloadData để kiểm soát việc tải lại dữ liệu
-//                getData();
-//                isLoadData = false; // Reset flag sau khi tải dữ liệu
-//            }
-//        } else {
-//            // Fragment B đang được khởi chạy lần đầu
-//            // Không cần tải lại dữ liệu
-//        }
-
-
         ((AppCompatActivity) getActivity()).setSupportActionBar(binding.tbProduct);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
 
@@ -78,10 +64,11 @@ public class ProductFragment extends Fragment {
             startActivity(new Intent(getActivity(), ProductActivity.class));
         });
 
-        token = "Bearer " + (String) Helper.getSharedPre(getContext(), "token", String.class);
+        token = "Bearer " + Helper.getSharedPre(getContext(), "token", String.class);
 
-        list = new ArrayList<>();
+        adapter = new ProductAdapter(getContext(), list, token);
         getData();
+//        onResume();
 
         binding.nestScoll.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
@@ -160,10 +147,9 @@ public class ProductFragment extends Fragment {
                 binding.pbLoading.setVisibility(View.GONE);
                 binding.pbLoadMore.setVisibility(View.GONE);
                 setHasOptionsMenu(true);
-                adapter = new ProductAdapter(getContext(), list, token);
+                pageIndex++;
                 binding.rcvProduct.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
-                pageIndex++;
             } else {
                 setHasOptionsMenu(false);
                 binding.rcvProduct.setVisibility(View.GONE);
@@ -172,20 +158,23 @@ public class ProductFragment extends Fragment {
                 binding.pbLoadMore.setVisibility(View.GONE);
                 binding.tvEmpty.setVisibility(View.VISIBLE);
             }
+
         }
     }
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (isLoadData) {
+            pageIndex = 1;
+            list.clear();
+            adapter.notifyDataSetChanged();
+            getData();
+            isLoadData = false;
+        }
 //        perPage = 1;
-//        getData();
-//        Log.d("tag_kiemTra", "onResume: " + list.size());
 //        binding.rcvProduct.setVisibility(View.VISIBLE);
-//    }
-//
-//    @Override
-//    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-//        super.onViewStateRestored(savedInstanceState);
-//    }
+    }
+
 }

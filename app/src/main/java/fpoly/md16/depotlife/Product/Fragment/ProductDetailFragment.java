@@ -26,12 +26,6 @@ public class ProductDetailFragment extends Fragment {
     private Product product;
     private String token;
     private Bundle bundle;
-//    private OnBackPressedCallback callback = new OnBackPressedCallback(true) {
-//        @Override
-//        public void handleOnBackPressed() {
-//            requireActivity().finish();
-//        }
-//    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,16 +38,13 @@ public class ProductDetailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        token = "Bearer " + (String) Helper.getSharedPre(getContext(), "token", String.class);
+        token = "Bearer " + Helper.getSharedPre(getContext(), "token", String.class);
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(binding.tbProduct);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        binding.imgBack.setOnClickListener(view1 -> {
-            requireActivity().finish();
-        });
+        binding.imgBack.setOnClickListener(view1 -> {requireActivity().finish();});
 
-//        requireActivity().getOnBackPressedDispatcher().addCallback(callback);
 
         bundle = getArguments();
         if (bundle != null) {
@@ -81,6 +72,7 @@ public class ProductDetailFragment extends Fragment {
                 public void onResponse(Call<Product> call, Response<Product> response) {
                     if (response.isSuccessful() || response.code() == 200) {
                         Toast.makeText(getContext(), "Xóa thành công", Toast.LENGTH_SHORT).show();
+                        ProductFragment.isLoadData = true;
                         requireActivity().finish();
                     }
                 }
@@ -132,10 +124,4 @@ public class ProductDetailFragment extends Fragment {
         super.onResume();
         getData();
     }
-
-    //    @Override
-//    public void onDestroy() {
-//        super.onDestroy();
-//        callback.remove();
-//    }
 }

@@ -9,10 +9,21 @@ public class ImagesResponse {
     private String image;
     @SerializedName("paths")
     private String[] paths;
+    @SerializedName("names")
+    private String[] names;
 
-    public ImagesResponse(String image, String[] paths) {
+    public ImagesResponse(String image, String[] paths, String[] names) {
         this.image = image;
         this.paths = paths;
+        this.names = names;
+    }
+
+    public String[] getNames() {
+        return names;
+    }
+
+    public void setNames(String[] names) {
+        this.names = names;
     }
 
     public String getImage() {
