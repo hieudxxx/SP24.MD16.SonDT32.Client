@@ -12,9 +12,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.squareup.picasso.Picasso;
+
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiSupplier;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiUser;
+import fpoly.md16.depotlife.R;
 import fpoly.md16.depotlife.Staff.Model.StaffResponse;
 import fpoly.md16.depotlife.Supplier.Model.Supplier;
 import fpoly.md16.depotlife.databinding.BotSheetImportImgBinding;
@@ -57,11 +60,17 @@ public class EditAccountFragment extends Fragment {
 
             if (user != null) {
 
+                binding.tvName.setText(user.getName());
                 binding.edtName.setText(user.getName());
                 binding.edtPhone.setText(user.getPhoneNumber());
                 binding.edtAddress.setText(user.getAddress());
                 binding.edtBirthday.setText(user.getBirthday());
-
+                String ava = user.getAvatar().replace("public","storage");
+                if (ava.isEmpty()) {
+                    binding.imgAvt.setImageResource(R.drawable.unknow_avt);
+                } else {
+                    Picasso.get().load("https://warehouse.sinhvien.io.vn/public/" +ava).into(binding.imgAvt);
+                }
 
                 binding.tvSave.setOnClickListener(view12 -> {
 
@@ -90,7 +99,7 @@ public class EditAccountFragment extends Fragment {
                             user1.setPhoneNumber(phone);
                             user1.setBirthday(birthday);
                             user1.setAddress(address);
-//                            user.setAvatar("avt");
+
 
                             ApiUser.apiUser.update(token, user.getId(), user1).enqueue(new Callback<StaffResponse.User>() {
                                 @Override

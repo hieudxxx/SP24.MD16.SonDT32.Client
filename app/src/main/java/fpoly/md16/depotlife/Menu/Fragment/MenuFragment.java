@@ -89,7 +89,20 @@ public class MenuFragment extends Fragment {
 
         binding.btnSupplier.setOnClickListener(v -> startActivity(new Intent(getContext(), SupplierActivity.class)));
 
-        binding.btnStaff.setOnClickListener(v -> Helper.loadFragment(getActivity().getSupportFragmentManager(), new StaffFragment(), null, R.id.frag_container_main));
+        binding.btnStaff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Integer role = (Integer) Helper.getSharedPre(getContext(), "role", Integer.class);
+                if (role == 1){
+                    Helper.loadFragment(getActivity().getSupportFragmentManager(), new StaffFragment(), null, R.id.frag_container_main);
+                }else {
+                    Toast.makeText(getContext(), "Bạn không có quyền truy cập chức năng này", Toast.LENGTH_SHORT).show();
+                }
+
+
+            }
+        });
+
 
         binding.btnCategories.setOnClickListener(v -> startActivity(new Intent(getContext(), CategoryActivity.class)));
 

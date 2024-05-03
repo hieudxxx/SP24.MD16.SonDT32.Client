@@ -9,6 +9,7 @@
     tools:context=".Statistic.StatisticFragment">
 
     <androidx.appcompat.widget.Toolbar
+        android:layout_height="50dp"
         android:id="@+id/tb_statistic"
         style="@style/custom_toolbar">
 
@@ -211,8 +212,8 @@
 
                     <TextView
                         style="@style/custom_tv_title_edt"
-                        android:layout_marginTop="10dp"
                         android:layout_marginStart="5dp"
+                        android:layout_marginTop="10dp"
                         android:text="Biểu đồ" />
 
                     <com.github.mikephil.charting.charts.PieChart
