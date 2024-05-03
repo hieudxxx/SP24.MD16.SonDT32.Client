@@ -24,6 +24,8 @@ import fpoly.md16.depotlife.databinding.FragmentInvoiceAddBinding;
 
 public class InvoiceAddFragment extends Fragment {
     private FragmentInvoiceAddBinding binding;
+    private String token;
+
     private ArrayList<Product> list;
     private InvoiceAddAdapter adapter;
 
@@ -38,6 +40,8 @@ public class InvoiceAddFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        token = "Bearer " + Helper.getSharedPre(getContext(), "token", String.class);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.getDefault());
         String currentDate = dateFormat.format(new Date());
@@ -54,6 +58,10 @@ public class InvoiceAddFragment extends Fragment {
 
         binding.imgBack.setOnClickListener(view1 -> requireActivity().finish());
         list = new ArrayList<>();
+
+        binding.btnSave.setOnClickListener(view12 -> {
+            
+        });
 
 //        ApiProduct.apiProduct.getProductList().enqueue(new Callback<ArrayList<Product>>() {
 //            @Override

@@ -20,16 +20,12 @@ import androidx.fragment.app.Fragment;
 import java.util.ArrayList;
 
 import fpoly.md16.depotlife.Helper.Helper;
-import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiInvoice;
 import fpoly.md16.depotlife.Invoice.Adapter.InvoiceDetailAdapter;
 import fpoly.md16.depotlife.Invoice.Model.Invoice;
 import fpoly.md16.depotlife.Product.Model.Product;
 import fpoly.md16.depotlife.R;
 import fpoly.md16.depotlife.databinding.DialogCheckDeleteBinding;
 import fpoly.md16.depotlife.databinding.FragmentInvoiceDetailBinding;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class InvoiceDetailFragment extends Fragment {
     private FragmentInvoiceDetailBinding binding;
@@ -83,34 +79,34 @@ public class InvoiceDetailFragment extends Fragment {
                 });
 
                 binding.tvIdInvoiceDetail.setText(invoice.getId());
-                ApiInvoice.apiInvoice.getOne(invoice.getId()).enqueue(new Callback<Invoice>() {
-                    @Override
-                    public void onResponse(Call<Invoice> call, Response<Invoice> response) {
-                        if (response.isSuccessful()) {
-                            invoice = response.body();
-
-                            binding.tvTotal.setText(Helper.formatVND(invoice.getTotal()));
-
-//                            binding.tvName.setText(comic.getName());
-//                            binding.tvTime.setText("Năm xuất bản: " + comic.getDate());
-//                            Glide.with(context).load(comic.getCover()).into(binding.imgCover);
-//                            binding.tvAuthor.setText("Tác giả: " + comic.getAuthor());
-//                            binding.tvChapter.setText("Chapter: " + comic.getChapter());
-//                            binding.tvDes.setText(comic.getDes());
-//                            _idComic = comic.get_id();
-//                            list = new ArrayList<>(Arrays.asList(comic.getCmt()));
+//                ApiInvoice.apiInvoice.getOne(invoice.getId()).enqueue(new Callback<Invoice>() {
+//                    @Override
+//                    public void onResponse(Call<Invoice> call, Response<Invoice> response) {
+//                        if (response.isSuccessful()) {
+//                            invoice = response.body();
 //
-//                            adapter = new Cmt_Item_Adapter(context, list);
-//                            binding.rcv.setAdapter(adapter);
-//                            adapter.notifyDataSetChanged();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Invoice> call, Throwable t) {
-                        Toast.makeText(getContext(), "Thất bại", Toast.LENGTH_SHORT).show();
-                    }
-                });
+//                            binding.tvTotal.setText(Helper.formatVND(invoice.getTotal()));
+//
+////                            binding.tvName.setText(comic.getName());
+////                            binding.tvTime.setText("Năm xuất bản: " + comic.getDate());
+////                            Glide.with(context).load(comic.getCover()).into(binding.imgCover);
+////                            binding.tvAuthor.setText("Tác giả: " + comic.getAuthor());
+////                            binding.tvChapter.setText("Chapter: " + comic.getChapter());
+////                            binding.tvDes.setText(comic.getDes());
+////                            _idComic = comic.get_id();
+////                            list = new ArrayList<>(Arrays.asList(comic.getCmt()));
+////
+////                            adapter = new Cmt_Item_Adapter(context, list);
+////                            binding.rcv.setAdapter(adapter);
+////                            adapter.notifyDataSetChanged();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<Invoice> call, Throwable t) {
+//                        Toast.makeText(getContext(), "Thất bại", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
                 list = new ArrayList<>();
 //                ApiProduct.apiProduct.getProductList().enqueue(new Callback<ArrayList<Product>>() {
 //                    @Override

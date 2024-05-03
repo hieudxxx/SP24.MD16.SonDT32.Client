@@ -100,9 +100,9 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.InvoiceV
                 } else {
                     ArrayList<Invoice> listFilter = new ArrayList<>();
                     for (Invoice invoice : mList) {
-                        if (invoice.getId().toLowerCase().contains(strSearch.toLowerCase())) {
-                            listFilter.add(invoice);
-                        }
+//                        if (invoice.getId().toLowerCase().contains(strSearch.toLowerCase())) {
+//                            listFilter.add(invoice);
+//                        }
                     }
                     list = listFilter;
                 }
