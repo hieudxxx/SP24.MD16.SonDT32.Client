@@ -77,7 +77,8 @@ public class DetailTabFragment extends Fragment {
                 public void onResponse(Call<Supplier> call, Response<Supplier> response) {
                     if (response.isSuccessful() || response.code() == 200) {
                         Toast.makeText(getContext(), "Xóa thành công", Toast.LENGTH_SHORT).show();
-                        requireActivity().finish();
+                        SupplierFragment.isLoadData = true;
+                        requireActivity().getSupportFragmentManager().popBackStack();
                     }
                 }
 

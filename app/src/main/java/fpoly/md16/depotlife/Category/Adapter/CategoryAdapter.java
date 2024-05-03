@@ -19,11 +19,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import fpoly.md16.depotlife.Category.CategoryActivity;
 import fpoly.md16.depotlife.Category.Model.Category;
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiCategory;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiSupplier;
 import fpoly.md16.depotlife.R;
+import fpoly.md16.depotlife.Supplier.Fragment.SupplierFragment;
 import fpoly.md16.depotlife.Supplier.Model.Supplier;
 import fpoly.md16.depotlife.databinding.DialogUpdateCategoryBinding;
 import fpoly.md16.depotlife.databinding.ItemCategoryBinding;
@@ -69,8 +71,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
                         @Override
                         public void onResponse(Call<Category> call, Response<Category> response) {
                             if (response.isSuccessful() || response.code() == 200) {
-                                Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Xóa thể loại thành công!", Toast.LENGTH_SHORT).show();
                                 categoryList.remove(category);
+                                CategoryActivity.isLoadData = true;
                                 notifyDataSetChanged();
                             }
                         }
@@ -128,9 +131,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
                             @Override
                             public void onResponse(Call<Category> call, Response<Category> response) {
                                 if (response.isSuccessful()) {
-                                    Toast.makeText(context, "Thành công", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(context, "Sửa thể loại thành công!", Toast.LENGTH_SHORT).show();
                                     alertDialog.dismiss();
                                     notifyDataSetChanged();
+                                    CategoryActivity.isLoadData = true;
                                 }
                             }
 
