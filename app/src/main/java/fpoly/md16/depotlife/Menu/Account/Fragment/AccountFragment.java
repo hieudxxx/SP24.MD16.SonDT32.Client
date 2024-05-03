@@ -39,7 +39,7 @@ public class AccountFragment extends Fragment {
         ((AppCompatActivity) getActivity()).setSupportActionBar(binding.tbAccount);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        binding.imgBack.setOnClickListener(view1 -> requireActivity().getSupportFragmentManager().popBackStack());
+        binding.imgBack.setOnClickListener(view1 -> requireActivity().finish());
 
         int id = (Integer) Helper.getSharedPre(getContext(), "id", Integer.class);
         String name = (String) Helper.getSharedPre(getContext(), "name", String.class);

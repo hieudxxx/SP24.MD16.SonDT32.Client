@@ -103,7 +103,6 @@ public class DetailTabFragment extends Fragment {
                     binding.tvId.setText(supplier.getId()+"");
                     binding.tvName.setText(supplier.getName());
                     binding.tvAddress.setText(supplier.getAddress());
-//                    binding.tvEmail.setText(supplier.getEmail());
                     binding.tvPhone.setText(supplier.getPhone());
                     binding.tvTaxCode.setText(supplier.getTax_code());
 
