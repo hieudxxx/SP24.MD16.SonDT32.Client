@@ -10,7 +10,6 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -73,26 +72,25 @@
                     android:text="@string/text_login" />
 
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true">
+                <!--                <LinearLayout-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_alignParentEnd="true"-->
+                <!--                    android:layout_alignParentRight="true"-->
+                <!--                    android:layout_centerVertical="true">-->
 
 
-                    <ImageButton
-                        android:id="@+id/img_fb"
-                        style="@style/custom_img_btn_login"
-                        android:layout_marginEnd="5dp"
-                        android:src="@drawable/facebook" />
-
-
-                    <ImageButton
-                        android:id="@+id/img_gg"
-                        style="@style/custom_img_btn_login"
-                        android:src="@drawable/google" />
-                </LinearLayout>
+                <!--                    <ImageButton-->
+                <!--                        android:id="@+id/img_fb"-->
+                <!--                        style="@style/custom_img_btn_login"-->
+                <!--                        android:layout_marginEnd="5dp"-->
+                <!--                        android:src="@drawable/facebook" />-->
+                <!--                    -->
+                <!--                    <ImageButton-->
+                <!--                        android:id="@+id/img_gg"-->
+                <!--                        style="@style/custom_img_btn_login"-->
+                <!--                        android:src="@drawable/google" />-->
+                <!--                </LinearLayout>-->
             </RelativeLayout>
 
 
@@ -171,7 +169,8 @@
                     style="@style/custom_tvChkLogin"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
-                    android:text="Quên mật khẩu ?" />
+                    android:text="Quên mật khẩu ?"
+                    android:visibility="gone" />
             </RelativeLayout>
 
 
@@ -184,8 +183,8 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="5dp"
                 android:text="@string/text_login"
-                android:textColor="@color/white"
-                android:textAllCaps="false" />
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
         </RelativeLayout>
 
     </ScrollView>
