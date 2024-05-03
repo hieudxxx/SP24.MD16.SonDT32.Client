@@ -2,14 +2,12 @@ package fpoly.md16.depotlife.Invoice.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,7 +17,6 @@ import androidx.fragment.app.Fragment;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiInvoice;
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Invoice.Activity.InvoiceActivity;
 import fpoly.md16.depotlife.Invoice.Adapter.InvoiceAdapter;
@@ -28,9 +25,6 @@ import fpoly.md16.depotlife.R;
 import fpoly.md16.depotlife.databinding.BotSheetFilterInvoiceBinding;
 import fpoly.md16.depotlife.databinding.BotSheetSortInvoiceBinding;
 import fpoly.md16.depotlife.databinding.FragmentInvoiceBinding;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class InvoiceFragment extends Fragment {
     private FragmentInvoiceBinding binding;
@@ -60,7 +54,7 @@ public class InvoiceFragment extends Fragment {
         });
 
         list = new ArrayList<>();
-        getData();
+//        getData();
 
     }
 
@@ -70,41 +64,41 @@ public class InvoiceFragment extends Fragment {
         inflater.inflate(R.menu.toolbar_menu, menu);
     }
 
-    private void getData() {
-        ApiInvoice.apiInvoice.getInvoiceList().enqueue(new Callback<ArrayList<Invoice>>() {
-            @Override
-            public void onResponse(Call<ArrayList<Invoice>> call, Response<ArrayList<Invoice>> response) {
-//                Log.d("tag_kiemTra", "onResponse: " + response.code());
-
-                if (response.isSuccessful()) {
-                    list = response.body();
-//                    Log.d("tag_kiemTra", "onResponse: " + response);
-                }
-                if (list != null && !list.isEmpty()) {
-                    binding.rcvInvoice.setVisibility(View.VISIBLE);
-                    binding.layoutTotal.setVisibility(View.VISIBLE);
-                    binding.layoutCalendar.setVisibility(View.VISIBLE);
-                    binding.tvEmpty.setVisibility(View.GONE);
-                    setHasOptionsMenu(true);
-                } else {
-                    binding.rcvInvoice.setVisibility(View.GONE);
-                    binding.layoutTotal.setVisibility(View.GONE);
-                    binding.layoutCalendar.setVisibility(View.GONE);
-                    binding.tvEmpty.setVisibility(View.VISIBLE);
-                    setHasOptionsMenu(false);
-                }
-                adapter = new InvoiceAdapter(getContext(), list, getParentFragmentManager());
-                binding.rcvInvoice.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<Invoice>> call, Throwable t) {
-                Log.d("tag_kiemTra", "onFailure: " + t.getMessage());
-                Toast.makeText(getContext(), "thất bại", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+//    private void getData() {
+//        ApiInvoice.apiInvoice.add().enqueue(new Callback<ArrayList<Invoice>>() {
+//            @Override
+//            public void onResponse(Call<ArrayList<Invoice>> call, Response<ArrayList<Invoice>> response) {
+////                Log.d("tag_kiemTra", "onResponse: " + response.code());
+//
+//                if (response.isSuccessful()) {
+//                    list = response.body();
+////                    Log.d("tag_kiemTra", "onResponse: " + response);
+//                }
+//                if (list != null && !list.isEmpty()) {
+//                    binding.rcvInvoice.setVisibility(View.VISIBLE);
+//                    binding.layoutTotal.setVisibility(View.VISIBLE);
+//                    binding.layoutCalendar.setVisibility(View.VISIBLE);
+//                    binding.tvEmpty.setVisibility(View.GONE);
+//                    setHasOptionsMenu(true);
+//                } else {
+//                    binding.rcvInvoice.setVisibility(View.GONE);
+//                    binding.layoutTotal.setVisibility(View.GONE);
+//                    binding.layoutCalendar.setVisibility(View.GONE);
+//                    binding.tvEmpty.setVisibility(View.VISIBLE);
+//                    setHasOptionsMenu(false);
+//                }
+//                adapter = new InvoiceAdapter(getContext(), list, getParentFragmentManager());
+//                binding.rcvInvoice.setAdapter(adapter);
+//                adapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ArrayList<Invoice>> call, Throwable t) {
+//                Log.d("tag_kiemTra", "onFailure: " + t.getMessage());
+//                Toast.makeText(getContext(), "thất bại", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 
     private void onShowFab() {
         binding.fab.shrink();

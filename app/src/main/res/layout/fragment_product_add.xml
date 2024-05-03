@@ -69,8 +69,7 @@
 
             <TextView
                 android:id="@+id/tv_war_name"
-                style="@style/custom_tv_warning"
-                android:visibility="visible" />
+                style="@style/custom_tv_warning" />
 
             <View
                 style="@style/custom_line"
@@ -121,8 +120,7 @@
 
             <TextView
                 android:id="@+id/tv_war_cat"
-                style="@style/custom_tv_warning"
-                android:visibility="visible" />
+                style="@style/custom_tv_warning" />
 
             <View
                 style="@style/custom_line"
@@ -151,8 +149,7 @@
 
             <TextView
                 android:id="@+id/tv_war_sup"
-                style="@style/custom_tv_warning"
-                android:visibility="visible" />
+                style="@style/custom_tv_warning" />
 
             <View
                 style="@style/custom_line"
@@ -272,5 +269,6 @@
             android:background="@color/white"
             android:drawableLeft="@drawable/add_properties"
             android:gravity="center_vertical"
-            android:hint="thêm thuộc tính" />    </LinearLayout>
+            android:hint="thêm thuộc tính" />
+    </LinearLayout>
 </ScrollView>
