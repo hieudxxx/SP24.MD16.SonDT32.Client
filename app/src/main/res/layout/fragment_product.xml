@@ -13,8 +13,6 @@
 
         <LinearLayout
             style="@style/custom_bgr_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <androidx.appcompat.widget.Toolbar
@@ -72,8 +70,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rcv_product"
                     style="@style/custom_rcv"
-                    tools:listitem="@layout/item_product"
-                    tools:ignore="MissingConstraints" />
+                    tools:listitem="@layout/item_product" />
 
                 <ProgressBar
                     android:id="@+id/pbLoadMore"
@@ -98,7 +95,10 @@
                     android:id="@+id/tv_empty"
                     style="@style/custom_tv_title"
                     android:text="Bạn chưa có hàng hóa nào"
-                    android:visibility="gone" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>

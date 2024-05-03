@@ -42,8 +42,6 @@ public class ProductAddFragment extends Fragment {
     private Product product;
     private Category category = new Category();
     private Supplier supplier = new Supplier();
-    private Bundle bundle;
-    private int id_product;
     private ShareViewModel<Object> viewModel;
     private Uri uri;
     private Uri mUri;
@@ -91,11 +89,11 @@ public class ProductAddFragment extends Fragment {
         });
 
         binding.tvCategory.setOnClickListener(view13 -> {
-            Helper.loadFragment(getParentFragmentManager(), new CategoryListFragment(), bundle, R.id.frag_container_product);
+            Helper.loadFragment(getParentFragmentManager(), new CategoryListFragment(), null, R.id.frag_container_product);
         });
 
         binding.tvSupplier.setOnClickListener(view13 -> {
-            Helper.loadFragment(getParentFragmentManager(), new SupplierListSelectFragment(), bundle, R.id.frag_container_product);
+            Helper.loadFragment(getParentFragmentManager(), new SupplierListSelectFragment(), null, R.id.frag_container_product);
         });
 
         binding.tvSave.setOnClickListener(view12 -> {
