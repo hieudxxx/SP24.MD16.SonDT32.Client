@@ -20,8 +20,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.github.dhaval2404.imagepicker.ImagePicker;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -74,7 +72,7 @@ public class ProductEditFragment extends Fragment implements onItemRcvClick<Inte
         ((AppCompatActivity) getActivity()).setSupportActionBar(binding.tbProduct);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        binding.imgBack.setOnClickListener(view1 -> { requireActivity().getSupportFragmentManager().popBackStack();});
+        binding.imgBack.setOnClickListener(view1 -> {requireActivity().getSupportFragmentManager().popBackStack();});
 
         token = "Bearer " + Helper.getSharedPre(getContext(), "token", String.class);
         viewModel = new ViewModelProvider(requireActivity()).get(ShareViewModel.class);
@@ -82,59 +80,11 @@ public class ProductEditFragment extends Fragment implements onItemRcvClick<Inte
         bundle = getArguments();
         if (bundle != null) {
             product = (Product) bundle.getSerializable("product");
-
             if (product != null) {
-                id_product = product.getId();
-                binding.edtName.setText(product.getProduct_name());
-                binding.edtId.setText(product.getId() + "");
-                binding.tvCategory.setText(product.getCategory_name());
-                binding.tvSupplier.setText(product.getSupplier_name());
-                binding.edtExportPrice.setText(product.getExport_price() + "");
-                binding.edtImportPrice.setText(product.getImport_price() + "");
-                binding.edtInventory.setText(product.getInventory() + "");
-                binding.edtUnit.setText(product.getUnit());
 
-                if (product.getImg() == null) product.setImg("null");
-                Helper.getImagesProduct(product, token, binding.imgProduct);
+                getData();
 
-                listImages = new ArrayList<>();
-                listNames = new ArrayList<>();
-                ApiProduct.apiProduct.getProductImages(token, product.getId(), product.getImg()).enqueue(new Callback<ImagesResponse>() {
-                    @Override
-                    public void onResponse(Call<ImagesResponse> call, Response<ImagesResponse> response) {
-                        if (response.isSuccessful()) {
-                            ImagesResponse imagesResponse = response.body();
-                            if (imagesResponse != null) {
-                                String[] path = imagesResponse.getPaths();
-                                String [] names = imagesResponse.getNames();
-                                if (path.length > 0) {
-                                    if (listImages != null) {
-                                        listImages.addAll(Arrays.asList(path));
-                                        listNames.addAll(Arrays.asList(names));
-                                        if (imagesResponse.getImage() != null) {
-                                            for (int i = 0; i < listImages.size(); i++) {
-                                                if (imagesResponse.getImage().equalsIgnoreCase(listImages.get(i))) {
-                                                    index = i;
-                                                }
-                                            }
-                                        }
-                                        ProductImagesAdapter imagesAdapter = new ProductImagesAdapter(getContext(), listImages, index, ProductEditFragment.this);
-                                        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
-                                        binding.rcvImages.setLayoutManager(layoutManager);
-                                        binding.rcvImages.setAdapter(imagesAdapter);
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ImagesResponse> call, Throwable throwable) {
-                        Log.d("onFailure", "onFailure: " + throwable.getMessage());
-                    }
-                });
-
-                binding.imgProduct.setOnClickListener(view14 -> { onRequestPermission();});
+                binding.imgProduct.setOnClickListener(view14 -> {onRequestPermission();});
 
                 binding.tvCategory.setOnClickListener(view13 -> {Helper.loadFragment(getParentFragmentManager(), new CategoryListFragment(), bundle, R.id.frag_container_product);});
 
@@ -144,21 +94,17 @@ public class ProductEditFragment extends Fragment implements onItemRcvClick<Inte
                     String name = binding.edtName.getText().toString().trim();
                     String export_price = binding.edtExportPrice.getText().toString().trim();
                     String import_price = binding.edtImportPrice.getText().toString().trim();
-                    String inventory = binding.edtInventory.getText().toString().trim();
                     String unit = binding.edtUnit.getText().toString().trim();
-                    if (name.isEmpty() || export_price.isEmpty() || import_price.isEmpty() || inventory.isEmpty() || unit.isEmpty()) {
-                        Toast.makeText(getContext(), "Hãy nhập đủ dữ liệu", Toast.LENGTH_SHORT).show();
-                    } else {
+                    if (name.isEmpty() || export_price.isEmpty() || import_price.isEmpty() || unit.isEmpty()) Toast.makeText(getContext(), "Hãy nhập đủ dữ liệu", Toast.LENGTH_SHORT).show();
+                    else {
                         Helper.isContainSpace(name, binding.tvWarName);
                         Helper.isNumberValid(export_price, binding.tvWarExportPrice);
                         Helper.isNumberValid(import_price, binding.tvWarImportPrice);
-                        Helper.isNumberValid(inventory, binding.tvWarInventory);
                         Helper.isContainSpace(unit, binding.tvWarUnit);
 
                         if (binding.tvWarName.getText().toString().isEmpty() &&
                                 binding.tvWarExportPrice.getText().toString().isEmpty() &&
                                 binding.tvWarImportPrice.getText().toString().isEmpty() &&
-                                binding.tvWarInventory.getText().toString().isEmpty() &&
                                 binding.tvWarUnit.getText().toString().isEmpty()
                         ) {
                             if (category == null || category.getId() <= 0) {
@@ -171,41 +117,12 @@ public class ProductEditFragment extends Fragment implements onItemRcvClick<Inte
                                 supplier.setId(product.getSupplier_id());
                             }
 
-                            if (uri != null) {
-                                listMultipartBody = new MultipartBody.Part[]{Helper.getRealPathFile(getContext(), uri)};
-                            }
+                            if (uri != null) listMultipartBody = new MultipartBody.Part[]{Helper.getRealPathFile(getContext(), uri)};
 
-                            if (img == null){
-                                img = product.getImg();
-                            }
-                            product = new Product(supplier.getId(), category.getId(), name, unit, Integer.parseInt(import_price), Integer.parseInt(export_price), Integer.parseInt(inventory), img);
-                            ApiProduct.apiProduct.update(token, id_product,
-                                    Helper.createStringPart(product.getProduct_name()),
-                                    Helper.createIntPart(product.getExport_price()),
-                                    Helper.createIntPart(product.getImport_price()),
-                                    Helper.createIntPart(product.getInventory()),
-                                    Helper.createStringPart(product.getUnit()),
-                                    Helper.createIntPart(product.getSupplier_id()),
-                                    Helper.createIntPart(product.getCategory_id()),
-                                    Helper.createStringPart(product.getImg()),
-                                    listMultipartBody).enqueue(new Callback<Product>() {
-                                @Override
-                                public void onResponse(Call<Product> call, Response<Product> response) {
-                                    if (response.isSuccessful()) {
-                                        Toast.makeText(getContext(), "Thành công", Toast.LENGTH_SHORT).show();
-//                                        Helper.loadFragment(getParentFragmentManager(), new ProductFragment(), null, R.id.frag_container_product);
+                            if (img == null) img = product.getImg();
 
-                                        requireActivity().getSupportFragmentManager().popBackStack();
-
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<Product> call, Throwable throwable) {
-                                    Log.d("onFailure", "onFailure: " + throwable.getMessage());
-                                    Toast.makeText(getActivity(), "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                            product = new Product(supplier.getId(), category.getId(), name, unit, Integer.parseInt(import_price), Integer.parseInt(export_price), img);
+                            onEditProduct(product);
                         } else {
                             Toast.makeText(getContext(), "Sửa thất bại", Toast.LENGTH_SHORT).show();
                         }
@@ -218,29 +135,97 @@ public class ProductEditFragment extends Fragment implements onItemRcvClick<Inte
         }
     }
 
+    private void onEditProduct(Product product) {
+        ApiProduct.apiProduct.update(token, id_product,
+                Helper.createStringPart(product.getProduct_name()),
+                Helper.createIntPart(product.getExport_price()),
+                Helper.createIntPart(product.getImport_price()),
+                Helper.createIntPart(product.getInventory()),
+                Helper.createStringPart(product.getUnit()),
+                Helper.createIntPart(product.getSupplier_id()),
+                Helper.createIntPart(product.getCategory_id()),
+                Helper.createStringPart(product.getImg()),
+                listMultipartBody).enqueue(new Callback<Product>() {
+            @Override
+            public void onResponse(Call<Product> call, Response<Product> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(getContext(), "Thành công", Toast.LENGTH_SHORT).show();
+//                                        Helper.loadFragment(getParentFragmentManager(), new ProductFragment(), null, R.id.frag_container_product);
+                    requireActivity().getSupportFragmentManager().popBackStack();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Product> call, Throwable throwable) {
+                Log.d("onFailure", "onFailure: " + throwable.getMessage());
+                Toast.makeText(getActivity(), "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void getData() {
+        id_product = product.getId();
+        binding.edtName.setText(product.getProduct_name());
+        binding.edtId.setText(product.getId() + "");
+        binding.tvCategory.setText(product.getCategory_name());
+        binding.tvSupplier.setText(product.getSupplier_name());
+        binding.edtExportPrice.setText(product.getExport_price() + "");
+        binding.edtImportPrice.setText(product.getImport_price() + "");
+        binding.edtUnit.setText(product.getUnit());
+
+        if (product.getImg() == null) product.setImg("null");
+        Helper.getImagesProduct(product, token, binding.imgProduct);
+
+        listImages = new ArrayList<>();
+        listNames = new ArrayList<>();
+        ApiProduct.apiProduct.getProductImages(token, product.getId(), product.getImg()).enqueue(new Callback<ImagesResponse>() {
+            @Override
+            public void onResponse(Call<ImagesResponse> call, Response<ImagesResponse> response) {
+                if (response.isSuccessful()) {
+                    ImagesResponse imagesResponse = response.body();
+                    if (imagesResponse != null) {
+                        String[] path = imagesResponse.getPaths();
+                        String[] names = imagesResponse.getNames();
+                        if (path.length > 0) {
+                            if (listImages != null) {
+                                listImages.addAll(Arrays.asList(path));
+                                listNames.addAll(Arrays.asList(names));
+                                if (imagesResponse.getImage() != null) {
+                                    for (int i = 0; i < listImages.size(); i++) {
+                                        if (imagesResponse.getImage().equalsIgnoreCase(listImages.get(i))) {
+                                            index = i;
+                                        }
+                                    }
+                                }
+                                ProductImagesAdapter imagesAdapter = new ProductImagesAdapter(getContext(), listImages, index, ProductEditFragment.this);
+                                LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
+                                binding.rcvImages.setLayoutManager(layoutManager);
+                                binding.rcvImages.setAdapter(imagesAdapter);
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ImagesResponse> call, Throwable throwable) {
+                Log.d("onFailure", "onFailure: " + throwable.getMessage());
+            }
+        });
+
+    }
+
     private void onRequestPermission() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            openGallery();
+            Helper.openGallery(getContext());
             return;
         }
-        if (getActivity().checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            openGallery();
-        } else {
+        if (getActivity().checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) Helper.openGallery(getContext());
+        else {
             String permission = (Manifest.permission.READ_EXTERNAL_STORAGE);
             requestPermissions(new String[]{permission}, 10);
         }
-    }
-
-    private void openGallery() {
-        ImagePicker.with(this)
-                .crop()                    //Crop image(Optional), Check Customization for more option
-                .compress(1024)            //Final image size will be less than 1 MB(Optional)
-                .maxResultSize(1080, 1080)    //Final image resolution will be less than 1080 x 1080(Optional)
-                .start();
-//        Intent i = new Intent();
-//        i.setType("image/*");
-//        i.setAction(Intent.ACTION_GET_CONTENT);
-//        resultLauncher.launch(Intent.createChooser(i, "Select Picture"));
     }
 
     @Override
@@ -268,7 +253,7 @@ public class ProductEditFragment extends Fragment implements onItemRcvClick<Inte
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 10) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                openGallery();
+                Helper.openGallery(getContext());
             }
         }
 
@@ -285,7 +270,7 @@ public class ProductEditFragment extends Fragment implements onItemRcvClick<Inte
 
     @Override
     public void onClick(Integer position) {
-        if (position > -1 ) {
+        if (position > -1) {
             product.setImg(listNames.get(position));
             img = listNames.get(position);
         }

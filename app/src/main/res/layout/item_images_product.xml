@@ -4,12 +4,27 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/img_product"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@drawable/img_add"
-        app:shapeAppearanceOverlay="@style/custom_shape_img"
-        app:strokeColor="@color/gray60"
-        app:strokeWidth="3dp" />
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/img_product"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/img_add"
+            app:shapeAppearanceOverlay="@style/custom_shape_img"
+            app:strokeColor="@color/gray60"
+            app:strokeWidth="3dp" />
+
+        <ImageView
+            android:id="@+id/img_delete"
+            android:layout_gravity="end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/delete_img_product" />
+
+    </FrameLayout>
+
+
 </LinearLayout>

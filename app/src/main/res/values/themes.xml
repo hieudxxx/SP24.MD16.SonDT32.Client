@@ -87,6 +87,19 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="custom_bgr_btn2_menu">
+        <item name="android:fontFamily">@font/nunito_bold</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:textAlignment">textStart</item>
+
+        <item name="android:textColor">@color/black</item>
+    </style>
+
     <style name="custom_bgr_layout_menu">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -359,7 +372,7 @@
     <style name="custom_rcv">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:visibility">visible</item>
+        <item name="android:visibility">gone</item>
         <item name="android:layout_marginTop">20dp</item>
         <item name="android:background">@drawable/bgr_bot_sheet</item>
         <item name="layoutManager">androidx.recyclerview.widget.LinearLayoutManager</item>

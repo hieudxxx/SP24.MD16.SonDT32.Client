@@ -13,6 +13,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import fpoly.md16.depotlife.Helper.Interfaces.Api.API;
 import fpoly.md16.depotlife.Helper.Interfaces.onClickListener.onItemRcvClick;
 import fpoly.md16.depotlife.databinding.ItemImagesProductBinding;
 
@@ -45,15 +46,18 @@ public class ProductImagesAdapter extends RecyclerView.Adapter<ProductImagesAdap
                 holder.binding.imgProduct.setStrokeColor(ColorStateList.valueOf(Color.TRANSPARENT));
             }
         }
-        Picasso.get().load("https://warehouse.sinhvien.io.vn/public" + list.get(position)).into(holder.binding.imgProduct);
+        Picasso.get().load(API.URL_IMG + list.get(position)).into(holder.binding.imgProduct);
 
         holder.itemView.setOnClickListener(view -> {
             index = holder.getAdapterPosition();
             if (onItemRcvClick != null) {
                 onItemRcvClick.onClick(holder.getAdapterPosition());
             }
-//            holder.binding.imgProduct.setStrokeColor(ColorStateList.valueOf(Color.RED));
             notifyDataSetChanged();
+        });
+
+        holder.binding.imgDelete.setOnClickListener(view -> {
+
         });
     }
 
