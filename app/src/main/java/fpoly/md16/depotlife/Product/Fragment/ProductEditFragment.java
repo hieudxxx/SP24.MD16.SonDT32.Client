@@ -107,22 +107,25 @@ public class ProductEditFragment extends Fragment implements onItemRcvClick<Inte
                             if (imagesResponse != null) {
                                 String[] path = imagesResponse.getPaths();
                                 String [] names = imagesResponse.getNames();
-                                if (path.length > 0) {
-                                    if (listImages != null) {
-                                        listImages.addAll(Arrays.asList(path));
-                                        listNames.addAll(Arrays.asList(names));
-                                        if (imagesResponse.getImage() != null) {
-                                            for (int i = 0; i < listImages.size(); i++) {
-                                                if (imagesResponse.getImage().equalsIgnoreCase(listImages.get(i))) {
-                                                    index = i;
+                                if (path != null){
+                                    if (path.length > 0) {
+                                        if (listImages != null) {
+                                            listImages.addAll(Arrays.asList(path));
+                                            listNames.addAll(Arrays.asList(names));
+                                            if (imagesResponse.getImage() != null) {
+                                                for (int i = 0; i < listImages.size(); i++) {
+                                                    if (imagesResponse.getImage().equalsIgnoreCase(listImages.get(i))) {
+                                                        index = i;
+                                                    }
                                                 }
                                             }
+                                            ProductImagesAdapter imagesAdapter = new ProductImagesAdapter(getContext(), listImages, index, ProductEditFragment.this);
+                                            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
+                                            binding.rcvImages.setLayoutManager(layoutManager);
+                                            binding.rcvImages.setAdapter(imagesAdapter);
                                         }
-                                        ProductImagesAdapter imagesAdapter = new ProductImagesAdapter(getContext(), listImages, index, ProductEditFragment.this);
-                                        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
-                                        binding.rcvImages.setLayoutManager(layoutManager);
-                                        binding.rcvImages.setAdapter(imagesAdapter);
                                     }
+
                                 }
                             }
                         }
