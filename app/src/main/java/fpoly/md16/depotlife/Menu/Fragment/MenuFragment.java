@@ -10,18 +10,17 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.squareup.picasso.Picasso;
 
+import fpoly.md16.depotlife.Category.CategoryActivity;
 import fpoly.md16.depotlife.Helper.Helper;
+import fpoly.md16.depotlife.Helper.Interfaces.Api.API;
 import fpoly.md16.depotlife.Invoice.Fragment.InvoiceFragment;
 import fpoly.md16.depotlife.Login.LoginActivity;
 import fpoly.md16.depotlife.MainActivity;
 import fpoly.md16.depotlife.Menu.Account.Activity.AccountActivity;
-import fpoly.md16.depotlife.Menu.Account.Fragment.AccountFragment;
-import fpoly.md16.depotlife.Staff.Fragment.StaffFragment;
 import fpoly.md16.depotlife.Menu.Activity.BaoLoi;
 import fpoly.md16.depotlife.Menu.Activity.CaiDat;
 import fpoly.md16.depotlife.Menu.Activity.DieuKhoan;
@@ -29,11 +28,11 @@ import fpoly.md16.depotlife.Menu.Activity.Goi_Hotline;
 import fpoly.md16.depotlife.Menu.Activity.ThongTinGianHang;
 import fpoly.md16.depotlife.Menu.Activity.TroGiupVaPhanHoi;
 import fpoly.md16.depotlife.Menu.Activity.VeChungToi;
-import fpoly.md16.depotlife.Category.CategoryActivity;
-import fpoly.md16.depotlife.Supplier.Activity.SupplierActivity;
 import fpoly.md16.depotlife.Product.Fragment.ProductFragment;
 import fpoly.md16.depotlife.R;
+import fpoly.md16.depotlife.Staff.Fragment.StaffFragment;
 import fpoly.md16.depotlife.Statistic.StatisticFragment;
+import fpoly.md16.depotlife.Supplier.Activity.SupplierActivity;
 import fpoly.md16.depotlife.databinding.DialogCheckFeatureBinding;
 import fpoly.md16.depotlife.databinding.FragmentMenuBinding;
 
@@ -52,17 +51,12 @@ public class MenuFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ((AppCompatActivity) getActivity()).setSupportActionBar(binding.tbMenu);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
-
         binding.txtNameAccount.setText((String)Helper.getSharedPre(getContext(), "name", String.class));
         String avt = (String) Helper.getSharedPre(getContext(), "avatar", String.class);
         String ava = avt.replace("public","storage");
-        if (avt.isEmpty()) {
-            binding.imgAvt.setImageResource(R.drawable.unknow_avt);
-        } else {
-            Picasso.get().load("https://warehouse.sinhvien.io.vn/public/" +ava).into(binding.imgAvt);
-        }
+
+        if (avt.isEmpty()) binding.imgAvt.setImageResource(R.drawable.unknow_avt);
+        else Picasso.get().load(API.URL_IMG +ava).into(binding.imgAvt);
 
         binding.imgBtnEdit.setOnClickListener(v -> {
             startActivity(new Intent(getContext(), AccountActivity.class));

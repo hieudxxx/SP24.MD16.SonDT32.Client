@@ -2,36 +2,20 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/bgr_screen"
+    style="@style/custom_bgr_layout"
     android:fillViewport="true"
     tools:context=".Menu.Fragment.MenuFragment">
 
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/tb_menu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white">
+            style="@style/custom_toolbar">
 
-<!--            <com.google.android.material.imageview.ShapeableImageView-->
-<!--                android:id="@+id/img_account"-->
-<!--                android:layout_width="70dp"-->
-<!--                android:layout_height="70dp"-->
-<!--                android:layout_alignParentStart="true"-->
-<!--                android:layout_centerVertical="true"-->
-<!--                android:layout_gravity="center_vertical"-->
-<!--                android:src="@drawable/avatar"-->
-<!--                app:shapeAppearanceOverlay="@style/custom_shape_img_circle"-->
-<!--                app:strokeWidth="2dp" />-->
-
-            <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+            <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
@@ -65,12 +49,12 @@
                 android:src="@drawable/edit_user" />
         </androidx.appcompat.widget.Toolbar>
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:orientation="horizontal"
-            android:padding="10dp">
+            android:padding="5dp">
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_invoice"
@@ -89,7 +73,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="10dp">
+            android:padding="5dp">
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_supplier"
@@ -108,13 +92,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="10dp">
+            android:padding="5dp">
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_categories"
                 style="@style/custom_bgr_btn_menu"
                 android:drawableStart="@drawable/category"
-                android:text="Loại hàng hoá" />
+                android:text="Loại hàng" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_product"
@@ -127,7 +111,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="10dp">
+            android:padding="5dp">
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_statistic"
@@ -150,111 +134,57 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_info"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
+                style="@style/custom_bgr_btn2_menu"
                 android:drawableStart="@drawable/in4_shop"
-                android:drawablePadding="-160dp"
-                android:padding="10dp"
-                android:text="Thông tin gian hàng"
-                android:textAllCaps="false"
-                android:textSize="17sp" />
+                android:text="Thông tin gian hàng" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_policy"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
+                style="@style/custom_bgr_btn2_menu"
                 android:drawableStart="@drawable/policy"
-                android:drawablePadding="-160dp"
-                android:padding="10dp"
-                android:text="Chính sách bảo mật"
-                android:textAllCaps="false"
-                android:textSize="17sp" />
+                android:text="Chính sách bảo mật" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_about"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
+                style="@style/custom_bgr_btn2_menu"
                 android:drawableStart="@drawable/about_us"
-                android:drawablePadding="-220dp"
-                android:padding="10dp"
-                android:text="Về chúng tôi"
-                android:textAllCaps="false"
-                android:textSize="17sp" />
+                android:text="Về chúng tôi" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_report"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
+                style="@style/custom_bgr_btn2_menu"
                 android:drawableStart="@drawable/report"
-                android:drawablePadding="-260dp"
-                android:padding="10dp"
-                android:text="Báo lỗi"
-                android:textAllCaps="false"
-                android:textSize="17sp" />
+                android:text="Báo lỗi" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_feedback"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
+                style="@style/custom_bgr_btn2_menu"
                 android:drawableStart="@drawable/help"
-                android:drawablePadding="-160dp"
-                android:padding="10dp"
-                android:text="Trợ giúp và phản hồi"
-                android:textAllCaps="false"
-                android:textSize="17sp" />
+                android:text="Trợ giúp và phản hồi" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_setting"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
+                style="@style/custom_bgr_btn2_menu"
                 android:drawableStart="@drawable/settings"
-                android:drawablePadding="-260dp"
-                android:padding="10dp"
-                android:text="Cài đặt"
-                android:textAllCaps="false"
-                android:textSize="17sp" />
+                android:text="Cài đặt" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_call"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
+                style="@style/custom_bgr_btn2_menu"
                 android:drawableStart="@drawable/call"
-                android:drawablePadding="-220dp"
-                android:padding="10dp"
-                android:text="Gọi tổng đài"
-                android:textAllCaps="false"
-                android:textSize="17sp" />
+                android:text="Gọi tổng đài" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_clause"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
+                style="@style/custom_bgr_btn2_menu"
                 android:drawableStart="@drawable/rules"
-                android:drawablePadding="-230dp"
-                android:padding="10dp"
-                android:text="Điều khoản"
-                android:textAllCaps="false"
-                android:textSize="17sp" />
+                android:text="Điều khoản" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_logout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
+                style="@style/custom_bgr_btn2_menu"
                 android:drawableStart="@drawable/logout"
-                android:drawablePadding="-240dp"
-                android:padding="10dp"
-                android:text="Đăng xuất"
-                android:textAllCaps="false"
-                android:textSize="17sp" />
+                android:text="Đăng xuất" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
