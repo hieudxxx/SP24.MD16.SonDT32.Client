@@ -21,18 +21,7 @@ public class InvoiceActivity extends AppCompatActivity {
         binding = ActivityInvoiceBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        Bundle bundle = getIntent().getExtras();
-        int type = getIntent().getIntExtra("type", 2);
-        if (type == 2) {
-            if (bundle != null) {
-                Invoice invoice = (Invoice) bundle.getSerializable("invoice");
-                bundle.putSerializable("invoice", invoice);
-                Helper.loadFragment(getSupportFragmentManager(), new InvoiceDetailFragment(), bundle, R.id.frag_container_invoice);
-            }
-        } else {
-            bundle = new Bundle();
-            bundle.putInt("type", type);
-            Helper.loadFragment(getSupportFragmentManager(), new InvoiceAddFragment(), bundle, R.id.frag_container_invoice);
-        }
+        Helper.loadFragment(getSupportFragmentManager(), new InvoiceAddFragment(),null, R.id.frag_container_invoice);
+
     }
 }

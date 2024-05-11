@@ -28,7 +28,7 @@ public class RetrofitRequest {
 
     public static Retrofit getRetrofit() {
         return retrofit = new Retrofit.Builder()
-                .baseUrl("https://warehouse.sinhvien.io.vn/public/api/")
+                .baseUrl(API.URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
 //                .client(httpClient.build())

@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import fpoly.md16.depotlife.Category.Model.Category;
 import fpoly.md16.depotlife.Category.Model.CategoryResponse;
-import fpoly.md16.depotlife.Supplier.Model.Supplier;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -16,7 +15,6 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiCategory {
-
     ApiCategory apiCategory = getRetrofit().create(ApiCategory.class);
 
     @GET("category")

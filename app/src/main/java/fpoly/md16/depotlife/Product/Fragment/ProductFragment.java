@@ -60,15 +60,12 @@ public class ProductFragment extends Fragment {
         ((AppCompatActivity) getActivity()).setSupportActionBar(binding.tbProduct);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        binding.fab.setOnClickListener(v -> {
-            startActivity(new Intent(getActivity(), ProductActivity.class));
-        });
+        binding.fab.setOnClickListener(v -> {startActivity(new Intent(getActivity(), ProductActivity.class));});
 
         token = "Bearer " + Helper.getSharedPre(getContext(), "token", String.class);
 
         adapter = new ProductAdapter(getContext(), list, token);
         getData();
-//        onResume();
 
         binding.nestScoll.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {

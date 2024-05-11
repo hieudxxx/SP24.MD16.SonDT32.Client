@@ -1,5 +1,6 @@
 package fpoly.md16.depotlife.Helper;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -23,7 +24,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Filterable;
 import android.widget.ImageView;
-
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +33,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.squareup.picasso.Picasso;
 
@@ -48,8 +49,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import fpoly.md16.depotlife.Helper.Interfaces.Api.API;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiProduct;
-import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiUser;
 import fpoly.md16.depotlife.Helper.Interfaces.onClickListener.CheckdeleteListener;
 import fpoly.md16.depotlife.Product.Model.ImagesResponse;
 import fpoly.md16.depotlife.Product.Model.Product;
@@ -303,6 +304,14 @@ public class Helper {
         });
     }
 
+    public static void openGallery(Context context){
+        ImagePicker.with((Activity) context)
+                .crop()                    //Crop image(Optional), Check Customization for more option
+                .compress(1024)            //Final image size will be less than 1 MB(Optional)
+                .maxResultSize(1080, 1080)    //Final image resolution will be less than 1080 x 1080(Optional)
+                .start();
+    }
+
     public static <T> void onSort(Context context, ArrayList<T> list, RecyclerView.Adapter<?> adapter, Comparator<T> sortByAsc, Comparator<T> sortByAZ) {
         BotSheetSortBinding sortBinding = BotSheetSortBinding.inflate(LayoutInflater.from(context));
         sortBinding.rdGr.setOnCheckedChangeListener(((radioGroup, i) -> {
@@ -389,13 +398,12 @@ public class Helper {
                         String[] path = imagesResponse.getPaths();
                         if (path != null && path.length > 0) {
                             if (product.getImg().isEmpty() || product.getImg() == null || product.getImg().equalsIgnoreCase("null")) {
-                                Picasso.get().load("https://warehouse.sinhvien.io.vn/public" + path[0]).into(img);
+                                Picasso.get().load(API.URL_IMG + path[0]).into(img);
                             } else {
-                                Picasso.get().load("https://warehouse.sinhvien.io.vn/public" + imagesResponse.getImage()).into(img);
+                                Picasso.get().load(API.URL_IMG + imagesResponse.getImage()).into(img);
                             }
                         } else {
                             img.setImageResource(R.drawable.img_add);
-
                         }
                     }
                 }
