@@ -44,7 +44,6 @@ public class ProductFragment extends Fragment {
     private String token;
     public static boolean isLoadData = false;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
