@@ -64,5 +64,7 @@ dependencies {
 
     implementation 'com.github.dhaval2404:imagepicker:2.1'
 
+    implementation 'com.google.mlkit:barcode-scanning:17.2.0'
+
 
 }
