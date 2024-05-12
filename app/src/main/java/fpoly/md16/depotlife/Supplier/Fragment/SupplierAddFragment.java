@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment;
 
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiSupplier;
-import fpoly.md16.depotlife.Product.Fragment.ProductFragment;
 import fpoly.md16.depotlife.Supplier.Model.Supplier;
 import fpoly.md16.depotlife.databinding.FragmentSupplierAddBinding;
 import retrofit2.Call;
@@ -68,7 +67,7 @@ public class SupplierAddFragment extends Fragment {
                     sup.setPhone(phone);
                     sup.setAddress(address);
                     sup.setTax_code(taxCode);
-                    sup.setTotal(0);
+//                    sup.setTotal(0);
                     sup.setStatus(1);
                     Log.d("tag_kiemTra", "onResponse: " + sup.toString());
                     ApiSupplier.apiSupplier.create(token, sup).enqueue(new Callback<Supplier>() {

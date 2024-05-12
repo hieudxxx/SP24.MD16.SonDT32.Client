@@ -5,6 +5,9 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.Comparator;
 
+import fpoly.md16.depotlife.Category.Model.Category;
+import fpoly.md16.depotlife.Supplier.Model.Supplier;
+
 public class Product implements Serializable {
     @SerializedName("id")
     private int id;
@@ -14,8 +17,6 @@ public class Product implements Serializable {
     private int category_id;
     @SerializedName("product_name")
     private String product_name;
-    @SerializedName("pin_image")
-    private String img;
     @SerializedName("barcode")
     private String barcode;
     @SerializedName("unit")
@@ -28,10 +29,16 @@ public class Product implements Serializable {
     private int inventory;
     @SerializedName("status")
     private int status;
-    @SerializedName("categories")
-    private String category_name;
     @SerializedName("supplier")
-    private String supplier_name;
+    private Supplier supplier;
+    @SerializedName("category")
+    private Category category;
+    @SerializedName("product_image")
+    private Image[] img;
+    @SerializedName("location")
+    private Location location;
+
+
 
     public static Comparator<Product> sortByAsc = (t1, t2) -> (int) (t1.getExport_price() - t2.getExport_price());
 
@@ -40,31 +47,21 @@ public class Product implements Serializable {
     public Product() {
     }
 
-
-    public Product(int id, int supplier_id, int category_id, String product_name, String img, String barcode, String unit, int import_price, int export_price, int inventory, int status, String category_name, String supplier_name) {
+    public Product(int id, int supplier_id, int category_id, String product_name, String barcode, String unit, int import_price, int export_price, int inventory, int status, Supplier supplier, Category category, Image[] img, Location location) {
         this.id = id;
         this.supplier_id = supplier_id;
         this.category_id = category_id;
         this.product_name = product_name;
-        this.img = img;
         this.barcode = barcode;
         this.unit = unit;
         this.import_price = import_price;
         this.export_price = export_price;
         this.inventory = inventory;
         this.status = status;
-        this.category_name = category_name;
-        this.supplier_name = supplier_name;
-    }
-
-    public Product(int supplier_id, int category_id, String product_name, String unit, int import_price, int export_price, String img) {
-        this.supplier_id = supplier_id;
-        this.category_id = category_id;
-        this.product_name = product_name;
-        this.unit = unit;
-        this.import_price = import_price;
-        this.export_price = export_price;
+        this.supplier = supplier;
+        this.category = category;
         this.img = img;
+        this.location = location;
     }
 
     public Product(int supplier_id, int category_id, String product_name, String unit, int import_price, int export_price) {
@@ -106,14 +103,6 @@ public class Product implements Serializable {
 
     public void setProduct_name(String product_name) {
         this.product_name = product_name;
-    }
-
-    public String getImg() {
-        return img;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
     }
 
     public String getBarcode() {
@@ -164,38 +153,35 @@ public class Product implements Serializable {
         this.status = status;
     }
 
-    public String getCategory_name() {
-        return category_name;
+    public Supplier getSupplier() {
+        return supplier;
     }
 
-    public void setCategory_name(String category_name) {
-        this.category_name = category_name;
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
     }
 
-    public String getSupplier_name() {
-        return supplier_name;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setSupplier_name(String supplier_name) {
-        this.supplier_name = supplier_name;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
-    @Override
-    public String toString() {
-        return "Product{" +
-                "id='" + id + '\'' +
-                ", supplier_id=" + supplier_id +
-                ", category_id=" + category_id +
-                ", product_name='" + product_name + '\'' +
-                ", img='" + img + '\'' +
-                ", barcode='" + barcode + '\'' +
-                ", unit='" + unit + '\'' +
-                ", import_price=" + import_price +
-                ", export_price=" + export_price +
-                ", inventory=" + inventory +
-                ", status=" + status +
-                ", category_name='" + category_name + '\'' +
-                ", supplier_name='" + supplier_name + '\'' +
-                '}';
+    public Image[] getImg() {
+        return img;
+    }
+
+    public void setImg(Image[] img) {
+        this.img = img;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 }

@@ -45,15 +45,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import fpoly.md16.depotlife.Helper.Interfaces.Api.API;
-import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiProduct;
 import fpoly.md16.depotlife.Helper.Interfaces.onClickListener.CheckdeleteListener;
-import fpoly.md16.depotlife.Product.Model.ImagesResponse;
-import fpoly.md16.depotlife.Product.Model.Product;
+import fpoly.md16.depotlife.Product.Model.Image;
 import fpoly.md16.depotlife.R;
 import fpoly.md16.depotlife.Staff.Activity.StaffDetailActivity;
 import fpoly.md16.depotlife.Staff.Model.StaffResponse;
@@ -64,9 +61,6 @@ import fpoly.md16.depotlife.databinding.DialogCheckDeleteBinding;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class Helper {
     public static final String SHARE_NAME = "ACC";
@@ -304,7 +298,7 @@ public class Helper {
         });
     }
 
-    public static void openGallery(Context context){
+    public static void openGallery(Context context) {
         ImagePicker.with((Activity) context)
                 .crop()                    //Crop image(Optional), Check Customization for more option
                 .compress(1024)            //Final image size will be less than 1 MB(Optional)
@@ -384,42 +378,22 @@ public class Helper {
         Helper.onSettingsBotSheet(context, optionStaffBinding);
     }
 
-
-
-
-
-    public static void getImagesProduct(Product product, String token, ShapeableImageView img) {
-        ApiProduct.apiProduct.getProductImages(token, product.getId(), product.getImg()).enqueue(new Callback<ImagesResponse>() {
-            @Override
-            public void onResponse(Call<ImagesResponse> call, Response<ImagesResponse> response) {
-                if (response.isSuccessful()) {
-                    ImagesResponse imagesResponse = response.body();
-                    if (imagesResponse != null) {
-                        String[] path = imagesResponse.getPaths();
-                        if (path != null && path.length > 0) {
-                            if (product.getImg().isEmpty() || product.getImg() == null || product.getImg().equalsIgnoreCase("null")) {
-                                Picasso.get().load(API.URL_IMG + path[0]).into(img);
-                            } else {
-                                Picasso.get().load(API.URL_IMG + imagesResponse.getImage()).into(img);
-                            }
-                        } else {
-                            img.setImageResource(R.drawable.img_add);
-                        }
+    public static void setImgProduct(Image[] url, ShapeableImageView img) {
+        if (url.length == 0 || url == null) {
+            img.setImageResource(R.drawable.img_add);
+        } else {
+            if (url.length == 1) {
+                Picasso.get().load(API.URL_IMG + url[0].getPath().replaceFirst("public", "")).into(img);
+            } else {
+                for (int i = 0; i < url.length; i++) {
+                    if (url[i].getIs_pined() == 1){
+                        Picasso.get().load(API.URL_IMG + url[i].getPath().replaceFirst("public", "")).into(img);
                     }
                 }
             }
-
-            @Override
-            public void onFailure(Call<ImagesResponse> call, Throwable throwable) {
-                Log.d("onFailure", "onFailure: " + throwable.getMessage());
-            }
-        });
+        }
     }
 
-
-    public static List<String> getListImages(List<String> list) {
-        return list;
-    }
 
     public static MultipartBody.Part getRealPathFile(Context context, Uri uri) {
         MultipartBody.Part multipartBody;

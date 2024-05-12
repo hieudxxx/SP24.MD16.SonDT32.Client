@@ -100,13 +100,19 @@
                     style="@style/custom_tv_title"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:text="Nhà cung cấp:" />
+                    android:text="Nhà cung \ncấp:" />
 
                 <TextView
                     android:id="@+id/tv_supplier"
                     style="@style/custom_tv_title"
                     android:layout_width="0dp"
-                    android:layout_weight="2" />
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:clickable="false"
+                    android:contextClickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    app:drawableRightCompat="@drawable/next_forgot_bold" />
             </LinearLayout>
 
             <View
@@ -191,6 +197,18 @@
                 android:layout_marginLeft="110dp"
                 android:layout_marginBottom="20dp" />
         </LinearLayout>
+
+        <TextView
+            style="@style/custom_tv_title"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Ảnh" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcv_images"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         <TextView
             style="@style/custom_tv_title"

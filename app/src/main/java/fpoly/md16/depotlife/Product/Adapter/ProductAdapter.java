@@ -15,7 +15,6 @@ import java.util.ArrayList;
 
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Product.Activity.ProductActivity;
-import fpoly.md16.depotlife.Product.Model.ImagesResponse;
 import fpoly.md16.depotlife.Product.Model.Product;
 import fpoly.md16.depotlife.databinding.ItemProductBinding;
 
@@ -24,9 +23,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     private ArrayList<Product> list;
     private ArrayList<Product> mlist;
     private String token;
-    private ImagesResponse imagesResponse;
 
-    public ProductAdapter(Context context, ArrayList<Product> list,String token) {
+    public ProductAdapter(Context context, ArrayList<Product> list, String token) {
         this.context = context;
         this.list = list;
         this.mlist = list;
@@ -44,13 +42,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
 
         Product product = list.get(holder.getAdapterPosition());
-        if (product.getImg() == null) product.setImg("null");
-
-        Helper.getImagesProduct(product, token, holder.binding.img);
+        Helper.setImgProduct(product.getImg(), holder.binding.img);
 
         holder.binding.tvName.setText(product.getProduct_name());
-        holder.binding.tvBarcode.setText(product.getBarcode());
-        holder.binding.tvBarcode.setText(product.getBarcode());
+        if (product.getLocation() != null) {
+            holder.binding.tvLocation.setText("Vị trí: " + product.getLocation().getCode());
+        }
         holder.binding.tvInventory.setText("Tồn kho: " + product.getInventory());
         holder.binding.tvExportPrice.setText("Giá bán: " + Helper.formatVND(product.getExport_price()));
         holder.binding.tvImportPrice.setText("Giá vốn: " + Helper.formatVND(product.getImport_price()));
