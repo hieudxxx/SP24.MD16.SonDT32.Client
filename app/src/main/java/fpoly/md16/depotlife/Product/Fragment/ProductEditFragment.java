@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,7 +29,7 @@ import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiProduct;
 import fpoly.md16.depotlife.Helper.Interfaces.onClickListener.onItemRcvClick;
 import fpoly.md16.depotlife.Product.Adapter.ProductImagesAdapter;
-import fpoly.md16.depotlife.Product.Model.ImagesResponse;
+import fpoly.md16.depotlife.Product.Model.Image;
 import fpoly.md16.depotlife.Product.Model.Product;
 import fpoly.md16.depotlife.R;
 import fpoly.md16.depotlife.Supplier.Fragment.SupplierListSelectFragment;
@@ -53,10 +52,8 @@ public class ProductEditFragment extends Fragment implements onItemRcvClick<Inte
     private ShareViewModel<Object> viewModel;
     private Uri uri;
     private MultipartBody.Part[] listMultipartBody;
-    private List<String> listImages;
-    private List<String> listNames;
-    private int index = -1;
-    private String img;
+    private List<Image> listImages;
+    private String pin_image;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,9 +65,6 @@ public class ProductEditFragment extends Fragment implements onItemRcvClick<Inte
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        ((AppCompatActivity) getActivity()).setSupportActionBar(binding.tbProduct);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         binding.imgBack.setOnClickListener(view1 -> {requireActivity().getSupportFragmentManager().popBackStack();});
 
@@ -163,9 +157,9 @@ public class ProductEditFragment extends Fragment implements onItemRcvClick<Inte
 
                             if (uri != null) listMultipartBody = new MultipartBody.Part[]{Helper.getRealPathFile(getContext(), uri)};
 
-                            if (img == null) img = product.getImg();
-
-                            product = new Product(supplier.getId(), category.getId(), name, unit, Integer.parseInt(import_price), Integer.parseInt(export_price), img);
+//                            if (img == null) img = product.getImg();
+                            if (pin_image == null) pin_image = "";
+                            product = new Product(supplier.getId(), category.getId(), name, unit, Integer.parseInt(import_price), Integer.parseInt(export_price));
                             onEditProduct(product);
                         } else {
                             Toast.makeText(getContext(), "Sửa thất bại", Toast.LENGTH_SHORT).show();
@@ -188,10 +182,10 @@ public class ProductEditFragment extends Fragment implements onItemRcvClick<Inte
                 Helper.createStringPart(product.getUnit()),
                 Helper.createIntPart(product.getSupplier_id()),
                 Helper.createIntPart(product.getCategory_id()),
-                Helper.createStringPart(product.getImg()),
-                listMultipartBody).enqueue(new Callback<Product>() {
+                Helper.createStringPart(pin_image),
+                listMultipartBody).enqueue(new Callback<List<String>>() {
             @Override
-            public void onResponse(Call<Product> call, Response<Product> response) {
+            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(getContext(), "Thành công", Toast.LENGTH_SHORT).show();
 //                                        Helper.loadFragment(getParentFragmentManager(), new ProductFragment(), null, R.id.frag_container_product);
@@ -201,7 +195,7 @@ public class ProductEditFragment extends Fragment implements onItemRcvClick<Inte
             }
 
             @Override
-            public void onFailure(Call<Product> call, Throwable throwable) {
+            public void onFailure(Call<List<String>> call, Throwable throwable) {
                 Log.d("onFailure", "onFailure: " + throwable.getMessage());
                 Toast.makeText(getActivity(), "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
             }
@@ -212,51 +206,21 @@ public class ProductEditFragment extends Fragment implements onItemRcvClick<Inte
         id_product = product.getId();
         binding.edtName.setText(product.getProduct_name());
         binding.edtId.setText(product.getId() + "");
-        binding.tvCategory.setText(product.getCategory_name());
-        binding.tvSupplier.setText(product.getSupplier_name());
+        binding.tvCategory.setText(product.getCategory().getName());
+        binding.tvSupplier.setText(product.getSupplier().getName());
         binding.edtExportPrice.setText(product.getExport_price() + "");
         binding.edtImportPrice.setText(product.getImport_price() + "");
         binding.edtUnit.setText(product.getUnit());
 
-        if (product.getImg() == null) product.setImg("null");
-        Helper.getImagesProduct(product, token, binding.imgProduct);
-
         listImages = new ArrayList<>();
-        listNames = new ArrayList<>();
-        ApiProduct.apiProduct.getProductImages(token, product.getId(), product.getImg()).enqueue(new Callback<ImagesResponse>() {
-            @Override
-            public void onResponse(Call<ImagesResponse> call, Response<ImagesResponse> response) {
-                if (response.isSuccessful()) {
-                    ImagesResponse imagesResponse = response.body();
-                    if (imagesResponse != null) {
-                        String[] path = imagesResponse.getPaths();
-                        String[] names = imagesResponse.getNames();
-                        if (path.length > 0) {
-                            if (listImages != null) {
-                                listImages.addAll(Arrays.asList(path));
-                                listNames.addAll(Arrays.asList(names));
-                                if (imagesResponse.getImage() != null) {
-                                    for (int i = 0; i < listImages.size(); i++) {
-                                        if (imagesResponse.getImage().equalsIgnoreCase(listImages.get(i))) {
-                                            index = i;
-                                        }
-                                    }
-                                }
-                                ProductImagesAdapter imagesAdapter = new ProductImagesAdapter(getContext(), listImages, index, ProductEditFragment.this);
-                                LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
-                                binding.rcvImages.setLayoutManager(layoutManager);
-                                binding.rcvImages.setAdapter(imagesAdapter);
-                            }
-                        }
-                    }
-                }
-            }
+        listImages = Arrays.asList(product.getImg());
 
-            @Override
-            public void onFailure(Call<ImagesResponse> call, Throwable throwable) {
-                Log.d("onFailure", "onFailure: " + throwable.getMessage());
-            }
-        });
+        Helper.setImgProduct(product.getImg(), binding.imgProduct);
+
+        ProductImagesAdapter imagesAdapter = new ProductImagesAdapter(getContext(), listImages, ProductEditFragment.this);
+        binding.rcvImages.setAdapter(imagesAdapter);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
+        binding.rcvImages.setLayoutManager(layoutManager);
 
     }
 
@@ -280,13 +244,13 @@ public class ProductEditFragment extends Fragment implements onItemRcvClick<Inte
             if (item instanceof Category) {
                 category = (Category) item;
                 binding.tvCategory.setText(category.getName());
-                product.setCategory_name(category.getName());
+                product.setCategory(category);
                 product.setCategory_id(category.getId());
             }
             if (item instanceof Supplier) {
                 supplier = (Supplier) item;
                 binding.tvSupplier.setText(supplier.getName());
-                product.setSupplier_name(supplier.getName());
+                product.setSupplier(supplier);
                 product.setSupplier_id(supplier.getId());
             }
         });
@@ -300,7 +264,6 @@ public class ProductEditFragment extends Fragment implements onItemRcvClick<Inte
                 Helper.openGallery(getContext());
             }
         }
-
     }
 
     @Override
@@ -309,14 +272,10 @@ public class ProductEditFragment extends Fragment implements onItemRcvClick<Inte
 
         uri = data.getData();
         binding.imgProduct.setImageURI(uri);
-        product.setImg(String.valueOf(uri));
     }
 
     @Override
     public void onClick(Integer position) {
-        if (position > -1) {
-            product.setImg(listNames.get(position));
-            img = listNames.get(position);
-        }
+        if (position > -1) pin_image = listImages.get(position).getName();
     }
 }

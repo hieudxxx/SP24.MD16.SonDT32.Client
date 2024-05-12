@@ -17,8 +17,8 @@ public class Supplier implements Serializable {
     private String tax_code;
     @SerializedName("address")
     private String address;
-    @SerializedName("total_import_price")
-    private double total;
+//    @SerializedName("total_import_price")
+//    private double total;
     @SerializedName("status")
     private int status;
 
@@ -35,7 +35,7 @@ public class Supplier implements Serializable {
         return filteredList;
     }
 
-    public static Comparator<Supplier> sortByAsc = (t1, t2) -> (int) (t1.getTotal() - t2.getTotal());
+    public static Comparator<Supplier> sortByAsc = (t1, t2) -> (int) (t1.getId() - t2.getId());
 
     public static Comparator<Supplier> sortByNameAZ = (t1, t2) -> t1.getName().compareTo(t2.getName());
 
@@ -43,15 +43,23 @@ public class Supplier implements Serializable {
     public Supplier() {
     }
 
-    public Supplier(int id, String name, String phone, String tax_code, String address, double total, int status) {
+    public Supplier(int id, String name, String phone, String tax_code, String address, int status) {
         this.id = id;
         this.name = name;
         this.phone = phone;
         this.tax_code = tax_code;
         this.address = address;
-        this.total = total;
         this.status = status;
     }
+    //    public Supplier(int id, String name, String phone, String tax_code, String address, double total, int status) {
+//        this.id = id;
+//        this.name = name;
+//        this.phone = phone;
+//        this.tax_code = tax_code;
+//        this.address = address;
+//        this.total = total;
+//        this.status = status;
+//    }
 
     public Supplier(String name, String phone, String tax_code, String address, int status) {
         this.name = name;
@@ -103,13 +111,13 @@ public class Supplier implements Serializable {
         this.address = address;
     }
 
-    public double getTotal() {
-        return total;
-    }
-
-    public void setTotal(double total) {
-        this.total = total;
-    }
+//    public double getTotal() {
+//        return total;
+//    }
+//
+//    public void setTotal(double total) {
+//        this.total = total;
+//    }
 
     public int getStatus() {
         return status;

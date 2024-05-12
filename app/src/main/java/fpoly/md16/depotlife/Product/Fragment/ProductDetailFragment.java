@@ -9,13 +9,19 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.Arrays;
+import java.util.List;
 
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiProduct;
+import fpoly.md16.depotlife.Product.Adapter.ProductImagesAdapter;
 import fpoly.md16.depotlife.Product.Model.Product;
 import fpoly.md16.depotlife.R;
+import fpoly.md16.depotlife.Supplier.Fragment.SupplierDetailFragment;
 import fpoly.md16.depotlife.databinding.FragmentProductDetailBinding;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,6 +30,7 @@ import retrofit2.Response;
 public class ProductDetailFragment extends Fragment {
     private FragmentProductDetailBinding binding;
     private Product product;
+    private List<Product> products;
     private String token;
     private Bundle bundle;
 
@@ -40,11 +47,9 @@ public class ProductDetailFragment extends Fragment {
 
         token = "Bearer " + Helper.getSharedPre(getContext(), "token", String.class);
 
-        ((AppCompatActivity) getActivity()).setSupportActionBar(binding.tbProduct);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        binding.imgBack.setOnClickListener(view1 -> {requireActivity().finish();});
-
+        binding.imgBack.setOnClickListener(view1 -> {
+            requireActivity().finish();
+        });
 
         bundle = getArguments();
         if (bundle != null) {
@@ -54,6 +59,12 @@ public class ProductDetailFragment extends Fragment {
 
                 binding.layoutDelete.setOnClickListener(view12 -> {
                     delete();
+                });
+
+                binding.tvSupplier.setOnClickListener(view14 -> {
+                    bundle = new Bundle();
+                    bundle.putSerializable("supplier", product.getSupplier());
+                    Helper.loadFragment(getParentFragmentManager(), new SupplierDetailFragment(), bundle, R.id.frag_container_product);
                 });
 
                 binding.imgEdit.setOnClickListener(view13 -> {
@@ -88,31 +99,34 @@ public class ProductDetailFragment extends Fragment {
     }
 
     private void getData() {
-        ApiProduct.apiProduct.getProductById(token, product.getId()).enqueue(new Callback<Product>() {
+        ApiProduct.apiProduct.getProductById(token, product.getId()).enqueue(new Callback<List<Product>>() {
             @Override
-            public void onResponse(Call<Product> call, Response<Product> response) {
+            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
                 if (response.isSuccessful()) {
-                    product = response.body();
-                    if (product != null) {
-                        binding.tvIdProduct.setText(product.getId() + "");
-                        binding.tvBarCode.setText(product.getId() + "");
-                        binding.tvName.setText(product.getProduct_name());
-                        binding.tvSupplier.setText(product.getSupplier_name());
-                        binding.tvCategory.setText(product.getCategory_name());
-                        binding.tvExportPrice.setText(Helper.formatVND(product.getExport_price()));
-                        binding.tvImportPrice.setText(Helper.formatVND(product.getImport_price()));
-                        binding.tvInventory.setText(product.getInventory() + "");
-                        binding.tvUnit.setText(product.getUnit());
+                    products = response.body();
+                    if (products != null) {
+                        binding.tvIdProduct.setText(products.get(0).getId() + "");
+                        binding.tvBarCode.setText(products.get(0).getId() + "");
+                        binding.tvName.setText(products.get(0).getProduct_name());
+                        binding.tvSupplier.setText(products.get(0).getSupplier().getName());
+                        binding.tvCategory.setText(products.get(0).getCategory().getName());
+                        binding.tvExportPrice.setText(Helper.formatVND(products.get(0).getExport_price()));
+                        binding.tvImportPrice.setText(Helper.formatVND(products.get(0).getImport_price()));
+                        binding.tvInventory.setText(products.get(0).getInventory() + "");
+                        binding.tvUnit.setText(products.get(0).getUnit());
 
-                        if (product.getImg() == null) product.setImg("null");
+                        ProductImagesAdapter imagesAdapter = new ProductImagesAdapter(getContext(), Arrays.asList(products.get(0).getImg()), null);
+                        binding.rcvImages.setAdapter(imagesAdapter);
+                        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
+                        binding.rcvImages.setLayoutManager(layoutManager);
 
-                        Helper.getImagesProduct(product, token, binding.imgProduct);
+                        Helper.setImgProduct(products.get(0).getImg(), binding.imgProduct);
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<Product> call, Throwable throwable) {
+            public void onFailure(Call<List<Product>> call, Throwable throwable) {
                 Log.d("onFailure", "onFailure: " + throwable.getMessage());
                 Toast.makeText(getActivity(), "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
             }

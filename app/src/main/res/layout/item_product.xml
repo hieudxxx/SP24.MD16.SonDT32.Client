@@ -32,11 +32,10 @@
                 android:text="Tên" />
 
             <TextView
-                android:id="@+id/tv_barcode"
+                android:id="@+id/tv_location"
                 style="@style/custom_tv_product_sold"
                 android:ellipsize="end"
-                android:maxLines="2"
-                android:text="Mã: " />
+                android:maxLines="2" />
         </LinearLayout>
 
         <LinearLayout
