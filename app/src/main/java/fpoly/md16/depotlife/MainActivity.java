@@ -18,6 +18,7 @@ import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Invoice.Fragment.InvoiceFragment;
 import fpoly.md16.depotlife.Menu.Fragment.MenuFragment;
 import fpoly.md16.depotlife.Product.Fragment.ProductFragment;
+import fpoly.md16.depotlife.Staff.Fragment.StaffFragment;
 import fpoly.md16.depotlife.Statistic.StatisticFragment;
 import fpoly.md16.depotlife.databinding.ActivityMainBinding;
 import kotlin.Unit;
@@ -32,9 +33,17 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        Integer role = (Integer) Helper.getSharedPre(this, "role", Integer.class);
 
-        binding.bottomNav.show(1,true);
-        binding.bottomNav.add(new MeowBottomNavigation.Model(1,R.drawable.statistic_bot_nav));
+
+
+        if (role == 1){
+            binding.bottomNav.show(1,true);
+            binding.bottomNav.add(new MeowBottomNavigation.Model(1,R.drawable.statistic_bot_nav));
+        }else {
+            binding.bottomNav.show(2,true);
+        }
+        
         binding.bottomNav.add(new MeowBottomNavigation.Model(2,R.drawable.invoice_bot_nav));
         binding.bottomNav.add(new MeowBottomNavigation.Model(3,R.drawable.scan));
         binding.bottomNav.add(new MeowBottomNavigation.Model(4,R.drawable.product_bot_nav));

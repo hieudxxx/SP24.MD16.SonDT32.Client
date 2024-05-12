@@ -14,7 +14,7 @@
             style="@style/custom_tv_date_time"
             android:layout_weight="1"
             android:fontFamily="@font/nunito_extrabold"
-            android:text="D01231413123"
+            android:text="HD001"
             android:textColor="@color/black" />
 
         <TextView

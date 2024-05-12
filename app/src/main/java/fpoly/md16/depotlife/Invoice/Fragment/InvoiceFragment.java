@@ -46,7 +46,8 @@ public class InvoiceFragment extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         binding.fab.setOnClickListener(view1 -> {
-            onShowFab();
+//            onShowFab();
+            getContext().startActivity(new Intent(getContext(), InvoiceActivity.class));
         });
 
         binding.layoutCalendar.setOnClickListener(view12 -> {
