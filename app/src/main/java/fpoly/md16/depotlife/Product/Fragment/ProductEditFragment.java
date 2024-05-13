@@ -80,44 +80,6 @@ public class ProductEditFragment extends Fragment implements onItemRcvClick<Inte
 
 
                 listImages = new ArrayList<>();
-                listNames = new ArrayList<>();
-                ApiProduct.apiProduct.getProductImages(token, product.getId(), product.getImg()).enqueue(new Callback<ImagesResponse>() {
-                    @Override
-                    public void onResponse(Call<ImagesResponse> call, Response<ImagesResponse> response) {
-                        if (response.isSuccessful()) {
-                            ImagesResponse imagesResponse = response.body();
-                            if (imagesResponse != null) {
-                                String[] path = imagesResponse.getPaths();
-                                String [] names = imagesResponse.getNames();
-                                if (path != null){
-                                    if (path.length > 0) {
-                                        if (listImages != null) {
-                                            listImages.addAll(Arrays.asList(path));
-                                            listNames.addAll(Arrays.asList(names));
-                                            if (imagesResponse.getImage() != null) {
-                                                for (int i = 0; i < listImages.size(); i++) {
-                                                    if (imagesResponse.getImage().equalsIgnoreCase(listImages.get(i))) {
-                                                        index = i;
-                                                    }
-                                                }
-                                            }
-                                            ProductImagesAdapter imagesAdapter = new ProductImagesAdapter(getContext(), listImages, index, ProductEditFragment.this);
-                                            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
-                                            binding.rcvImages.setLayoutManager(layoutManager);
-                                            binding.rcvImages.setAdapter(imagesAdapter);
-                                        }
-                                    }
-
-                                }
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ImagesResponse> call, Throwable throwable) {
-                        Log.d("onFailure", "onFailure: " + throwable.getMessage());
-                    }
-                });
 
                 binding.imgProduct.setOnClickListener(view14 -> { onRequestPermission();});
 
