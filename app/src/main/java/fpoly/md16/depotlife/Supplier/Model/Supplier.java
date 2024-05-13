@@ -94,7 +94,6 @@ public class Supplier implements Serializable {
     }
 
 
-
     public String getTax_code() {
         return tax_code;
     }
