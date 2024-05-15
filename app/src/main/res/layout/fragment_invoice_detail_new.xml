@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bgr_screen"
+    tools:context=".Invoice.Fragment.InvoiceDetailFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tb_invoice"
+            style="@style/custom_toolbar">
+
+            <ImageView
+                android:id="@+id/img_back"
+                style="@style/custom_img_back_toolbar"
+                android:layout_gravity="center_vertical" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_id_invoice_detail"
+                    style="@style/custom_title_toolbar"
+                    android:text="Chi tiết hoá đơn" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/img_edit_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:src="@drawable/edit_invoice" />
+        </androidx.appcompat.widget.Toolbar>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tb_invoice"
+            android:backgroundTint="@color/bgr_btn"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="5dp"
+            app:cardCornerRadius="5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_name_supplier"
+                            style="@style/custom_tv_date_time"
+                            android:textColor="@color/white"
+                            android:text="Công ty cổ phần thời trang Mantis" />
+
+                        <TextView
+                            android:id="@+id/tv_address"
+                            style="@style/custom_tv_invoice_add"
+                            android:textColor="#BFFFFFFF"
+                            android:text="226A, Đê La Thành, Ô Chợ Dừa, Đống Đa, Hà Nội"
+                            android:textAlignment="textStart" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:layout_weight="1">
+
+                        <TextView
+                            style="@style/custom_tv_date_time"
+                            android:textSize="18sp"
+                            android:layout_weight="1"
+                            android:textColor="@color/white"
+                            android:layout_width="match_parent"
+                            android:textAlignment="textEnd"
+                            android:text="#HD001" />
+
+                        <TextView
+                            style="@style/custom_tv_date_time"
+                            android:text="21/02/2024"
+                            android:layout_weight="1"
+                            android:textColor="@color/white"
+                            android:layout_width="match_parent"
+                            android:textAlignment="textEnd"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/view"
+                    style="@style/custom_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/custom_tv_date_time"
+                            android:textColor="@color/white"
+                            android:textAlignment="textStart"
+                            android:layout_width="match_parent"
+                            android:text="Gửi từ :" />
+
+                        <TextView
+                            android:id="@+id/tv_email"
+                            style="@style/custom_tv_invoice_add"
+                            android:layout_width="match_parent"
+                            android:textColor="#BFFFFFFF"
+                            android:layout_marginLeft="5dp"
+                            android:text="226A, Đê La Thành, Ô Chợ Dừa, Đống Đa, Hà Nội"
+                            android:textAlignment="textStart" />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/custom_tv_date_time"
+                            android:textColor="@color/white"
+                            android:textAlignment="center"
+                            android:layout_width="match_parent"
+                            android:text="Trạng thái " />
+
+                        <TextView
+                            android:id="@+id/tv_status"
+                            style="@style/custom_tv_date_time"
+                            android:layout_width="match_parent"
+                            android:textColor="@color/red"
+                            android:text="CHƯA THANH TOÁN"
+                            android:textAlignment="center" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cv"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="5dp"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_invoice_detail" />
+
+            <LinearLayout
+                android:layout_marginVertical="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bgr_btn_menu"
+                android:backgroundTint="@color/bgr_btn"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Thu nhập chịu thuế"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="1200đ"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Giảm giá"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="12%"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="VAT"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="10%"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Tổng tiền"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="155200đ"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
+</androidx.core.widget.NestedScrollView>

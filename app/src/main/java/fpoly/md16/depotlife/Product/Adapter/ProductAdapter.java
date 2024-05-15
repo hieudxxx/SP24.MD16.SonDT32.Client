@@ -50,7 +50,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         }
         holder.binding.tvInventory.setText("Tồn kho: " + product.getInventory());
         holder.binding.tvExportPrice.setText("Giá bán: " + Helper.formatVND(product.getExport_price()));
-        holder.binding.tvImportPrice.setText("Giá vốn: " + Helper.formatVND(product.getImport_price()));
+//        holder.binding.tvImportPrice.setText("Giá vốn: " + Helper.formatVND(product.getImport_price()));
 
         holder.itemView.setOnClickListener(view -> {
             Bundle bundle = new Bundle();
