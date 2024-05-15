@@ -196,6 +196,26 @@
                 style="@style/custom_line"
                 android:layout_marginLeft="110dp"
                 android:layout_marginBottom="20dp" />
+
+            <LinearLayout style="@style/custom_tv_supplier">
+
+                <TextView
+                    style="@style/custom_tv_title"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="Vị trí: " />
+
+                <TextView
+                    android:id="@+id/tv_location"
+                    style="@style/custom_tv_title"
+                    android:layout_width="0dp"
+                    android:layout_weight="2" />
+            </LinearLayout>
+
+            <View
+                style="@style/custom_line"
+                android:layout_marginLeft="110dp"
+                android:layout_marginBottom="20dp" />
         </LinearLayout>
 
         <TextView
