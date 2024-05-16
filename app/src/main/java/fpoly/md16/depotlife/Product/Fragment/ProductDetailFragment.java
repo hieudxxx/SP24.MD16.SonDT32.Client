@@ -48,6 +48,7 @@ public class ProductDetailFragment extends Fragment {
         token = "Bearer " + Helper.getSharedPre(getContext(), "token", String.class);
         binding.imgBack.setOnClickListener(view1 -> {
             requireActivity().finish();
+            ProductFragment.isLoadData = true;
         });
 
         bundle = getArguments();
@@ -115,7 +116,7 @@ public class ProductDetailFragment extends Fragment {
                         binding.tvUnit.setText(products.get(0).getUnit());
                         binding.tvLocation.setText(products.get(0).getLocation().getCode());
 
-                        ProductImagesAdapter imagesAdapter = new ProductImagesAdapter(getContext(), Arrays.asList(products.get(0).getImg()), null, token);
+                        ProductImagesAdapter imagesAdapter = new ProductImagesAdapter(getContext(), Arrays.asList(products.get(0).getImg()), null, token, false);
                         binding.rcvImages.setAdapter(imagesAdapter);
                         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
                         binding.rcvImages.setLayoutManager(layoutManager);

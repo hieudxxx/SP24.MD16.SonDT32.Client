@@ -129,7 +129,7 @@ public class Helper {
             tv.setVisibility(View.VISIBLE);
             tv.setText("Không được chứa khoảng trắng");
             return false;
-        } else if (value.matches(".*[!@#$%^&*_+\\-=\\[\\]{};':\"\\\\|,.<>/?~-].*")) {
+        } else if (value.matches(".*[!@#$%^*_+\\-=\\[\\]{};':\"\\\\|,.<>/?~-].*")) {
             tv.setVisibility(View.VISIBLE);
             tv.setText("Không được chứa ký tự đặc biệt");
             return false;
@@ -308,14 +308,6 @@ public class Helper {
         });
     }
 
-    public static void openGallery(Context context) {
-        ImagePicker.with((Activity) context)
-                .crop()                    //Crop image(Optional), Check Customization for more option
-                .compress(1024)            //Final image size will be less than 1 MB(Optional)
-                .maxResultSize(1080, 1080)    //Final image resolution will be less than 1080 x 1080(Optional)
-                .start(10);
-    }
-
     public static <T> void onSort(Context context, ArrayList<T> list, RecyclerView.Adapter<?> adapter, Comparator<T> sortByAsc, Comparator<T> sortByAZ) {
         BotSheetSortBinding sortBinding = BotSheetSortBinding.inflate(LayoutInflater.from(context));
         sortBinding.rdGr.setOnCheckedChangeListener(((radioGroup, i) -> {
@@ -430,13 +422,22 @@ public class Helper {
         }
     }
 
-    public static void openAlbum(ActivityResultLauncher<Intent> resultLauncher){
+    public static void openAlbum(ActivityResultLauncher<Intent> resultLauncher) {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*");
         resultLauncher.launch(intent);
-
     }
 
+    public static void openGallery(Activity activity, ActivityResultLauncher<Intent> resultLauncher) {
+        ImagePicker.with(activity)
+                .crop()                    // Crop image (Optional), Check Customization for more option
+                .compress(1024)            // Final image size will be less than 1 MB (Optional)
+                .maxResultSize(1080, 1080) // Final image resolution will be less than 1080 x 1080 (Optional)
+                .createIntent(intent -> {
+                    resultLauncher.launch(intent);
+                    return null;
+                });
+    }
 
     public static MultipartBody.Part getRealPathFile(Context context, Uri uri) {
         MultipartBody.Part multipartBody;
@@ -447,14 +448,32 @@ public class Helper {
         return multipartBody;
     }
 
-    public static void onSetIntSpn(Context context, List<Integer> listString, Spinner spinner) {
-        ArrayAdapter<Integer> adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, listString);
+    public static void onSetIntSpn(Context context, List<Integer> listInt, Spinner spinner, int index) {
+        ArrayAdapter<Integer> adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, listInt);
         spinner.setAdapter(adapter);
+        int position = listInt.indexOf(index);
+        if (position != -1) {
+            // Nếu tìm thấy, thiết lập vị trí được chọn của Spinner
+            spinner.setSelection(position);
+        }
     }
 
-    public static void onSetStringSpn(Context context, List<String> listString, Spinner spinner) {
+    public static void onSetStringSpn(Context context, List<String> listString, Spinner spinner, String index) {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, listString);
         spinner.setAdapter(adapter);
+
+        int position = -1; // Khởi tạo vị trí không tìm thấy
+        for (int i = 0; i < listString.size(); i++) {
+            if (listString.get(i).equalsIgnoreCase(index)) {
+                position = i;
+                break; // Thoát vòng lặp khi tìm thấy
+            }
+        }
+
+        if (position != -1) {
+            // Nếu tìm thấy, thiết lập vị trí được chọn của Spinner
+            spinner.setSelection(position);
+        }
     }
 
 

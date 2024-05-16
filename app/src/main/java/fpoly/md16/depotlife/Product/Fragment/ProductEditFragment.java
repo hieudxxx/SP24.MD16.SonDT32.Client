@@ -1,6 +1,7 @@
 package fpoly.md16.depotlife.Product.Fragment;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -64,7 +65,20 @@ public class ProductEditFragment extends Fragment implements onItemRcvClick<Inte
     private MultipartBody.Part[] listMultipartBody;
     private List<Image> listImages;
     private int id_product;
-    ActivityResultLauncher<Intent> resultLauncher;
+    private ActivityResultLauncher<Intent> launcher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    uri = result.getData().getData();
+                    binding.imgProduct.setImageURI(uri);
+                }
+            }
+    );
+    private int zone;
+    private String shelf;
+    private int level;
+    private int positonItem;
+    private boolean isLocation = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -91,7 +105,6 @@ public class ProductEditFragment extends Fragment implements onItemRcvClick<Inte
 
                 getData();
 
-                registerResult();
                 binding.imgProduct.setOnClickListener(view14 -> {
                     onRequestPermission();
 
@@ -113,15 +126,13 @@ public class ProductEditFragment extends Fragment implements onItemRcvClick<Inte
                 binding.spnZone.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                        // Logic xử lý item được chọn
-                        int selectedItem = (Integer) ((Spinner) adapterView).getAdapter().getItem(position);
-
-                        ApiLocation.apiLocation.getShelf(token, selectedItem).enqueue(new Callback<List<String>>() {
+                        zone = (Integer) ((Spinner) adapterView).getAdapter().getItem(position);
+                        ApiLocation.apiLocation.getShelf(token, zone).enqueue(new Callback<List<String>>() {
                             @Override
                             public void onResponse(Call<List<String>> call, Response<List<String>> response) {
                                 if (response.isSuccessful()) {
                                     List<String> listShelf = response.body();
-                                    Helper.onSetStringSpn(getContext(), listShelf, binding.spnShelf);
+                                    Helper.onSetStringSpn(getContext(), listShelf, binding.spnShelf, product.getLocation().getShelf());
                                 }
                             }
 
@@ -142,13 +153,13 @@ public class ProductEditFragment extends Fragment implements onItemRcvClick<Inte
                 binding.spnShelf.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                        String selectedItem = (String) ((Spinner) adapterView).getAdapter().getItem(position);
-                        ApiLocation.apiLocation.getLevel(token, selectedItem).enqueue(new Callback<List<Integer>>() {
+                        shelf = (String) ((Spinner) adapterView).getAdapter().getItem(position);
+                        ApiLocation.apiLocation.getLevel(token, shelf).enqueue(new Callback<List<Integer>>() {
                             @Override
                             public void onResponse(Call<List<Integer>> call, Response<List<Integer>> response) {
                                 if (response.isSuccessful()) {
                                     List<Integer> listLevel = response.body();
-                                    Helper.onSetIntSpn(getContext(), listLevel, binding.spnLevel);
+                                    Helper.onSetIntSpn(getContext(), listLevel, binding.spnLevel, product.getLocation().getLevel());
                                 }
                             }
 
@@ -164,6 +175,31 @@ public class ProductEditFragment extends Fragment implements onItemRcvClick<Inte
                     public void onNothingSelected(AdapterView<?> adapterView) {
 
                     }
+                });
+
+                binding.spnLevel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                        level = (Integer) ((Spinner) adapterView).getAdapter().getItem(position);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+
+                binding.imgLocation.setOnClickListener(view15 -> {
+                    if (isLocation) {
+                        binding.imgLocation.setImageResource(R.drawable.edit_invoice);
+                        binding.layoutLocation.setVisibility(View.GONE);
+                        isLocation = !isLocation;
+                    } else {
+                        binding.imgLocation.setImageResource(R.drawable.delete_img_product);
+                        binding.layoutLocation.setVisibility(View.VISIBLE);
+                        isLocation = !isLocation;
+                    }
+                    Toast.makeText(context, ""+isLocation, Toast.LENGTH_SHORT).show();
                 });
 
                 binding.tvSave.setOnClickListener(view12 -> {
@@ -197,8 +233,9 @@ public class ProductEditFragment extends Fragment implements onItemRcvClick<Inte
                             if (uri != null)
                                 listMultipartBody = new MultipartBody.Part[]{Helper.getRealPathFile(getContext(), uri)};
 
-//                            if (img == null) img = product.getImg();
-                            if (pin_image == null) pin_image = "";
+                            if (pin_image == null)
+                                pin_image = listImages.get(positonItem).getName();
+
                             product = new Product(supplier.getId(), category.getId(), name, unit, Integer.parseInt(import_price), Integer.parseInt(export_price));
                             onEditProduct(product);
                         } else {
@@ -211,30 +248,14 @@ public class ProductEditFragment extends Fragment implements onItemRcvClick<Inte
         }
     }
 
-    private void registerResult() {
-        resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    try {
-                        uri = result.getData().getData();
-                        binding.imgProduct.setImageURI(uri);
-                    } catch (Exception e) {
-                        Toast.makeText(context, "err", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
-
-
     private void onRequestPermission() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-//            Helper.openGallery(getContext());
-            Helper.openAlbum(resultLauncher);
+            Helper.openGallery(getActivity(), launcher);
             return;
         }
         if (getActivity().checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            Helper.openAlbum(resultLauncher);
-        }
-//            Helper.openGallery(getContext());
-        else {
+            Helper.openGallery(getActivity(), launcher);
+        } else {
             String permission = (Manifest.permission.READ_EXTERNAL_STORAGE);
             requestPermissions(new String[]{permission}, 10);
         }
@@ -245,25 +266,17 @@ public class ProductEditFragment extends Fragment implements onItemRcvClick<Inte
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 10) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                Helper.openGallery(getContext());
-                Helper.openAlbum(resultLauncher);
+                Helper.openGallery(getActivity(), launcher);
             }
         }
     }
 
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == 10 && resultCode == getActivity().RESULT_OK) {
-//            Uri uri = data.getData();
-//            binding.imgProduct.setImageURI(uri);
-//        }
-//
-////        Toast.makeText(context, "" + uri, Toast.LENGTH_SHORT).show();
-//        Log.d("tag_kiemTra", "onActivityResult: aaaaaaaaaaaaaaaaaaaaaa");
-//    }
-
     private void onEditProduct(Product product) {
+        if (!isLocation) {
+            zone = -1;
+            shelf = " ";
+            level = -1;
+        }
         ApiProduct.apiProduct.update(token, id_product,
                 Helper.createStringPart(product.getProduct_name()),
                 Helper.createIntPart(product.getExport_price()),
@@ -271,6 +284,9 @@ public class ProductEditFragment extends Fragment implements onItemRcvClick<Inte
                 Helper.createStringPart(product.getUnit()),
                 Helper.createIntPart(product.getSupplier_id()),
                 Helper.createIntPart(product.getCategory_id()),
+                Helper.createIntPart(zone),
+                Helper.createStringPart(shelf),
+                Helper.createIntPart(level),
                 Helper.createStringPart(pin_image),
                 listMultipartBody).enqueue(new Callback<List<String>>() {
             @Override
@@ -304,7 +320,7 @@ public class ProductEditFragment extends Fragment implements onItemRcvClick<Inte
 
         Helper.setImgProduct(product.getImg(), binding.imgProduct);
 
-        ProductImagesAdapter imagesAdapter = new ProductImagesAdapter(getContext(), listImages, ProductEditFragment.this, token);
+        ProductImagesAdapter imagesAdapter = new ProductImagesAdapter(getContext(), listImages, ProductEditFragment.this, token, true);
         binding.rcvImages.setAdapter(imagesAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
         binding.rcvImages.setLayoutManager(layoutManager);
@@ -314,7 +330,7 @@ public class ProductEditFragment extends Fragment implements onItemRcvClick<Inte
             public void onResponse(Call<List<Integer>> call, Response<List<Integer>> response) {
                 if (response.isSuccessful()) {
                     List<Integer> listZone = response.body();
-                    Helper.onSetIntSpn(getContext(), listZone, binding.spnZone);
+                    Helper.onSetIntSpn(getContext(), listZone, binding.spnZone, product.getLocation().getZone());
                 }
             }
 
@@ -350,6 +366,7 @@ public class ProductEditFragment extends Fragment implements onItemRcvClick<Inte
     public void onClick(Integer position) {
         if (position > -1) {
             pin_image = listImages.get(position).getName();
+            positonItem = position;
             Picasso.get().load(API.URL_IMG + listImages.get(position).getPath().replace("public", "")).into(binding.imgProduct);
         }
     }
