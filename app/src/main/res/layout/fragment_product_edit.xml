@@ -197,10 +197,6 @@
                 style="@style/custom_line"
                 android:layout_marginLeft="110dp" />
 
-            <View
-                style="@style/custom_line"
-                android:layout_marginLeft="110dp" />
-
             <LinearLayout
                 style="@style/custom_tv_supplier"
                 android:paddingVertical="0dp"
@@ -221,6 +217,10 @@
                     android:backgroundTint="@color/white" />
             </LinearLayout>
 
+            <View
+                style="@style/custom_line"
+                android:layout_marginLeft="110dp" />
+
             <TextView
                 android:id="@+id/tv_war_unit"
                 style="@style/custom_tv_warning" />
@@ -238,41 +238,58 @@
                     style="@style/custom_tv_title"
                     android:layout_width="0dp"
                     android:layout_weight="2" />
+
+                <ImageView
+                    android:id="@+id/imgLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/edit_invoice"
+                    android:text="Sửa vị trí" />
             </LinearLayout>
 
             <View
                 style="@style/custom_line"
                 android:layout_marginLeft="110dp" />
 
-            <LinearLayout style="@style/custom_tv_supplier">
-
-                <TextView
-                    style="@style/custom_tv_title"
-                    android:layout_width="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Vị trí mới: " />
-            </LinearLayout>
-
             <LinearLayout
-                style="@style/custom_tv_supplier"
-                android:gravity="center">
+                android:visibility="gone"
+                android:id="@+id/layout_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <Spinner
-                    
-                    android:id="@+id/spn_zone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                <LinearLayout
+                    style="@style/custom_tv_supplier"
+                    android:layout_gravity="center_horizontal">
 
-                <Spinner
-                    android:id="@+id/spn_shelf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    <TextView
+                        style="@style/custom_tv_title"
+                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Vị trí mới: " />
+                </LinearLayout>
 
-                <Spinner
-                    android:id="@+id/spn_level"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                <LinearLayout
+                    style="@style/custom_tv_supplier"
+                    android:gravity="center">
+
+                    <Spinner
+                        android:id="@+id/spn_zone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <Spinner
+                        android:id="@+id/spn_shelf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <Spinner
+                        android:id="@+id/spn_level"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
             </LinearLayout>
+
 
         </LinearLayout>
 

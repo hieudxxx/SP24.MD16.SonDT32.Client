@@ -36,6 +36,9 @@ public interface ApiProduct {
                               @Part("unit") RequestBody unit,
                               @Part("supplier_id") RequestBody supplier_id,
                               @Part("categories_id") RequestBody categories_id,
+                              @Part("zone") RequestBody zone,
+                              @Part("shelf") RequestBody shelf,
+                              @Part("level") RequestBody level,
                               @Part("pin_image") RequestBody pin_image,
                               @Part MultipartBody.Part[] images
     );
@@ -49,6 +52,9 @@ public interface ApiProduct {
                       @Part("unit") RequestBody unit,
                       @Part("supplier_id") RequestBody supplier_id,
                       @Part("categories_id") RequestBody categories_id,
+                      @Part("zone") RequestBody zone,
+                      @Part("shelf") RequestBody shelf,
+                      @Part("level") RequestBody level,
                       @Part MultipartBody.Part[] images
     );
 

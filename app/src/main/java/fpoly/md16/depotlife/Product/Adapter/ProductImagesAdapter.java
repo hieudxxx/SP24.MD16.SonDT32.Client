@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
@@ -31,12 +32,14 @@ public class ProductImagesAdapter extends RecyclerView.Adapter<ProductImagesAdap
     private List<Image> list;
     private onItemRcvClick onItemRcvClick;
     private String token;
+    private boolean type;
 
-    public ProductImagesAdapter(Context context, List<Image> list, onItemRcvClick onItemRcvClick, String token) {
+    public ProductImagesAdapter(Context context, List<Image> list, onItemRcvClick onItemRcvClick, String token, boolean type) {
         this.context = context;
         this.list = new ArrayList<>(list);
         this.onItemRcvClick = onItemRcvClick;
         this.token = token;
+        this.type = type;
     }
 
     @NonNull
@@ -48,9 +51,16 @@ public class ProductImagesAdapter extends RecyclerView.Adapter<ProductImagesAdap
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        if (list.get(position).getIs_pined() == 1)
+
+        if (!type) holder.binding.imgDelete.setVisibility(View.GONE);
+        else holder.binding.imgDelete.setVisibility(View.VISIBLE);
+
+        if (list.get(position).getIs_pined() == 1) {
             holder.binding.imgProduct.setStrokeColor(ColorStateList.valueOf(Color.GRAY));
-        else holder.binding.imgProduct.setStrokeColor(ColorStateList.valueOf(Color.TRANSPARENT));
+            if (onItemRcvClick != null) {
+                onItemRcvClick.onClick(position);
+            }
+        } else holder.binding.imgProduct.setStrokeColor(ColorStateList.valueOf(Color.TRANSPARENT));
 
         Picasso.get().load(API.URL_IMG + list.get(position).getPath().replace("public", "")).into(holder.binding.imgProduct);
 

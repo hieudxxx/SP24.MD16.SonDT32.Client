@@ -15,7 +15,6 @@ public interface ApiLocation {
     Call<List<Integer>> getZone(@Header("Authorization") String authToken);
     @GET("location/get-shelf")
     Call<List<String>> getShelf(@Header("Authorization") String authToken, @Query("zone") int zone);
-
     @GET("location/get-level")
     Call<List<Integer>> getLevel(@Header("Authorization") String authToken, @Query("shelf") String shelf);
 }
