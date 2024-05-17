@@ -62,15 +62,15 @@ public class InvoiceDetailFragment extends Fragment {
         if (bundle != null) {
             invoice = (Invoice) bundle.getSerializable("invoice");
             if (invoice != null) {
-                if (invoice.getStatus() == 0) {
-                    binding.tvStatusInvoice.setText("Phiếu tạm");
-                    binding.tvStatusInvoice.setTextColor(Color.YELLOW);
-                    binding.imgEditDetail.setVisibility(View.VISIBLE);
-                } else {
-                    binding.tvStatusInvoice.setText("Hoàn thành");
-                    binding.tvStatusInvoice.setTextColor(Color.BLACK);
-                    binding.imgEditDetail.setVisibility(View.GONE);
-                }
+//                if (invoice.getStatus() == 0) {
+//                    binding.tvStatusInvoice.setText("Phiếu tạm");
+//                    binding.tvStatusInvoice.setTextColor(Color.YELLOW);
+//                    binding.imgEditDetail.setVisibility(View.VISIBLE);
+//                } else {
+//                    binding.tvStatusInvoice.setText("Hoàn thành");
+//                    binding.tvStatusInvoice.setTextColor(Color.BLACK);
+//                    binding.imgEditDetail.setVisibility(View.GONE);
+//                }
 
                 binding.imgEditDetail.setOnClickListener(view12 -> {
                     bundle = new Bundle();

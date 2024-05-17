@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="5dp"
+    android:background="@color/white"
+    android:layout_marginTop="5dp"
+    android:weightSum="10">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="8"
+        android:orientation="vertical"
+        android:paddingRight="5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/cbxProduct"
+                android:layout_width="20dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_gravity="center"
+                android:layout_height="20dp"/>
+
+            <TextView
+                android:id="@+id/tv_name"
+                style="@style/custom_tv_product_name"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:text="@string/bottom_sheet_behavior" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvSupplier"
+            style="@style/custom_tv_product_sold"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="Công ty Cổ phần phát triển công nghệ thực phẩm Nam An"
+            android:textSize="12sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <TextView
+                style="@style/custom_tv_product_sold"
+                android:layout_weight="0.5"
+                android:maxLines="2"
+                android:textSize="12sp"
+                android:text="Loại:" />
+
+            <TextView
+                android:id="@+id/tvCategories"
+                style="@style/custom_tv_product_sold"
+                android:layout_weight="4"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textSize="12sp"
+                android:text="Tinh bột ngô" />
+
+            <TextView
+                style="@style/custom_tv_product_sold"
+                android:layout_weight="0.5"
+                android:maxLines="2"
+                android:textSize="12sp"
+                android:text="Tồn kho:" />
+
+            <TextView
+                android:id="@+id/tvInventory"
+                style="@style/custom_tv_product_sold"
+                android:layout_weight="5"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textSize="12sp"
+                android:text="1000" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <TextView
+                style="@style/custom_tv_product_sold"
+                android:layout_weight="0.5"
+                android:maxLines="2"
+                android:textSize="12sp"
+                android:text="Giá bán:" />
+
+            <TextView
+                android:id="@+id/tvExportPrice"
+                style="@style/custom_tv_product_sold"
+                android:layout_weight="5"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textSize="12sp"
+                android:text="5000000" />
+
+            <TextView
+                style="@style/custom_tv_product_sold"
+                android:layout_weight="0.5"
+                android:maxLines="2"
+                android:textSize="12sp"
+                android:text="Giá nhập:" />
+
+            <TextView
+                android:id="@+id/tvImportPrice"
+                style="@style/custom_tv_product_sold"
+                android:layout_weight="4"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textSize="12sp"
+                android:text="1000000" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:weightSum="10"
+        android:orientation="vertical">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_weight="9"
+            android:id="@+id/img"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/app_icon"
+            app:shapeAppearanceOverlay="@style/custom_shape_img"
+            app:strokeColor="@color/bgr_screen"
+            app:strokeWidth="2dp" />
+
+        <TextView
+            android:gravity="center"
+            android:layout_weight="1"
+            android:id="@+id/tvLocation"
+            style="@style/custom_tv_product_sold"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textSize="10sp"
+            android:text="Không có vị trí" />
+
+    </LinearLayout>
+
+</LinearLayout>

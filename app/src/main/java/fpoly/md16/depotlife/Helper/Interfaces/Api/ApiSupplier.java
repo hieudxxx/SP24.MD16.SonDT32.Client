@@ -2,7 +2,10 @@ package fpoly.md16.depotlife.Helper.Interfaces.Api;
 
 import static fpoly.md16.depotlife.Helper.Interfaces.Api.RetrofitRequest.getRetrofit;
 
+import com.google.android.gms.common.internal.safeparcel.SafeParcelable;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import fpoly.md16.depotlife.Product.Model.Product;
 import fpoly.md16.depotlife.Product.Model.ProductResponse;
@@ -35,5 +38,8 @@ public interface ApiSupplier {
 
     @POST("suppliers/create")
     Call<Supplier> create(@Header("Authorization") String authToken, @Body Supplier data);
+
+    @GET("suppliers/search")
+    Call<List<Supplier>> getDataSearch(@Header("Authorization") String authToken, @Query("keyword") String keyword);
 
 }
