@@ -9,7 +9,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import fpoly.md16.depotlife.Helper.Helper;
@@ -22,7 +21,6 @@ import retrofit2.Response;
 
 public class SupplierAddFragment extends Fragment {
     private FragmentSupplierAddBinding binding;
-
     private String token;
 
     @Override
@@ -36,12 +34,9 @@ public class SupplierAddFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ((AppCompatActivity) getActivity()).setSupportActionBar(binding.tbAccount);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
-
         binding.imgBack.setOnClickListener(view1 -> requireActivity().getSupportFragmentManager().popBackStack());
 
-        token = "Bearer " + (String) Helper.getSharedPre(getContext(), "token", String.class);
+        token = "Bearer " + Helper.getSharedPre(getContext(), "token", String.class);
 
         binding.tvSave.setOnClickListener(view12 -> {
             String name = binding.edtName.getText().toString().trim();
@@ -69,12 +64,9 @@ public class SupplierAddFragment extends Fragment {
                     sup.setTax_code(taxCode);
 //                    sup.setTotal(0);
                     sup.setStatus(1);
-                    Log.d("tag_kiemTra", "onResponse: " + sup.toString());
                     ApiSupplier.apiSupplier.create(token, sup).enqueue(new Callback<Supplier>() {
                         @Override
                         public void onResponse(Call<Supplier> call, Response<Supplier> response) {
-                            Log.d("tag_kiemTra", "onResponse: " + response.code());
-                            Log.d("tag_kiemTra", "onResponse: " + response);
                             if (response.isSuccessful()) {
                                 Toast.makeText(getContext(), "Thêm ncc thành công", Toast.LENGTH_SHORT).show();
                                 SupplierFragment.isLoadData = true;

@@ -50,8 +50,6 @@ public class SupplierAdapter extends RecyclerView.Adapter<SupplierAdapter.ViewHo
 
         holder.binding.tvStatus.setText(list.get(position).getStatus() == 1 ? "Đang hợp tác" : "Đã ngừng hợp tác");
 
-//        holder.binding.tvTotal.setText(Helper.formatVND(list.get(position).getTotal()));
-
         holder.itemView.setOnClickListener(view -> {
             Bundle bundle = new Bundle();
             bundle.putSerializable("supplier", list.get(holder.getAdapterPosition()));

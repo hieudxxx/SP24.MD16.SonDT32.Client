@@ -9,7 +9,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -52,9 +51,6 @@ public class SupplierListSelectFragment extends Fragment implements onItemRcvCli
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ((AppCompatActivity) getActivity()).setSupportActionBar(binding.tbSupplier);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
-
         binding.imgAddSupplider.setOnClickListener(view1 -> {
             Helper.loadFragment(getParentFragmentManager(), new SupplierAddFragment(), null, R.id.frag_container_product);
         });
@@ -63,7 +59,7 @@ public class SupplierListSelectFragment extends Fragment implements onItemRcvCli
             requireActivity().getSupportFragmentManager().popBackStack();
         });
 
-        token = "Bearer " + (String) Helper.getSharedPre(getContext(), "token", String.class);
+        token = "Bearer " + Helper.getSharedPre(getContext(), "token", String.class);
         list = new ArrayList<>();
 
         getData();
@@ -84,7 +80,6 @@ public class SupplierListSelectFragment extends Fragment implements onItemRcvCli
             ShareViewModel viewModel = new ViewModelProvider(requireActivity()).get(ShareViewModel.class);
             viewModel.select(supplierSelected);
             requireActivity().getSupportFragmentManager().popBackStack();
-
         });
     }
 
