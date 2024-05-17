@@ -41,8 +41,6 @@ public class Product implements Serializable {
     @SerializedName("location")
     private Location location;
 
-
-
     public static Comparator<Product> sortByAsc = (t1, t2) -> (int) (t1.getExport_price() - t2.getExport_price());
 
     public static Comparator<Product> sortByNameAZ = (t1, t2) -> t1.getProduct_name().compareTo(t2.getProduct_name());
@@ -66,6 +64,7 @@ public class Product implements Serializable {
         this.img = img;
         this.location = location;
     }
+
 
     public Product(int supplier_id, int category_id, String product_name, String unit, int import_price, int export_price) {
         this.supplier_id = supplier_id;

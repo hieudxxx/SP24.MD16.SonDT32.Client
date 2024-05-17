@@ -6,10 +6,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -20,14 +23,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,6 +45,8 @@ import com.google.android.material.imageview.ShapeableImageView;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -45,6 +54,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -119,7 +129,7 @@ public class Helper {
             tv.setVisibility(View.VISIBLE);
             tv.setText("Không được chứa khoảng trắng");
             return false;
-        } else if (value.matches(".*[!@#$%^&*_+\\-=\\[\\]{};':\"\\\\|,.<>/?~-].*")) {
+        } else if (value.matches(".*[!@#$%^*_+\\-=\\[\\]{};':\"\\\\|,.<>/?~-].*")) {
             tv.setVisibility(View.VISIBLE);
             tv.setText("Không được chứa ký tự đặc biệt");
             return false;
@@ -298,14 +308,6 @@ public class Helper {
         });
     }
 
-    public static void openGallery(Context context) {
-        ImagePicker.with((Activity) context)
-                .crop()                    //Crop image(Optional), Check Customization for more option
-                .compress(1024)            //Final image size will be less than 1 MB(Optional)
-                .maxResultSize(1080, 1080)    //Final image resolution will be less than 1080 x 1080(Optional)
-                .start();
-    }
-
     public static <T> void onSort(Context context, ArrayList<T> list, RecyclerView.Adapter<?> adapter, Comparator<T> sortByAsc, Comparator<T> sortByAZ) {
         BotSheetSortBinding sortBinding = BotSheetSortBinding.inflate(LayoutInflater.from(context));
         sortBinding.rdGr.setOnCheckedChangeListener(((radioGroup, i) -> {
@@ -386,7 +388,7 @@ public class Helper {
                 Picasso.get().load(API.URL_IMG + url[0].getPath().replaceFirst("public", "")).into(img);
             } else {
                 for (int i = 0; i < url.length; i++) {
-                    if (url[i].getIs_pined() == 1){
+                    if (url[i].getIs_pined() == 1) {
                         Picasso.get().load(API.URL_IMG + url[i].getPath().replaceFirst("public", "")).into(img);
                     }
                 }
@@ -394,6 +396,48 @@ public class Helper {
         }
     }
 
+    private Uri saveImageToStorage(Bitmap bitmap, Context context) {
+        String fileName = "camera_image_" + System.currentTimeMillis() + ".jpg";
+        File storageDir = new File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "YourFolderName");
+
+        boolean success = true;
+        if (!storageDir.exists()) {
+            success = storageDir.mkdirs();
+        }
+
+        File imageFile = new File(storageDir, fileName);
+        try {
+            FileOutputStream fos = new FileOutputStream(imageFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            success = false;
+        }
+
+        if (success) {
+            return FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", imageFile);
+        } else {
+            return null;
+        }
+    }
+
+    public static void openAlbum(ActivityResultLauncher<Intent> resultLauncher) {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.setType("image/*");
+        resultLauncher.launch(intent);
+    }
+
+    public static void openGallery(Activity activity, ActivityResultLauncher<Intent> resultLauncher) {
+        ImagePicker.with(activity)
+                .crop()                    // Crop image (Optional), Check Customization for more option
+                .compress(1024)            // Final image size will be less than 1 MB (Optional)
+                .maxResultSize(1080, 1080) // Final image resolution will be less than 1080 x 1080 (Optional)
+                .createIntent(intent -> {
+                    resultLauncher.launch(intent);
+                    return null;
+                });
+    }
 
     public static MultipartBody.Part getRealPathFile(Context context, Uri uri) {
         MultipartBody.Part multipartBody;
@@ -402,6 +446,34 @@ public class Helper {
         RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         multipartBody = MultipartBody.Part.createFormData("images[]", file.getName(), requestBody);
         return multipartBody;
+    }
+
+    public static void onSetIntSpn(Context context, List<Integer> listInt, Spinner spinner, int index) {
+        ArrayAdapter<Integer> adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, listInt);
+        spinner.setAdapter(adapter);
+        int position = listInt.indexOf(index);
+        if (position != -1) {
+            // Nếu tìm thấy, thiết lập vị trí được chọn của Spinner
+            spinner.setSelection(position);
+        }
+    }
+
+    public static void onSetStringSpn(Context context, List<String> listString, Spinner spinner, String index) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, listString);
+        spinner.setAdapter(adapter);
+
+        int position = -1; // Khởi tạo vị trí không tìm thấy
+        for (int i = 0; i < listString.size(); i++) {
+            if (listString.get(i).equalsIgnoreCase(index)) {
+                position = i;
+                break; // Thoát vòng lặp khi tìm thấy
+            }
+        }
+
+        if (position != -1) {
+            // Nếu tìm thấy, thiết lập vị trí được chọn của Spinner
+            spinner.setSelection(position);
+        }
     }
 
 
