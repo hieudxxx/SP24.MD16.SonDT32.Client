@@ -35,9 +35,7 @@ public class SupplierDetailFragment extends Fragment {
     private Bundle bundle;
     private Supplier supplier;
     private int id_supplier;
-
     private String token;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,7 +48,7 @@ public class SupplierDetailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        token = (String) Helper.getSharedPre(getContext(), "token", String.class);
+        token = "Bearer " + Helper.getSharedPre(getContext(), "token", String.class);
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(binding.tbSupplier);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -67,7 +65,7 @@ public class SupplierDetailFragment extends Fragment {
             supplier = (Supplier) bundle.getSerializable("supplier");
             id_supplier = supplier.getId();
             if (id_supplier > 0) {
-                ApiSupplier.apiSupplier.getSupplier("Bearer " + token, supplier.getId()).enqueue(new Callback<Supplier>() {
+                ApiSupplier.apiSupplier.getSupplier(token, supplier.getId()).enqueue(new Callback<Supplier>() {
                     @Override
                     public void onResponse(Call<Supplier> call, Response<Supplier> response) {
 
@@ -129,7 +127,6 @@ public class SupplierDetailFragment extends Fragment {
             item_inactive.setTitle("Hợp tác");
         }
     }
-
 
 
 }

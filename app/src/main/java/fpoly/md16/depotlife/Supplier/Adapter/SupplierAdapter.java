@@ -3,11 +3,8 @@ package fpoly.md16.depotlife.Supplier.Adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
@@ -73,7 +70,6 @@ public class SupplierAdapter extends RecyclerView.Adapter<SupplierAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ItemSupplierBinding binding;
-
         public ViewHolder(@NonNull ItemSupplierBinding binding) {
             super(binding.getRoot());
             this.binding = binding;

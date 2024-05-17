@@ -1,6 +1,5 @@
 package fpoly.md16.depotlife.Supplier.Fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,7 +12,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,14 +19,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiSupplier;
-import fpoly.md16.depotlife.Product.Adapter.ProductAdapter;
-import fpoly.md16.depotlife.Product.Model.Product;
-import fpoly.md16.depotlife.Product.Model.ProductResponse;
-import fpoly.md16.depotlife.Product.ProductFilterActivity;
 import fpoly.md16.depotlife.R;
 import fpoly.md16.depotlife.Supplier.Adapter.SupplierAdapter;
 import fpoly.md16.depotlife.Supplier.Model.Supplier;
@@ -63,9 +56,6 @@ public class SupplierFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
 
-        ((AppCompatActivity) getActivity()).setSupportActionBar(binding.tbSupplier);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
-
         binding.btnBack.setOnClickListener(view1 -> {
             requireActivity().finish();
         });
@@ -74,7 +64,7 @@ public class SupplierFragment extends Fragment {
             Helper.loadFragment(getParentFragmentManager(), new SupplierAddFragment(), null, R.id.frag_container_supplier);
         });
 
-        token = (String) Helper.getSharedPre(getContext(), "token", String.class);
+        token = "Bearer " + Helper.getSharedPre(getContext(), "token", String.class);
 
         list = new ArrayList<>();
         LinearLayoutManager manager = new LinearLayoutManager(view.getContext());
@@ -96,19 +86,16 @@ public class SupplierFragment extends Fragment {
     }
 
     private void getData() {
-        ApiSupplier.apiSupplier.getData("Bearer " + token, pageIndex).enqueue(new Callback<SupplierResponse>() {
+        ApiSupplier.apiSupplier.getData(token, pageIndex).enqueue(new Callback<SupplierResponse>() {
             @Override
             public void onResponse(Call<SupplierResponse> call, Response<SupplierResponse> response) {
-                Log.d("onResponse_supplier", "response_code: " + response.code());
                 if (response.isSuccessful()) {
                     supplierResponse = response.body();
                     if (supplierResponse != null) {
-                        Log.d("TAGGGGG", "onResponse: "+supplierResponse);
                         binding.tvTotalInvoice.setText(supplierResponse.getTotal()+"");
                         perPage = supplierResponse.getLast_page();
                         onCheckList(supplierResponse);
                     }
-//
                 } else {
                     try {
                         String errorBody = response.errorBody().string();
@@ -131,8 +118,7 @@ public class SupplierFragment extends Fragment {
 
     private void onCheckList(SupplierResponse supplierResponse) {
         if (supplierResponse.getData() != null) {
-            List<Supplier> tempList = Arrays.asList(supplierResponse.getData()); // hoặc có thể dùng foreach để check từng item
-            list.addAll(tempList);
+            list.addAll(Arrays.asList(supplierResponse.getData()));
             binding.rcv.setVisibility(View.VISIBLE);
             binding.layoutTotal.setVisibility(View.VISIBLE);
             binding.tvEmpty.setVisibility(View.GONE);
