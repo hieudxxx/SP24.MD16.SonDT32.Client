@@ -126,7 +126,7 @@ public class SupplierDetailFragment extends Fragment {
         if (supplier.getStatus() == 0) {
             item_inactive.setTitle("Ngừng hợp tác");
         } else {
-            item_inactive.setTitle("Tái hợp tác");
+            item_inactive.setTitle("Hợp tác");
         }
     }
 

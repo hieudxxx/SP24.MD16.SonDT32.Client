@@ -103,6 +103,7 @@ public class SupplierFragment extends Fragment {
                 if (response.isSuccessful()) {
                     supplierResponse = response.body();
                     if (supplierResponse != null) {
+                        Log.d("TAGGGGG", "onResponse: "+supplierResponse);
                         binding.tvTotalInvoice.setText(supplierResponse.getTotal()+"");
                         perPage = supplierResponse.getLast_page();
                         onCheckList(supplierResponse);
@@ -156,23 +157,23 @@ public class SupplierFragment extends Fragment {
         inflater.inflate(R.menu.toolbar_menu, menu);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.item_search) {
-            Helper.onSearch(item, adapter);
-            return true;
-        } else if (id == R.id.item_sort) {
-            Helper.onSort(getContext(), list, adapter, Supplier.sortByAsc, Supplier.sortByNameAZ);
-            return true;
-        } else if (id == R.id.item_filter) {
-//            Intent intent = new Intent(getActivity(), ProductFilterActivity.class);
-//            startActivity(intent);
-            return true;
-        } else {
-            return super.onOptionsItemSelected(item);
-        }
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        int id = item.getItemId();
+//        if (id == R.id.item_search) {
+//            Helper.onSearch(item, adapter);
+//            return true;
+//        } else if (id == R.id.item_sort) {
+//            Helper.onSort(getContext(), list, adapter, Supplier.sortByAsc, Supplier.sortByNameAZ);
+//            return true;
+//        } else if (id == R.id.item_filter) {
+////            Intent intent = new Intent(getActivity(), ProductFilterActivity.class);
+////            startActivity(intent);
+//            return true;
+//        } else {
+//            return super.onOptionsItemSelected(item);
+//        }
+//    }
 
     private void onFilter() {
         BotSheetFilterSupplierBinding filterBinding = BotSheetFilterSupplierBinding.inflate(LayoutInflater.from(getActivity()));

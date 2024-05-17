@@ -1,40 +1,34 @@
-package fpoly.md16.depotlife.Supplier.Adapter;
+package fpoly.md16.depotlife.Invoice.Adapter;
 
-import android.content.Context;
 import android.graphics.Color;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import fpoly.md16.depotlife.Helper.Helper;
-import fpoly.md16.depotlife.R;
-import fpoly.md16.depotlife.Supplier.Fragment.SupplierDetailFragment;
 import fpoly.md16.depotlife.Supplier.Model.Supplier;
 import fpoly.md16.depotlife.databinding.ItemSupplierBinding;
 
-public class SupplierAdapter extends RecyclerView.Adapter<SupplierAdapter.ViewHolder> {
-    private Context context;
+public class DialogSupplierAdapter extends RecyclerView.Adapter<DialogSupplierAdapter.ViewHolder> {
     private ArrayList<Supplier> list;
-    private FragmentManager fragmentManager;
 
+    private InterClickItemData interClickItemData;
+
+    public interface InterClickItemData {
+        void chooseItem(Supplier supplier);
+    }
     public void setData(List<Supplier> list) {
         this.list = (ArrayList<Supplier>) list;
         notifyDataSetChanged();
     }
 
-    public SupplierAdapter(Context context, FragmentManager fragmentManager) {
-        this.context = context;
-        this.fragmentManager = fragmentManager;
+
+    public DialogSupplierAdapter(InterClickItemData interClickItemData) {
+        this.interClickItemData = interClickItemData;
     }
 
     @NonNull
@@ -57,9 +51,7 @@ public class SupplierAdapter extends RecyclerView.Adapter<SupplierAdapter.ViewHo
         holder.binding.tvTotalMoney.setText(String.valueOf(list.get(position).getTotal()));
 
         holder.itemView.setOnClickListener(view -> {
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("supplier", list.get(holder.getAdapterPosition()));
-            Helper.loadFragment(fragmentManager, new SupplierDetailFragment(), bundle, R.id.frag_container_supplier);
+            interClickItemData.chooseItem(list.get(position));
         });
     }
 
