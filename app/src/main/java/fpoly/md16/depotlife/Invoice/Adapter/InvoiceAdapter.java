@@ -48,29 +48,29 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.InvoiceV
     @Override
     public void onBindViewHolder(@NonNull InvoiceViewHolder holder, int position) {
 
-        holder.binding.tvIdInvoice.setText(list.get(position).getId() + "");
-        if (list.get(position).getStatus() == 0) {
-            holder.binding.tvStatusInvoice.setText("Phiếu tạm");
-            holder.binding.tvStatusInvoice.setTextColor(Color.YELLOW);
-        } else {
-            holder.binding.tvStatusInvoice.setText("Hoàn thành");
-            holder.binding.tvStatusInvoice.setTextColor(Color.GRAY);
-        }
-        holder.binding.tvIdUserInvoice.setText(list.get(position).getUser_id() + "");
-        holder.binding.tvDateCreated.setText(list.get(position).getDate_created());
-        if (list.get(position).getType() == 0) {
-            holder.binding.tvTypeInvoice.setText("Phiếu nhập");
-        } else {
-            holder.binding.tvTypeInvoice.setText("Phiếu xuất");
-        }
-        holder.binding.tvTotalInvoice.setText(String.valueOf(list.get(position).getTotal()));
-        holder.binding.tvTotalInvoice.setText(Helper.formatVND(list.get(position).getTotal()));
-        holder.binding.tvTotalInvoice.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.tv_blue_bold));
-        holder.itemView.setOnClickListener(view -> {
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("invoice",list.get(holder.getAdapterPosition()));
-            context.startActivity(new Intent(context, InvoiceActivity.class).putExtras(bundle));
-        });
+//        holder.binding.tvIdInvoice.setText(list.get(position).getId() + "");
+//        if (list.get(position).getStatusPayment() == 0) {
+//            holder.binding.tvStatusInvoice.setText("Phiếu tạm");
+//            holder.binding.tvStatusInvoice.setTextColor(Color.YELLOW);
+//        } else {
+//            holder.binding.tvStatusInvoice.setText("Hoàn thành");
+//            holder.binding.tvStatusInvoice.setTextColor(Color.GRAY);
+//        }
+//        holder.binding.tvIdUserInvoice.setText(list.get(position).getUser_id() + "");
+//        holder.binding.tvDateCreated.setText(list.get(position).getDate_created());
+//        if (list.get(position).getType() == 0) {
+//            holder.binding.tvTypeInvoice.setText("Phiếu nhập");
+//        } else {
+//            holder.binding.tvTypeInvoice.setText("Phiếu xuất");
+//        }
+//        holder.binding.tvTotalInvoice.setText(String.valueOf(list.get(position).getTotal()));
+//        holder.binding.tvTotalInvoice.setText(Helper.formatVND(list.get(position).getTotal()));
+//        holder.binding.tvTotalInvoice.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.tv_blue_bold));
+//        holder.itemView.setOnClickListener(view -> {
+//            Bundle bundle = new Bundle();
+//            bundle.putSerializable("invoice",list.get(holder.getAdapterPosition()));
+//            context.startActivity(new Intent(context, InvoiceActivity.class).putExtras(bundle));
+//        });
 
 //        Double totalBill = invoice.getTotal_bill();
 //        Locale locale = new Locale("vi", "VN");

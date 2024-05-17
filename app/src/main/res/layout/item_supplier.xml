@@ -1,47 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_marginVertical="5dp"
+    android:paddingHorizontal="5dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     android:orientation="vertical"
     android:padding="5dp">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/tv_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_gravity="center"
+        android:fontFamily="@font/nunito_bold"
+        android:text="Công ty Cổ phần thời trang Việt danh"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="10">
 
         <TextView
-            android:id="@+id/tv_name"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:fontFamily="@font/nunito_semibold"
-            android:text="Công ty Cổ phần thời trang Việt danh"
+            android:text="SĐT:"
+            android:textColor="#838383"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="6"
+            android:fontFamily="@font/nunito_semibold"
+            android:text="0973967774"
             android:textColor="@color/black"
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/tv_total"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:fontFamily="@font/nunito_bold"
-            android:gravity="end"
-            android:text="0973967774"
+            android:fontFamily="@font/nunito_semibold"
+            android:text="TAX:"
+            android:textColor="#838383"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_tax"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="2"
+            android:fontFamily="@font/nunito_semibold"
+            android:text="0123456789"
             android:textColor="@color/black"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
+
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_status"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/nunito_semibold"
-        android:text="Đã ngừng hợp tác"
-        android:textColor="@color/gray60"
-        android:textSize="18sp" />
+        android:weightSum="10"
+        android:orientation="horizontal">
 
-    <View style="@style/custom_line" />
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/nunito_semibold"
+            android:text="Tổng nhập:"
+            android:textColor="#838383"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_weight="7"
+            android:id="@+id/tv_totalMoney"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/nunito_semibold"
+            android:text="0123456789"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_weight="2"
+            android:id="@+id/tvStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/nunito_semibold"
+            android:text="0123456789"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
 </LinearLayout>

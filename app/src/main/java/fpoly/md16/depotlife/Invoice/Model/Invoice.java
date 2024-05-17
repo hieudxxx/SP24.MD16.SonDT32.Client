@@ -17,94 +17,50 @@ public class Invoice implements Serializable {
     private int id;
     @SerializedName("user_id")
     private int user_id;
+    @SerializedName("total_amount")
+    private long totalAmount;
+    @SerializedName("invoice_type")
+    private int invoiceType;
+    @SerializedName("customer_id")
+    private int customer_id;
+    @SerializedName("supplier_id")
+    private int supplier_id;
+    @SerializedName("pay_status")
+    private int statusPayment;
     @SerializedName("discount")
     private int discount;
-    @SerializedName("products")
-    private Product[] products;
+    @SerializedName("due_date")
+    private String dueDate;
     @SerializedName("note")
     private String note;
     @SerializedName("term")
     private String term;
     @SerializedName("signature_name")
     private String signature_name;
-//    @SerializedName("signature")
-//    private String signature_img;
-
-    @SerializedName("invoice_type")
-    private int type;
-    @SerializedName("pay_status")
-    private int status;
-    @SerializedName("total_amount")
-    private int total;
-
-    @SerializedName("signature_name")
+    @SerializedName("signature")
+    private String signature_img;
+    @SerializedName("created_at")
     private String date_created;
-
-    public static ArrayList<Invoice> filterByStatus(ArrayList<Invoice> invoices, int status) {
-        ArrayList<Invoice> filteredInvoices = new ArrayList<>();
-
-        for (Invoice invoice : invoices) {
-            if (invoice.getStatus() == status) {
-                filteredInvoices.add(invoice);
-            }
-        }
-        return filteredInvoices;
-    }
-
-    public static ArrayList<Invoice> filterByType(ArrayList<Invoice> invoices, int invoiceType) {
-        ArrayList<Invoice> filteredInvoices = new ArrayList<>();
-
-        for (Invoice invoice : invoices) {
-            if (invoice.getType() == invoiceType) {
-                filteredInvoices.add(invoice);
-            }
-        }
-        return filteredInvoices;
-    }
-
-    public static Comparator<Invoice> sortByAsc = (t1, t2) -> (int) (t1.getTotal() - t2.getTotal());
-
-    public static Comparator<Invoice> sortByNewestDate = new Comparator<Invoice>() {
-        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
-
-        @Override
-        public int compare(Invoice invoice1, Invoice invoice2) {
-            try {
-                Date date1 = dateFormat.parse(invoice1.getDate_created());
-                Date date2 = dateFormat.parse(invoice2.getDate_created());
-                return date2.compareTo(date1); // Sắp xếp giảm dần theo ngày
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            return 0;
-        }
-    };
+    @SerializedName("products")
+    private ProductInvoice[] productInvoice;
 
     public Invoice() {
     }
 
-    public Invoice(int id, int user_id, int discount, Product[] products, String note, String term, String signature_name, int type, int status, int total, String date_created) {
-        this.id = id;
+    public Invoice(int user_id, int invoiceType, int customer_id, int supplier_id, int statusPayment, int discount, String dueDate, String note, String term, String signature_name, String signature_img, String date_created, ProductInvoice[] productInvoice) {
         this.user_id = user_id;
+        this.invoiceType = invoiceType;
+        this.customer_id = customer_id;
+        this.supplier_id = supplier_id;
+        this.statusPayment = statusPayment;
         this.discount = discount;
-        this.products = products;
+        this.dueDate = dueDate;
         this.note = note;
         this.term = term;
         this.signature_name = signature_name;
-        this.type = type;
-        this.status = status;
-        this.total = total;
+        this.signature_img = signature_img;
         this.date_created = date_created;
-    }
-
-    public Invoice(int user_id, int discount, Product[] products, String signature_name, int type, int status, int total) {
-        this.user_id = user_id;
-        this.discount = discount;
-        this.products = products;
-        this.signature_name = signature_name;
-        this.type = type;
-        this.status = status;
-        this.total = total;
+        this.productInvoice = productInvoice;
     }
 
     public int getId() {
@@ -123,6 +79,46 @@ public class Invoice implements Serializable {
         this.user_id = user_id;
     }
 
+    public long getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(long totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public int getInvoiceType() {
+        return invoiceType;
+    }
+
+    public void setInvoiceType(int invoiceType) {
+        this.invoiceType = invoiceType;
+    }
+
+    public int getCustomer_id() {
+        return customer_id;
+    }
+
+    public void setCustomer_id(int customer_id) {
+        this.customer_id = customer_id;
+    }
+
+    public int getSupplier_id() {
+        return supplier_id;
+    }
+
+    public void setSupplier_id(int supplier_id) {
+        this.supplier_id = supplier_id;
+    }
+
+    public int getStatusPayment() {
+        return statusPayment;
+    }
+
+    public void setStatusPayment(int statusPayment) {
+        this.statusPayment = statusPayment;
+    }
+
     public int getDiscount() {
         return discount;
     }
@@ -131,12 +127,12 @@ public class Invoice implements Serializable {
         this.discount = discount;
     }
 
-    public Product[] getProducts() {
-        return products;
+    public String getDueDate() {
+        return dueDate;
     }
 
-    public void setProducts(Product[] products) {
-        this.products = products;
+    public void setDueDate(String dueDate) {
+        this.dueDate = dueDate;
     }
 
     public String getNote() {
@@ -163,28 +159,12 @@ public class Invoice implements Serializable {
         this.signature_name = signature_name;
     }
 
-    public int getType() {
-        return type;
+    public String getSignature_img() {
+        return signature_img;
     }
 
-    public void setType(int type) {
-        this.type = type;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public int getTotal() {
-        return total;
-    }
-
-    public void setTotal(int total) {
-        this.total = total;
+    public void setSignature_img(String signature_img) {
+        this.signature_img = signature_img;
     }
 
     public String getDate_created() {
@@ -195,19 +175,54 @@ public class Invoice implements Serializable {
         this.date_created = date_created;
     }
 
-    public static Comparator<Invoice> getSortByAsc() {
-        return sortByAsc;
+    public ProductInvoice[] getProductInvoice() {
+        return productInvoice;
     }
 
-    public static void setSortByAsc(Comparator<Invoice> sortByAsc) {
-        Invoice.sortByAsc = sortByAsc;
+    public void setProductInvoice(ProductInvoice[] productInvoice) {
+        this.productInvoice = productInvoice;
     }
 
-    public static Comparator<Invoice> getSortByNewestDate() {
-        return sortByNewestDate;
+    public static class ProductInvoice {
+        @SerializedName("productId")
+        private int productId;
+        @SerializedName("quantity")
+        private int quantity;
+        @SerializedName("expiry")
+        private String expiry;
+
+        public ProductInvoice() {
+        }
+
+        public ProductInvoice(int productId, int quantity, String expiry) {
+            this.productId = productId;
+            this.quantity = quantity;
+            this.expiry = expiry;
+        }
+
+        public int getProductId() {
+            return productId;
+        }
+
+        public void setProductId(int productId) {
+            this.productId = productId;
+        }
+
+        public int getQuantity() {
+            return quantity;
+        }
+
+        public void setQuantity(int quantity) {
+            this.quantity = quantity;
+        }
+
+        public String getExpiry() {
+            return expiry;
+        }
+
+        public void setExpiry(String expiry) {
+            this.expiry = expiry;
+        }
     }
 
-    public static void setSortByNewestDate(Comparator<Invoice> sortByNewestDate) {
-        Invoice.sortByNewestDate = sortByNewestDate;
-    }
 }
