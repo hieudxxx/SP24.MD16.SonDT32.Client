@@ -2,6 +2,7 @@ package fpoly.md16.depotlife;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
         Integer role = (Integer) Helper.getSharedPre(this, "role", Integer.class);
 
-
+//        binding.bottomNav.setBackgroundColor(Color.TRANSPARENT);
 
         if (role == 1){
             binding.bottomNav.show(1,true);

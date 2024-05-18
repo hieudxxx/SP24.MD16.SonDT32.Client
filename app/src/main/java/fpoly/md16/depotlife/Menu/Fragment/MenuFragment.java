@@ -56,12 +56,15 @@ public class MenuFragment extends Fragment {
         String ava = avt.replace("public","storage");
 
         if (avt.isEmpty()) binding.imgAvt.setImageResource(R.drawable.unknow_avt);
-        else Picasso.get().load(API.URL_IMG +ava).into(binding.imgAvt);
+        else Picasso.get().load("https://warehouse.sinhvien.io.vn/public/" +ava).into(binding.imgAvt);
 
-        binding.imgBtnEdit.setOnClickListener(v -> {
+        binding.imgAvt.setOnClickListener(v -> {
             startActivity(new Intent(getContext(), AccountActivity.class));
-//            Helper.loadFragment(getActivity().getSupportFragmentManager(), new AccountFragment(), null, R.id.frag_container_main);
         });
+
+        Integer role = (Integer) Helper.getSharedPre(getContext(), "role", Integer.class);
+        if(role == 1) binding.txtRoleAccount.setText("Admin");
+        else binding.txtRoleAccount.setText("Staff");
 
         binding.btnInvoice.setOnClickListener(v -> {
             Helper.loadFragment(getActivity().getSupportFragmentManager(), new InvoiceFragment(), null, R.id.frag_container_main);
