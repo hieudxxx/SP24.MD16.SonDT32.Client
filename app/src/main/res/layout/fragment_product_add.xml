@@ -201,10 +201,6 @@
                 style="@style/custom_line"
                 android:layout_marginLeft="110dp" />
 
-            <View
-                style="@style/custom_line"
-                android:layout_marginLeft="110dp" />
-
             <LinearLayout
                 style="@style/custom_tv_supplier"
                 android:paddingVertical="0dp"
@@ -223,6 +219,39 @@
                     android:layout_height="match_parent"
                     android:layout_weight="2"
                     android:backgroundTint="@color/white" />
+            </LinearLayout>
+
+            <View
+                style="@style/custom_line"
+                android:layout_marginLeft="110dp" />
+
+            <LinearLayout style="@style/custom_tv_supplier">
+
+                <TextView
+                    style="@style/custom_tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Vị trí: " />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/custom_tv_supplier"
+                android:gravity="center">
+
+                <Spinner
+                    android:id="@+id/spn_zone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <Spinner
+                    android:id="@+id/spn_shelf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <Spinner
+                    android:id="@+id/spn_level"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <TextView

@@ -1,6 +1,7 @@
 package fpoly.md16.depotlife.Product.Fragment;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -10,17 +11,23 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+
+import java.util.List;
 
 import fpoly.md16.depotlife.Category.Fragment.CategoryListFragment;
 import fpoly.md16.depotlife.Category.Model.Category;
 import fpoly.md16.depotlife.Helper.Helper;
+import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiLocation;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiProduct;
 import fpoly.md16.depotlife.Product.Model.Product;
 import fpoly.md16.depotlife.R;
@@ -44,6 +51,19 @@ public class ProductAddFragment extends Fragment {
     private Uri uri;
     private MultipartBody.Part[] listMultipartBody;
 
+    private int zone;
+    private String shelf;
+    private int level;
+    private ActivityResultLauncher<Intent> launcher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    uri = result.getData().getData();
+                    binding.imgProduct.setImageURI(uri);
+                }
+            }
+    );
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -54,9 +74,6 @@ public class ProductAddFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        ((AppCompatActivity) getActivity()).setSupportActionBar(binding.tbProduct);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         binding.imgBack.setOnClickListener(view1 -> {
             requireActivity().finish();
@@ -71,16 +88,93 @@ public class ProductAddFragment extends Fragment {
         if (supplier == null) binding.tvSupplier.setText("");
         else binding.tvSupplier.setText(supplier.getName());
 
+        getData();
 
-//        if (uri != null) {
-//            binding.imgProduct.setImageURI(uri);
-//        }
+        binding.tvCategory.setOnClickListener(view13 -> {
+            Helper.loadFragment(getParentFragmentManager(), new CategoryListFragment(), null, R.id.frag_container_product);
+        });
 
-        binding.imgProduct.setOnClickListener(view14 -> {onRequestPermission();});
+        binding.tvSupplier.setOnClickListener(view13 -> {
+            Helper.loadFragment(getParentFragmentManager(), new SupplierListSelectFragment(), null, R.id.frag_container_product);
+        });
 
-        binding.tvCategory.setOnClickListener(view13 -> {Helper.loadFragment(getParentFragmentManager(), new CategoryListFragment(), null, R.id.frag_container_product);});
+        binding.spnZone.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                zone = (Integer) ((Spinner) adapterView).getAdapter().getItem(position);
+//                        product.getLocation().setZone(zone);
+//                        Toast.makeText(getContext(), ""+selectedItem, Toast.LENGTH_SHORT).show();
+                ApiLocation.apiLocation.getShelf(token, zone).enqueue(new Callback<List<String>>() {
+                    @Override
+                    public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+                        if (response.isSuccessful()) {
+                            List<String> listShelf = response.body();
+                            Helper.onSetStringSpn(getContext(), listShelf, binding.spnShelf, " ");
+                        }
+                    }
 
-        binding.tvSupplier.setOnClickListener(view13 -> {Helper.loadFragment(getParentFragmentManager(), new SupplierListSelectFragment(), null, R.id.frag_container_product);});
+                    @Override
+                    public void onFailure(Call<List<String>> call, Throwable throwable) {
+                        Log.d("onFailure", "onFailure: " + throwable.getMessage());
+                        Toast.makeText(getActivity(), "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        binding.spnShelf.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                shelf = (String) ((Spinner) adapterView).getAdapter().getItem(position);
+//                        product.getLocation().setShelf(shelf);
+//                        Log.d("tag_kiemTra", "onItemSelected: "+product.getLocation().getShelf());
+//                        Toast.makeText(getContext(), ""+selectedItem, Toast.LENGTH_SHORT).show();
+                ApiLocation.apiLocation.getLevel(token, shelf).enqueue(new Callback<List<Integer>>() {
+                    @Override
+                    public void onResponse(Call<List<Integer>> call, Response<List<Integer>> response) {
+                        if (response.isSuccessful()) {
+                            List<Integer> listLevel = response.body();
+                            Helper.onSetIntSpn(getContext(), listLevel, binding.spnLevel, -1);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Integer>> call, Throwable throwable) {
+
+                    }
+                });
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        binding.spnLevel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                level = (Integer) ((Spinner) adapterView).getAdapter().getItem(position);
+//                        product.getLocation().setLevel(level);
+//                        Log.d("tag_kiemTra", "level: "+product.getLocation().getLevel());
+//                        Toast.makeText(getContext(), ""+selectedItem, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        binding.imgProduct.setOnClickListener(view14 -> {
+            onRequestPermission();
+        });
 
         binding.tvSave.setOnClickListener(view12 -> {
             String name = binding.edtName.getText().toString().trim();
@@ -109,12 +203,31 @@ public class ProductAddFragment extends Fragment {
                 ) {
                     if (uri != null) listMultipartBody = new MultipartBody.Part[]{Helper.getRealPathFile(getContext(), uri)};
 
-                    if (category == null || supplier == null) Toast.makeText(getContext(), "Hãy nhập đủ dữ liệu", Toast.LENGTH_SHORT).show();
+                    if (category == null || supplier == null)
+                        Toast.makeText(getContext(), "Hãy nhập đủ dữ liệu", Toast.LENGTH_SHORT).show();
                     else {
                         product = new Product(supplier.getId(), category.getId(), name, unit, Integer.parseInt(import_price), Integer.parseInt(export_price));
                         onAddProduct(product);
                     }
                 }
+            }
+        });
+    }
+
+    private void getData() {
+        ApiLocation.apiLocation.getZone(token).enqueue(new Callback<List<Integer>>() {
+            @Override
+            public void onResponse(Call<List<Integer>> call, Response<List<Integer>> response) {
+                if (response.isSuccessful()) {
+                    List<Integer> listZone = response.body();
+                    Helper.onSetIntSpn(getContext(), listZone, binding.spnZone, -1);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Integer>> call, Throwable throwable) {
+                Log.d("onFailure", "onFailure: " + throwable.getMessage());
+                Toast.makeText(getActivity(), "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -127,6 +240,9 @@ public class ProductAddFragment extends Fragment {
                 Helper.createStringPart(product.getUnit()),
                 Helper.createIntPart(product.getSupplier_id()),
                 Helper.createIntPart(product.getCategory_id()),
+                Helper.createIntPart(zone),
+                Helper.createStringPart(shelf),
+                Helper.createIntPart(level),
                 listMultipartBody).enqueue(new Callback<Product>() {
             @Override
             public void onResponse(Call<Product> call, Response<Product> response) {
@@ -134,7 +250,6 @@ public class ProductAddFragment extends Fragment {
                     Toast.makeText(getContext(), "Thành công", Toast.LENGTH_SHORT).show();
                     ProductFragment.isLoadData = true;
                     requireActivity().finish();
-
                 }
             }
 
@@ -148,11 +263,11 @@ public class ProductAddFragment extends Fragment {
 
     private void onRequestPermission() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            Helper.openGallery(getContext());
+            Helper.openGallery(getActivity(), launcher);
             return;
         }
         if (getActivity().checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            Helper.openGallery(getContext());
+            Helper.openGallery(getActivity(), launcher);
         } else {
             String permission = (Manifest.permission.READ_EXTERNAL_STORAGE);
             requestPermissions(new String[]{permission}, 10);
@@ -164,21 +279,7 @@ public class ProductAddFragment extends Fragment {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 10) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Helper.openGallery(getContext());
-            }
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-//        Log.d("tag_kiemTra", "data: "+data);
-
-        if (data != null) {
-            uri = data.getData();
-//            Log.d("tag_kiemTra", "onActivityResult: "+uri);
-            if (uri != null) {
-                binding.imgProduct.setImageURI(uri);
+                Helper.openGallery(getActivity(), launcher);
             }
         }
     }

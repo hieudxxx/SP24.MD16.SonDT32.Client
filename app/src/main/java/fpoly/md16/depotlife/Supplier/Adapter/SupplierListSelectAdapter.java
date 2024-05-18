@@ -14,7 +14,6 @@ import fpoly.md16.depotlife.Supplier.Model.Supplier;
 import fpoly.md16.depotlife.databinding.ItemSelectListBinding;
 
 public class SupplierListSelectAdapter extends RecyclerView.Adapter<SupplierListSelectAdapter.ViewHolder> {
-
     private Context context;
     private ArrayList<Supplier> list;
     private ArrayList<Supplier> mlist;

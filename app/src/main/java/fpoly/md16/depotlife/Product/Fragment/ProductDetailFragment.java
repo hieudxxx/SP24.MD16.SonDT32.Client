@@ -46,9 +46,9 @@ public class ProductDetailFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         token = "Bearer " + Helper.getSharedPre(getContext(), "token", String.class);
-
         binding.imgBack.setOnClickListener(view1 -> {
             requireActivity().finish();
+            ProductFragment.isLoadData = true;
         });
 
         bundle = getArguments();
@@ -78,7 +78,7 @@ public class ProductDetailFragment extends Fragment {
 
     private void delete() {
         Helper.onCheckdeleteDialog(getContext(), () -> {
-            ApiProduct.apiProduct.delete("Bearer " + token, product.getId()).enqueue(new Callback<Product>() {
+            ApiProduct.apiProduct.delete(token, product.getId()).enqueue(new Callback<Product>() {
                 @Override
                 public void onResponse(Call<Product> call, Response<Product> response) {
                     if (response.isSuccessful() || response.code() == 200) {
@@ -114,8 +114,9 @@ public class ProductDetailFragment extends Fragment {
                         binding.tvImportPrice.setText(Helper.formatVND(products.get(0).getImport_price()));
                         binding.tvInventory.setText(products.get(0).getInventory() + "");
                         binding.tvUnit.setText(products.get(0).getUnit());
+                        binding.tvLocation.setText(products.get(0).getLocation().getCode());
 
-                        ProductImagesAdapter imagesAdapter = new ProductImagesAdapter(getContext(), Arrays.asList(products.get(0).getImg()), null);
+                        ProductImagesAdapter imagesAdapter = new ProductImagesAdapter(getContext(), Arrays.asList(products.get(0).getImg()), null, token, false);
                         binding.rcvImages.setAdapter(imagesAdapter);
                         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
                         binding.rcvImages.setLayoutManager(layoutManager);

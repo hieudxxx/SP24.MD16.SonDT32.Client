@@ -1,11 +1,10 @@
 package fpoly.md16.depotlife.Supplier.Adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
@@ -20,10 +19,9 @@ import fpoly.md16.depotlife.Supplier.Fragment.SupplierDetailFragment;
 import fpoly.md16.depotlife.Supplier.Model.Supplier;
 import fpoly.md16.depotlife.databinding.ItemSupplierBinding;
 
-public class SupplierAdapter extends RecyclerView.Adapter<SupplierAdapter.ViewHolder> implements Filterable {
+public class SupplierAdapter extends RecyclerView.Adapter<SupplierAdapter.ViewHolder> {
     private Context context;
     private ArrayList<Supplier> list;
-    private ArrayList<Supplier> mlist;
     private FragmentManager fragmentManager;
 
     public void setData(List<Supplier> list) {
@@ -48,9 +46,12 @@ public class SupplierAdapter extends RecyclerView.Adapter<SupplierAdapter.ViewHo
 
         holder.binding.tvName.setText(list.get(position).getName());
 
-        holder.binding.tvStatus.setText(list.get(position).getStatus() == 1 ? "Đang hợp tác" : "Đã ngừng hợp tác");
+        holder.binding.tvStatus.setText(list.get(position).getStatus() == 1 ? "Hợp tác" : "Đã hủy");
+        holder.binding.tvStatus.setTextColor(list.get(position).getStatus() == 1 ? Color.GREEN : Color.RED);
 
-//        holder.binding.tvTotal.setText(Helper.formatVND(list.get(position).getTotal()));
+        holder.binding.tvPhone.setText(list.get(position).getPhone());
+        holder.binding.tvTax.setText(list.get(position).getTax_code());
+        holder.binding.tvTotalMoney.setText(String.valueOf(list.get(position).getTotal()));
 
         holder.itemView.setOnClickListener(view -> {
             Bundle bundle = new Bundle();
@@ -67,39 +68,8 @@ public class SupplierAdapter extends RecyclerView.Adapter<SupplierAdapter.ViewHo
         return 0;
     }
 
-    @Override
-    public Filter getFilter() {
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence charSequence) {
-                String strSearch = charSequence.toString();
-                if (strSearch.isEmpty()) {
-                    list = mlist;
-                } else {
-                    ArrayList<Supplier> listFilter = new ArrayList<>();
-                    for (Supplier supplier : mlist) {
-                        if (supplier.getName().toLowerCase().contains(strSearch.toLowerCase())) {
-                            listFilter.add(supplier);
-                        }
-                    }
-                    list = listFilter;
-                }
-                FilterResults results = new FilterResults();
-                results.values = list;
-                return results;
-            }
-
-            @Override
-            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                list = (ArrayList<Supplier>) filterResults.values;
-                notifyDataSetChanged();
-            }
-        };
-    }
-
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ItemSupplierBinding binding;
-
         public ViewHolder(@NonNull ItemSupplierBinding binding) {
             super(binding.getRoot());
             this.binding = binding;

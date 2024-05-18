@@ -28,4 +28,16 @@ public class ProductActivity extends AppCompatActivity {
             Helper.loadFragment(getSupportFragmentManager(), new ProductAddFragment(), null, R.id.frag_container_product);
         }
     }
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == 10 && resultCode == RESULT_OK){
+//            Uri uri = data.getData();
+////            binding.imgProduct.setImageURI(uri);
+//            Toast.makeText(this, "" + uri, Toast.LENGTH_SHORT).show();
+//
+//        }
+//
+//    }
 }

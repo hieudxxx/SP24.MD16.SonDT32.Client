@@ -26,19 +26,28 @@ public interface ApiProduct {
     @GET("products/get-id/{id}")
     Call<List<Product>> getProductById(@Header("Authorization") String authToken, @Path("id") int id);
 
+    @GET("products/search")
+    Call<List<Product>> productSearch(@Header("Authorization") String authToken, @Query("keyword") String keyword);
+
+    @GET("products/filter-supplier")
+    Call<List<Product>> productFilterBySupplier(@Header("Authorization") String authToken, @Query("supplier_id") int supplier_id);
+
+
     @Multipart
     @POST("products/update/{id}")
     Call<List<String>> update(@Header("Authorization") String authToken,
-                         @Path("id") int id,
-                         @Part("product_name") RequestBody name,
-                         @Part("sell_price") RequestBody export_price,
-                         @Part("import_price") RequestBody import_price,
-                         @Part("total_quantity") RequestBody inventory,
-                         @Part("unit") RequestBody unit,
-                         @Part("supplier_id") RequestBody supplier_id,
-                         @Part("categories_id") RequestBody categories_id,
-                         @Part("pin_image") RequestBody pin_image,
-                         @Part MultipartBody.Part[] images
+                              @Path("id") int id,
+                              @Part("product_name") RequestBody name,
+                              @Part("sell_price") RequestBody export_price,
+                              @Part("import_price") RequestBody import_price,
+                              @Part("unit") RequestBody unit,
+                              @Part("supplier_id") RequestBody supplier_id,
+                              @Part("categories_id") RequestBody categories_id,
+                              @Part("zone") RequestBody zone,
+                              @Part("shelf") RequestBody shelf,
+                              @Part("level") RequestBody level,
+                              @Part("pin_image") RequestBody pin_image,
+                              @Part MultipartBody.Part[] images
     );
 
     @Multipart
@@ -50,10 +59,17 @@ public interface ApiProduct {
                       @Part("unit") RequestBody unit,
                       @Part("supplier_id") RequestBody supplier_id,
                       @Part("categories_id") RequestBody categories_id,
+                      @Part("zone") RequestBody zone,
+                      @Part("shelf") RequestBody shelf,
+                      @Part("level") RequestBody level,
                       @Part MultipartBody.Part[] images
     );
 
     @GET("products/delete/{id}")
     Call<Product> delete(@Header("Authorization") String authToken, @Path("id") int id);
+
+    @GET("products/delete-image/{id}")
+    Call<Product> deleteImage(@Header("Authorization") String authToken, @Path("id") int id);
+
 
 }

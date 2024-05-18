@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.squareup.picasso.Picasso;
 
 import fpoly.md16.depotlife.Category.CategoryActivity;
+import fpoly.md16.depotlife.Customers.CustomerActivity;
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.API;
 import fpoly.md16.depotlife.Invoice.Fragment.InvoiceFragment;
@@ -112,7 +113,7 @@ public class MenuFragment extends Fragment {
             Helper.loadFragment(getActivity().getSupportFragmentManager(), new StatisticFragment(), null, R.id.frag_container_main);
             MainActivity.binding.bottomNav.show(1, true);
         });
-        binding.btnTreasuryBook.setOnClickListener(v -> Toast.makeText(getContext(), "Đang phát triển", Toast.LENGTH_SHORT).show());
+        binding.btnCustomer.setOnClickListener(v -> startActivity(new Intent(getContext(), CustomerActivity.class)));
 
         binding.btnInfo.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), ThongTinGianHang.class);

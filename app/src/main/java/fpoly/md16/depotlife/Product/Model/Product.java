@@ -1,8 +1,11 @@
 package fpoly.md16.depotlife.Product.Model;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Comparator;
 
 import fpoly.md16.depotlife.Category.Model.Category;
@@ -38,8 +41,6 @@ public class Product implements Serializable {
     @SerializedName("location")
     private Location location;
 
-
-
     public static Comparator<Product> sortByAsc = (t1, t2) -> (int) (t1.getExport_price() - t2.getExport_price());
 
     public static Comparator<Product> sortByNameAZ = (t1, t2) -> t1.getProduct_name().compareTo(t2.getProduct_name());
@@ -63,6 +64,7 @@ public class Product implements Serializable {
         this.img = img;
         this.location = location;
     }
+
 
     public Product(int supplier_id, int category_id, String product_name, String unit, int import_price, int export_price) {
         this.supplier_id = supplier_id;
@@ -183,5 +185,26 @@ public class Product implements Serializable {
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", supplier_id=" + supplier_id +
+                ", category_id=" + category_id +
+                ", product_name='" + product_name + '\'' +
+                ", barcode='" + barcode + '\'' +
+                ", unit='" + unit + '\'' +
+                ", import_price=" + import_price +
+                ", export_price=" + export_price +
+                ", inventory=" + inventory +
+                ", status=" + status +
+                ", supplier=" + supplier +
+                ", category=" + category +
+                ", img=" + Arrays.toString(img) +
+                ", location=" + location +
+                '}';
     }
 }

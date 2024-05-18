@@ -134,10 +134,10 @@
                 android:text="Tồng quan" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_treasuryBook"
+                android:id="@+id/btn_customer"
                 style="@style/custom_bgr_btn_menu"
-                android:drawableStart="@drawable/ledger"
-                android:text="Sổ quỹ" />
+                android:drawableStart="@drawable/customer"
+                android:text="Khách hàng" />
         </LinearLayout>
 
         <LinearLayout

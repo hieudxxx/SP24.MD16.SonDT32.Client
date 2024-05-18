@@ -5,20 +5,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import fpoly.md16.depotlife.Category.Fragment.CategoryListFragment;
 import fpoly.md16.depotlife.Helper.Helper;
-import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiProduct;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiSupplier;
-import fpoly.md16.depotlife.Product.Model.Product;
-import fpoly.md16.depotlife.R;
 import fpoly.md16.depotlife.Supplier.Model.Supplier;
 import fpoly.md16.depotlife.databinding.FragmentSupplierEditBinding;
 import retrofit2.Call;
@@ -29,13 +23,9 @@ import retrofit2.Response;
 public class SupplierEditFragment extends Fragment {
     private FragmentSupplierEditBinding binding;
     private Supplier supplier;
-
     private String token;
-
     private Bundle bundle;
-
     private int status;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -47,13 +37,9 @@ public class SupplierEditFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ((AppCompatActivity) getActivity()).setSupportActionBar(binding.tbAccount);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
-
         binding.imgBack.setOnClickListener(view1 -> requireActivity().getSupportFragmentManager().popBackStack());
 
-        token = "Bearer " + (String) Helper.getSharedPre(getContext(), "token", String.class);
-
+        token = "Bearer " + Helper.getSharedPre(getContext(), "token", String.class);
 
         bundle = getArguments();
         if (bundle != null) {
@@ -100,7 +86,6 @@ public class SupplierEditFragment extends Fragment {
                                 @Override
                                 public void onResponse(Call<Supplier> call, Response<Supplier> response) {
                                     if (response.isSuccessful()) {
-                                        Toast.makeText(getContext(), "Thành công", Toast.LENGTH_SHORT).show();
                                         SupplierFragment.isLoadData = true;
                                         requireActivity().getSupportFragmentManager().popBackStack();
                                     }
@@ -127,15 +112,11 @@ public class SupplierEditFragment extends Fragment {
         }else {
             binding.radioButtonOption2.setChecked(true);
         }
-        binding.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
-                if (binding.radioButtonOption1.isChecked()){
-                    status = 1;
-                } else if (binding.radioButtonOption2.isChecked()) {
-                    status = 0;
-                }
-
+        binding.radioGroup.setOnCheckedChangeListener((radioGroup, checkedId) -> {
+            if (binding.radioButtonOption1.isChecked()){
+                status = 1;
+            } else if (binding.radioButtonOption2.isChecked()) {
+                status = 0;
             }
         });
     }
