@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.squareup.picasso.Picasso;
 
 import fpoly.md16.depotlife.Category.CategoryActivity;
+import fpoly.md16.depotlife.Customers.CustomerActivity;
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.API;
 import fpoly.md16.depotlife.Invoice.Fragment.InvoiceFragment;
@@ -56,12 +57,15 @@ public class MenuFragment extends Fragment {
         String ava = avt.replace("public","storage");
 
         if (avt.isEmpty()) binding.imgAvt.setImageResource(R.drawable.unknow_avt);
-        else Picasso.get().load(API.URL_IMG +ava).into(binding.imgAvt);
+        else Picasso.get().load("https://warehouse.sinhvien.io.vn/public/" +ava).into(binding.imgAvt);
 
-        binding.imgBtnEdit.setOnClickListener(v -> {
+        binding.imgAvt.setOnClickListener(v -> {
             startActivity(new Intent(getContext(), AccountActivity.class));
-//            Helper.loadFragment(getActivity().getSupportFragmentManager(), new AccountFragment(), null, R.id.frag_container_main);
         });
+
+        Integer role = (Integer) Helper.getSharedPre(getContext(), "role", Integer.class);
+        if(role == 1) binding.txtRoleAccount.setText("Admin");
+        else binding.txtRoleAccount.setText("Staff");
 
         binding.btnInvoice.setOnClickListener(v -> {
             Helper.loadFragment(getActivity().getSupportFragmentManager(), new InvoiceFragment(), null, R.id.frag_container_main);
@@ -109,7 +113,7 @@ public class MenuFragment extends Fragment {
             Helper.loadFragment(getActivity().getSupportFragmentManager(), new StatisticFragment(), null, R.id.frag_container_main);
             MainActivity.binding.bottomNav.show(1, true);
         });
-        binding.btnTreasuryBook.setOnClickListener(v -> Toast.makeText(getContext(), "Đang phát triển", Toast.LENGTH_SHORT).show());
+        binding.btnCustomer.setOnClickListener(v -> startActivity(new Intent(getContext(), CustomerActivity.class)));
 
         binding.btnInfo.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), ThongTinGianHang.class);

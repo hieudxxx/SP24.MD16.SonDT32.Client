@@ -98,6 +98,9 @@
             android:name=".Category.CategoryActivity"
             android:exported="true" />
         <activity
+            android:name=".Customers.CustomerActivity"
+            android:exported="true" />
+        <activity
             android:name=".ForgotPassword.ForgotPasswordActivity"
             android:exported="false" />
         <activity

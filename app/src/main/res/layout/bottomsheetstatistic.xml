@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="56dp"
+    app:layout_behavior="android.support.design.widget.BottomSheetBehavior"
+    app:cardCornerRadius="10dp"
+
+    android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/custom_tv_title_edt"
+                android:padding="10dp"
+                android:layout_gravity="center"
+                android:text="Bộ lọc" />
+
+            <View
+                android:id="@+id/view"
+                style="@style/custom_line"
+                android:layout_marginTop="10dp" />
+
+            <TextView
+                style="@style/custom_tv_title_edt"
+                android:padding="10dp"
+                android:text="Thời gian" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <androidx.cardview.widget.CardView
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardBackgroundColor="@color/bgr_btn_statistic"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginVertical="10dp"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="10dp">
+
+                        <TextView
+                            android:layout_gravity="center"
+                            android:id="@+id/tv_homnay"
+                            style="@style/custom_tv_date_time"
+                            android:textColor="#6C6C6C"
+                            android:text="Hôm nay" />
+
+                    </androidx.cardview.widget.CardView>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardBackgroundColor="@color/bgr_btn_statistic"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginVertical="10dp"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="10dp">
+
+                        <TextView
+                            android:layout_gravity="center"
+                            android:id="@+id/tv_thangnay"
+                            android:textColor="#6C6C6C"
+                            style="@style/custom_tv_date_time"
+                            android:text="Tháng này" />
+
+                    </androidx.cardview.widget.CardView>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginVertical="10dp"
+                        app:cardBackgroundColor="@color/bgr_btn_statistic"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="10dp">
+
+                        <TextView
+                            android:layout_gravity="center"
+                            android:id="@+id/tv_thangtruoc"
+                            android:textColor="#6C6C6C"
+                            style="@style/custom_tv_date_time"
+                            android:text="Tháng trước" />
+
+                    </androidx.cardview.widget.CardView>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardBackgroundColor="@color/bgr_btn_statistic"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginVertical="10dp"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="10dp">
+
+                        <TextView
+                            android:layout_gravity="center"
+                            android:id="@+id/tv_homqua"
+                            style="@style/custom_tv_date_time"
+                            android:textColor="#6C6C6C"
+                            android:text="Hôm qua" />
+
+                    </androidx.cardview.widget.CardView>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardBackgroundColor="@color/bgr_btn_statistic"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginVertical="10dp"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="10dp">
+
+                        <TextView
+                            android:layout_gravity="center"
+                            android:id="@+id/tv_30ngay"
+                            android:textColor="#6C6C6C"
+                            style="@style/custom_tv_date_time"
+                            android:text="30 ngày" />
+
+                    </androidx.cardview.widget.CardView>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginVertical="10dp"
+                        app:cardBackgroundColor="@color/bgr_btn_statistic"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="10dp">
+
+                        <TextView
+                            android:layout_gravity="center"
+                            android:id="@+id/tv_namnay"
+                            android:textColor="#6C6C6C"
+                            style="@style/custom_tv_date_time"
+                            android:text="Năm nay" />
+
+                    </androidx.cardview.widget.CardView>
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <TextView
+                style="@style/custom_tv_title_edt"
+                android:layout_marginTop="30dp"
+                android:layout_marginStart="10dp"
+                android:textSize="18sp"
+                android:textColor="#737373"
+                android:text="Hoặc tuỳ chình thời gian" />
+
+            <LinearLayout
+                android:id="@+id/layout_calendar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/custom_tv_title_edt"
+                    android:layout_marginStart="10dp"
+                    android:textSize="18sp"
+                    android:textColor="#737373"
+                    android:text="Từ         " />
+
+                <TextView
+                    android:id="@+id/tv_date"
+                    style="@style/custom_tv_date_time"
+                    android:text="05/03/2024" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/arrow_down_bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_calendar2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/custom_tv_title_edt"
+                    android:layout_marginStart="10dp"
+                    android:textSize="18sp"
+                    android:textColor="#737373"
+                    android:text="Đến      " />
+
+                <TextView
+                    android:id="@+id/tv_date2"
+                    style="@style/custom_tv_date_time"
+                    android:text="05/03/2024" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/arrow_down_bold" />
+            </LinearLayout>
+
+            <View
+                style="@style/custom_line"
+                android:layout_marginTop="20dp" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:layout_width="0dp"
+                    android:id="@+id/btn_thietlap"
+                    android:layout_weight="1"
+                    android:layout_margin="15dp"
+                    android:layout_height="wrap_content"
+                    android:text="Thiết lập lại"/>
+
+                <Button
+                    android:layout_width="0dp"
+                    android:id="@+id/btn_apdung"
+                    android:layout_weight="1"
+                    android:layout_margin="15dp"
+                    android:layout_height="wrap_content"
+                    android:text="Áp dụng"/>
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>
