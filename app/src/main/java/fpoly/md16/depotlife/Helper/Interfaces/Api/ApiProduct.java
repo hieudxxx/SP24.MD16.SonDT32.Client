@@ -23,11 +23,18 @@ public interface ApiProduct {
     @GET("products")
     Call<ProductResponse> getData(@Header("Authorization") String authToken, @Query("page") int page_index);
 
+    @GET("products/get-product-by-supplier")
+    Call<ProductResponse> getDataBySupplier(@Header("Authorization") String authToken, @Query("supplier_id") int supplier_id, @Query("page") int page_index);
+
+
     @GET("products/get-id/{id}")
     Call<List<Product>> getProductById(@Header("Authorization") String authToken, @Path("id") int id);
 
     @GET("products/search")
-    Call<List<Product>> productSearch(@Header("Authorization") String authToken, @Query("keyword") String keyword);
+    Call<List<Product>> productSearch(
+            @Header("Authorization") String authToken,
+            @Query("keyword") String keyword,
+            @Query("supplier_id") Integer supplierId);
 
     @GET("products/filter-supplier")
     Call<List<Product>> productFilterBySupplier(@Header("Authorization") String authToken, @Query("supplier_id") int supplier_id);
