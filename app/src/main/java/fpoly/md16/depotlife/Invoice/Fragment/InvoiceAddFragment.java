@@ -8,8 +8,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -22,12 +20,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -67,15 +63,11 @@ public class InvoiceAddFragment extends Fragment {
 
     public String token;
     private int invoiceType;
-    private int paymentStatus;
-
-    private int supplierId;
     public String invoiceCreator;
 
     private final Handler handler = new Handler();
     private Runnable runnable;
-    private int pageIndexSupplier = 1;
-    private int pageIndexProduct = 1;
+    private int pageIndex = 1;
 
     private int perPage = 0;
 
@@ -94,25 +86,6 @@ public class InvoiceAddFragment extends Fragment {
     public static boolean isLoadData = false;
 
     final int SEARCH_ID = R.id.action_search;
-
-    private static final String ARG_PRODUCT_INVOICES = "product_invoices";
-    private List<Invoice.ProductInvoice> productInvoices;
-
-    public static InvoiceAddFragment newInstance(List<Invoice.ProductInvoice> productInvoices) {
-        InvoiceAddFragment fragment = new InvoiceAddFragment();
-        Bundle args = new Bundle();
-        args.putSerializable(ARG_PRODUCT_INVOICES, new ArrayList<>(productInvoices));
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            productInvoices = (List<Invoice.ProductInvoice>) getArguments().getSerializable(ARG_PRODUCT_INVOICES);
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -159,7 +132,6 @@ public class InvoiceAddFragment extends Fragment {
                     invoiceType = position;
                     binding.idCustomer.setVisibility(View.VISIBLE);
                     binding.idSupplier.setVisibility(View.GONE);
-                    supplierId = 0;
                 }
             }
         });
@@ -168,38 +140,8 @@ public class InvoiceAddFragment extends Fragment {
         ArrayAdapter<String> adapter_status = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_dropdown_item_1line, items_status_payment);
         binding.spnPaymentStatus.setAdapter(adapter_status);
 
-        binding.spnPaymentStatus.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                if (position == 0) {
-                    paymentStatus = position;
-                    binding.borderDueDate.setVisibility(View.VISIBLE);
-                } else {
-                    paymentStatus = position;
-                    binding.borderDueDate.setVisibility(View.GONE);
-                }
-            }
-        });
-
         binding.spnSupName.setOnClickListener(view12 -> {
             showDialog(view.getContext());
-        });
-
-        binding.spnSupName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                listProduct.clear();
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
         });
 
         binding.btnAddProd.setOnClickListener(view13 -> {
@@ -219,25 +161,10 @@ public class InvoiceAddFragment extends Fragment {
         binding.rcvListChooseProduct.setLayoutManager(manager);
         chooseProductAdapter = new ChooseProductAdapter(new ChooseProductAdapter.InterClickItemData() {
             @Override
-            public void onProductInvoiceUpdated(List<Invoice.ProductInvoice> productInvoices) {
-                for (Invoice.ProductInvoice val: productInvoices
-                     ) {
-                    Log.d("zzzzzzzzzzzzzzzz", "onID: "+val.getProductId());
-                    Log.d("zzzzzzzzzzzzzzzz", "onExpiry: "+val.getExpiry());
-                    Log.d("zzzzzzzzzzzzzzzz", "onQuantity: "+val.getQuantity());
-                    Log.d("zzzzzzzzzzzzzzzz", "onSize: "+productInvoices.size());
-                }
+            public void ProductInvoice(Invoice.ProductInvoice productInvoice) {
+                Log.d("dataaaaaaaaaa", "expiry: " + productInvoice);
             }
-
-            @Override
-            public void removeItem(Product product) {
-                clickDeleteData(product);
-            }
-
         }, invoiceType);
-
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
-        binding.rcvListChooseProduct.addItemDecoration(dividerItemDecoration);
 
         binding.rcvListChooseProduct.setAdapter(chooseProductAdapter);
         chooseProductAdapter.setData(listChooseProduct);
@@ -264,7 +191,7 @@ public class InvoiceAddFragment extends Fragment {
     }
 
     private void getData(DialogLayoutBinding dialogLayoutBinding) {
-        ApiSupplier.apiSupplier.getData("Bearer " + token, pageIndexSupplier).enqueue(new Callback<SupplierResponse>() {
+        ApiSupplier.apiSupplier.getData("Bearer " + token, pageIndex).enqueue(new Callback<SupplierResponse>() {
             @Override
             public void onResponse(Call<SupplierResponse> call, Response<SupplierResponse> response) {
                 if (response.isSuccessful()) {
@@ -327,6 +254,7 @@ public class InvoiceAddFragment extends Fragment {
             setHasOptionsMenu(true);
             dialogLayoutBinding.rcvDialogSupplier.setAdapter(dialogSupplierAdapter);
             dialogSupplierAdapter.setData(list);
+            pageIndex++;
         } else {
             setHasOptionsMenu(false);
             dialogLayoutBinding.rcvDialogSupplier.setVisibility(View.GONE);
@@ -377,7 +305,6 @@ public class InvoiceAddFragment extends Fragment {
             @Override
             public void chooseItem(Supplier supplier) {
                 binding.spnSupName.setText(supplier.getName());
-                supplierId = supplier.getId();
                 dialog.dismiss();
             }
         });
@@ -409,8 +336,7 @@ public class InvoiceAddFragment extends Fragment {
         dialogLayoutBinding.nestScroll.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
                 dialogLayoutBinding.pbLoadMore.setVisibility(View.VISIBLE);
-                pageIndexSupplier++;
-                if (pageIndexSupplier <= perPage) {
+                if (pageIndex <= perPage) {
                     getData(dialogLayoutBinding);
                     dialogLayoutBinding.pbLoadMore.setVisibility(View.GONE);
                 } else {
@@ -443,8 +369,7 @@ public class InvoiceAddFragment extends Fragment {
         SearchManager searchManager = (SearchManager) dialog.getContext().getSystemService(Context.SEARCH_SERVICE);
 
         // Tìm SearchView và cấu hình nó
-        MenuItem searchItem = toolbar.getMenu().findItem(R.id.action_search);
-
+        MenuItem searchItem = toolbar.getMenu().findItem(R.id.action_search); // Đảm bảo rằng ID này khớp với ID trong file menu của bạn
         SearchView searchView = (SearchView) searchItem.getActionView();
         if (searchView != null) {
             searchView.setSearchableInfo(searchManager.getSearchableInfo(((Activity) context).getComponentName()));
@@ -491,8 +416,7 @@ public class InvoiceAddFragment extends Fragment {
         dialogProductLayoutBinding.nestScrollDialogProduct.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
                 dialogProductLayoutBinding.pbLoadMoreProduct.setVisibility(View.VISIBLE);
-                pageIndexProduct++;
-                if (pageIndexProduct <= perPage) {
+                if (pageIndex <= perPage) {
                     getDataProduct(dialogProductLayoutBinding);
                     dialogProductLayoutBinding.pbLoadMoreProduct.setVisibility(View.GONE);
                 } else {
@@ -555,7 +479,7 @@ public class InvoiceAddFragment extends Fragment {
     }
 
     private void getDataProduct(DialogProductLayoutBinding dialogProductLayoutBinding) {
-        ApiProduct.apiProduct.getDataBySupplier("Bearer " + token, supplierId,pageIndexProduct).enqueue(new Callback<ProductResponse>() {
+        ApiProduct.apiProduct.getData("Bearer " + token, pageIndex).enqueue(new Callback<ProductResponse>() {
             @Override
             public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
                 if (response.isSuccessful()) {
@@ -582,7 +506,7 @@ public class InvoiceAddFragment extends Fragment {
     }
 
     private void getDataSearchProduct(DialogProductLayoutBinding dialogProductLayoutBinding, String keyword) {
-        ApiProduct.apiProduct.productSearch("Bearer " + token, keyword,supplierId).enqueue(new Callback<List<Product>>() {
+        ApiProduct.apiProduct.productSearch("Bearer " + token, keyword).enqueue(new Callback<List<Product>>() {
             @Override
             public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
 
@@ -633,27 +557,12 @@ public class InvoiceAddFragment extends Fragment {
             dialogProductLayoutBinding.pbLoadMoreProduct.setVisibility(View.GONE);
             dialogProductLayoutBinding.rcvDialogProduct.setAdapter(dialogProductAdapter);
             dialogProductAdapter.setData(listProduct);
+            pageIndex++;
         } else {
             dialogProductLayoutBinding.rcvDialogProduct.setVisibility(View.GONE);
             dialogProductLayoutBinding.pbLoadingProduct.setVisibility(View.GONE);
             dialogProductLayoutBinding.tvEmptyProduct.setVisibility(View.VISIBLE);
         }
-    }
-
-    private void clickDeleteData(Product product) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Xóa sản phẩm");
-        builder.setMessage("Bạn có muốn xóa ("+product.getProduct_name()+") không ?");
-        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                listChooseProduct.remove(product);
-                chooseProductAdapter.setData(listChooseProduct);
-                Toast.makeText(getActivity(), "Xóa sản phẩm thành công!", Toast.LENGTH_SHORT).show();
-            }
-        });
-        builder.setNegativeButton("Không", null);
-        builder.show();
     }
 
     @Override
