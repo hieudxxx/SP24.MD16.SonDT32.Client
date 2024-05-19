@@ -3,10 +3,7 @@ package fpoly.md16.depotlife.Helper.Interfaces.Api;
 import static fpoly.md16.depotlife.Helper.Interfaces.Api.RetrofitRequest.getRetrofit;
 
 import fpoly.md16.depotlife.Login.Model.UserResponse;
-import fpoly.md16.depotlife.Product.Model.ImagesResponse;
-import fpoly.md16.depotlife.Product.Model.Product;
 import fpoly.md16.depotlife.Staff.Model.StaffResponse;
-import fpoly.md16.depotlife.Supplier.Model.Supplier;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -20,7 +17,6 @@ public interface ApiUser {
 
     @POST("login")
     Call<UserResponse> login(@Body UserResponse data);
-
 
     @GET("staff")
     Call<StaffResponse> getStaffList(@Header("Authorization") String authToken,@Query("page") int page_index);

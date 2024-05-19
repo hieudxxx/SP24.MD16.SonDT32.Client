@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="horizontal"
+    android:padding="5dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_id_batch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Số lô: 5" />
+
+        <TextView
+            android:id="@+id/tv_quantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Số lượng: 20" />
+
+        <TextView
+            android:id="@+id/tv_expiry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hạn sử dụng: 20" />
+
+        <View style="@style/custom_line" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/img_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/delete" />
+</LinearLayout>

@@ -3,27 +3,19 @@ package fpoly.md16.depotlife.Invoice.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Invoice.Activity.InvoiceActivity;
 import fpoly.md16.depotlife.Invoice.Adapter.InvoiceAdapter;
 import fpoly.md16.depotlife.Invoice.Model.Invoice;
-import fpoly.md16.depotlife.R;
-import fpoly.md16.depotlife.databinding.BotSheetFilterInvoiceBinding;
-import fpoly.md16.depotlife.databinding.BotSheetSortInvoiceBinding;
 import fpoly.md16.depotlife.databinding.FragmentInvoiceBinding;
 
 public class InvoiceFragment extends Fragment {
@@ -42,8 +34,8 @@ public class InvoiceFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ((AppCompatActivity) getActivity()).setSupportActionBar(binding.tbInvoice);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+//        ((AppCompatActivity) getActivity()).setSupportActionBar(binding.tbInvoice);
+//        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         binding.fab.setOnClickListener(view1 -> {
 //            onShowFab();
@@ -59,11 +51,11 @@ public class InvoiceFragment extends Fragment {
 
     }
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.toolbar_menu, menu);
-    }
+//    @Override
+//    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+//        super.onCreateOptionsMenu(menu, inflater);
+//        inflater.inflate(R.menu.toolbar_menu, menu);
+//    }
 
 //    private void getData() {
 //        ApiInvoice.apiInvoice.add().enqueue(new Callback<ArrayList<Invoice>>() {

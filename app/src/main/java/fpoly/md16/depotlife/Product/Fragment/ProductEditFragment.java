@@ -199,7 +199,6 @@ public class ProductEditFragment extends Fragment implements onItemRcvClick<Inte
                         binding.layoutLocation.setVisibility(View.VISIBLE);
                         isLocation = !isLocation;
                     }
-                    Toast.makeText(context, ""+isLocation, Toast.LENGTH_SHORT).show();
                 });
 
                 binding.tvSave.setOnClickListener(view12 -> {
@@ -314,7 +313,25 @@ public class ProductEditFragment extends Fragment implements onItemRcvClick<Inte
         binding.edtExportPrice.setText(product.getExport_price() + "");
         binding.edtImportPrice.setText(product.getImport_price() + "");
         binding.edtUnit.setText(product.getUnit());
-        binding.tvOldLocation.setText(product.getLocation().getCode());
+        if (product.getLocation() != null){
+            binding.tvOldLocation.setText(product.getLocation().getCode());
+            ApiLocation.apiLocation.getZone(token).enqueue(new Callback<List<Integer>>() {
+                @Override
+                public void onResponse(Call<List<Integer>> call, Response<List<Integer>> response) {
+                    if (response.isSuccessful()) {
+                        List<Integer> listZone = response.body();
+                        Helper.onSetIntSpn(getContext(), listZone, binding.spnZone, product.getLocation().getZone());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<Integer>> call, Throwable throwable) {
+                    Log.d("onFailure1111", "onFailure: " + throwable.getMessage());
+                    Toast.makeText(getActivity(), "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        else binding.tvOldLocation.setText("Chưa có vị trí");
 
         listImages = Arrays.asList(product.getImg());
 
@@ -325,21 +342,6 @@ public class ProductEditFragment extends Fragment implements onItemRcvClick<Inte
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
         binding.rcvImages.setLayoutManager(layoutManager);
 
-        ApiLocation.apiLocation.getZone(token).enqueue(new Callback<List<Integer>>() {
-            @Override
-            public void onResponse(Call<List<Integer>> call, Response<List<Integer>> response) {
-                if (response.isSuccessful()) {
-                    List<Integer> listZone = response.body();
-                    Helper.onSetIntSpn(getContext(), listZone, binding.spnZone, product.getLocation().getZone());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Integer>> call, Throwable throwable) {
-                Log.d("onFailure1111", "onFailure: " + throwable.getMessage());
-                Toast.makeText(getActivity(), "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     @Override

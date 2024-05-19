@@ -77,25 +77,28 @@ public class ProductDetailFragment extends Fragment {
     }
 
     private void delete() {
-        Helper.onCheckdeleteDialog(getContext(), () -> {
-            ApiProduct.apiProduct.delete(token, product.getId()).enqueue(new Callback<Product>() {
-                @Override
-                public void onResponse(Call<Product> call, Response<Product> response) {
-                    if (response.isSuccessful() || response.code() == 200) {
-                        Toast.makeText(getContext(), "Xóa thành công", Toast.LENGTH_SHORT).show();
-                        ProductFragment.isLoadData = true;
-                        requireActivity().finish();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<Product> call, Throwable throwable) {
-                    Log.d("onFailure", "onFailure: " + throwable.getMessage());
-                    Toast.makeText(getActivity(), "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-        });
+        bundle = new Bundle();
+        bundle.putSerializable("product", product);
+        Helper.loadFragment(getParentFragmentManager(), new ProductDeleteFragment(), bundle, R.id.frag_container_product);
+//        Helper.onCheckdeleteDialog(getContext(), () -> {
+//            ApiProduct.apiProduct.delete(token, product.getId()).enqueue(new Callback<Product>() {
+//                @Override
+//                public void onResponse(Call<Product> call, Response<Product> response) {
+//                    if (response.isSuccessful() || response.code() == 200) {
+//                        Toast.makeText(getContext(), "Xóa thành công", Toast.LENGTH_SHORT).show();
+//                        ProductFragment.isLoadData = true;
+//                        requireActivity().finish();
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailure(Call<Product> call, Throwable throwable) {
+//                    Log.d("onFailure", "onFailure: " + throwable.getMessage());
+//                    Toast.makeText(getActivity(), "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
+//                }
+//            });
+//
+//        });
     }
 
     private void getData() {
@@ -114,7 +117,8 @@ public class ProductDetailFragment extends Fragment {
                         binding.tvImportPrice.setText(Helper.formatVND(products.get(0).getImport_price()));
                         binding.tvInventory.setText(products.get(0).getInventory() + "");
                         binding.tvUnit.setText(products.get(0).getUnit());
-                        binding.tvLocation.setText(products.get(0).getLocation().getCode());
+                        if (products.get(0).getLocation() != null) binding.tvLocation.setText(products.get(0).getLocation().getCode());
+                        else binding.tvLocation.setText("Chưa có vị trí");
 
                         ProductImagesAdapter imagesAdapter = new ProductImagesAdapter(getContext(), Arrays.asList(products.get(0).getImg()), null, token, false);
                         binding.rcvImages.setAdapter(imagesAdapter);

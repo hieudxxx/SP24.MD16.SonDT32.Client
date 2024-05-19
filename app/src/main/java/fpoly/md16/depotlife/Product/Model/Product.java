@@ -28,7 +28,7 @@ public class Product implements Serializable {
     private int import_price;
     @SerializedName("sell_price")
     private int export_price;
-    @SerializedName("total_quantity")
+    @SerializedName("expiries_sum_quantity_exp")
     private int inventory;
     @SerializedName("status")
     private int status;
