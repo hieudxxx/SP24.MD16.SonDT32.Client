@@ -250,6 +250,12 @@
             android:background="@color/white"
             android:orientation="horizontal">
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:src="@drawable/delete" />
+
             <TextView
                 style="@style/custom_title_product_detail"
                 android:layout_height="match_parent"
@@ -263,7 +269,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:src="@drawable/delete" />
+                android:src="@drawable/next_32" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

@@ -1,16 +1,9 @@
 package fpoly.md16.depotlife;
 
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
-import android.util.Log;
-import android.widget.Toast;
+import android.view.Menu;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 
@@ -18,7 +11,6 @@ import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Invoice.Fragment.InvoiceFragment;
 import fpoly.md16.depotlife.Menu.Fragment.MenuFragment;
 import fpoly.md16.depotlife.Product.Fragment.ProductFragment;
-import fpoly.md16.depotlife.Staff.Fragment.StaffFragment;
 import fpoly.md16.depotlife.Statistic.StatisticFragment;
 import fpoly.md16.depotlife.databinding.ActivityMainBinding;
 import kotlin.Unit;
@@ -82,5 +74,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu,menu);
+        return false;
+    }
 }

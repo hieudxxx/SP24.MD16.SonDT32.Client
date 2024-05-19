@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
+    android:layout_margin="5dp"
+    android:padding="5dp"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <LinearLayout
@@ -35,8 +37,8 @@
                 android:id="@+id/tv_location"
                 style="@style/custom_tv_product_sold"
                 android:ellipsize="end"
-                android:text="Vị trí:"
-                android:maxLines="2" />
+                android:maxLines="2"
+                android:text="Vị trí:" />
 
             <TextView
                 android:id="@+id/tv_export_price"
@@ -61,18 +63,15 @@
                 app:strokeColor="@color/bgr_screen"
                 app:strokeWidth="2dp" />
 
-<!--            <TextView-->
-<!--                android:id="@+id/tv_import_price"-->
-<!--                style="@style/custom_tv_date_time"-->
-<!--                android:padding="0dp"-->
-<!--                android:textColor="@color/red"-->
-<!--                android:textSize="15sp" />-->
+            <!--            <TextView-->
+            <!--                android:id="@+id/tv_import_price"-->
+            <!--                style="@style/custom_tv_date_time"-->
+            <!--                android:padding="0dp"-->
+            <!--                android:textColor="@color/red"-->
+            <!--                android:textSize="15sp" />-->
 
 
         </LinearLayout>
     </LinearLayout>
 
-    <View
-        style="@style/custom_line"
-        android:layout_marginTop="5dp" />
 </LinearLayout>
