@@ -2,13 +2,17 @@ package fpoly.md16.depotlife.Helper.Interfaces.Api;
 
 import static fpoly.md16.depotlife.Helper.Interfaces.Api.RetrofitRequest.getRetrofit;
 
+import com.google.gson.JsonObject;
+
 import java.util.List;
 
+import fpoly.md16.depotlife.Product.Model.BatchResponse;
 import fpoly.md16.depotlife.Product.Model.Product;
 import fpoly.md16.depotlife.Product.Model.ProductResponse;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
@@ -32,6 +36,14 @@ public interface ApiProduct {
     @GET("products/filter-supplier")
     Call<List<Product>> productFilterBySupplier(@Header("Authorization") String authToken, @Query("supplier_id") int supplier_id);
 
+    @GET("products/getBatch/{id}")
+    Call<List<BatchResponse>> getBatch(@Header("Authorization") String authToken, @Path("id") int id);
+
+    @GET("products/delete-image/{id}")
+    Call<Product> deleteImage(@Header("Authorization") String authToken, @Path("id") int id);
+
+    @GET("products/search")
+    Call<List<Product>> searchByName(@Header("Authorization") String authToken, @Query("keyword") String keyword);
 
     @Multipart
     @POST("products/update/{id}")
@@ -65,11 +77,6 @@ public interface ApiProduct {
                       @Part MultipartBody.Part[] images
     );
 
-    @GET("products/delete/{id}")
-    Call<Product> delete(@Header("Authorization") String authToken, @Path("id") int id);
-
-    @GET("products/delete-image/{id}")
-    Call<Product> deleteImage(@Header("Authorization") String authToken, @Path("id") int id);
-
-
+    @DELETE("products/deleteBatch/{productId}/{expiryId}")
+    Call<JsonObject> delete(@Header("Authorization") String authToken, @Path("productId") int id, @Path("expiryId") int expiryId, @Query("quantity") int quantity);
 }

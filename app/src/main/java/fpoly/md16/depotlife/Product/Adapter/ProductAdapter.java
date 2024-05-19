@@ -5,31 +5,33 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Product.Activity.ProductActivity;
 import fpoly.md16.depotlife.Product.Model.Product;
 import fpoly.md16.depotlife.databinding.ItemProductBinding;
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> implements Filterable {
+public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
     private Context context;
     private ArrayList<Product> list;
-    private ArrayList<Product> mlist;
     private String token;
 
-    public ProductAdapter(Context context, ArrayList<Product> list, String token) {
+    public ProductAdapter(Context context, String token) {
         this.context = context;
-        this.list = list;
-        this.mlist = list;
         this.token = token;
     }
+
+    public void setData(List<Product> list) {
+        this.list = (ArrayList<Product>) list;
+        notifyDataSetChanged();
+    }
+
 
     @NonNull
     @Override
@@ -65,36 +67,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             return list.size();
         }
         return 0;
-    }
-
-    @Override
-    public Filter getFilter() {
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                String strSearch = constraint.toString();
-                if (strSearch.isEmpty()) {
-                    list = mlist;
-                } else {
-                    ArrayList<Product> listFilter = new ArrayList<>();
-                    for (Product product : mlist) {
-                        if (product.getProduct_name().toLowerCase().contains(strSearch.toLowerCase())) {
-                            listFilter.add(product);
-                        }
-                    }
-                    list = listFilter;
-                }
-                FilterResults results = new FilterResults();
-                results.values = list;
-                return results;
-            }
-
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                list = (ArrayList<Product>) results.values;
-                notifyDataSetChanged();
-            }
-        };
     }
 
     public static class ProductViewHolder extends RecyclerView.ViewHolder {
