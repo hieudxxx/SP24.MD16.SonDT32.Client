@@ -1,0 +1,550 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="Base.Theme.DeportLife" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimary">@color/bgr_btn</item>
+    </style>
+
+    <style name="Base.Theme.DeportLife.LoginActivity" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/bgr_btn</item>
+        <item name="fontFamily">@font/nunito_bold</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="Base.Theme.DeportLife.MainActivity" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/bgr_btn</item>
+    </style>
+
+    <style name="Theme.DeportLife" parent="Base.Theme.DeportLife" />
+
+    <!--Custom textview-->
+    <style name="custom_tv_app_name">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/nunito_bold</item>
+        <item name="android:textSize">35sp</item>
+    </style>
+
+    <style name="custom_tv_title">
+        <item name="android:fontFamily">@font/nunito_bold</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">20sp</item>
+
+    </style>
+
+    <style name="custom_tv_product_name">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/nunito_bold</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="custom_tv_invoice_add">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:clickable">false</item>
+        <item name="android:onClick">false</item>
+        <item name="android:focusable">false</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="android:focusedByDefault">false</item>
+        <item name="android:textColor">#8E9095</item>
+        <item name="android:fontFamily">@font/nunito_bold</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">20dp</item>
+    </style>
+
+    <style name="custom_tv_product_sold">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/nunito_semibold</item>
+        <item name="android:textColor">@color/gray60</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="custom_tv_btn">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="custom_bgr_btn_menu">
+        <item name="android:fontFamily">@font/nunito_bold</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginHorizontal">10dp</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:background">@drawable/bgr_btn_menu</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="custom_bgr_btn2_menu">
+        <item name="android:fontFamily">@font/nunito_bold</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:textAlignment">textStart</item>
+
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="custom_bgr_layout_menu">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginHorizontal">20dp</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="custom_edt_opt">
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:background">@drawable/custom_bgr_edt_opt</item>
+        <item name="android:imeOptions">actionNext</item>
+        <item name="android:importantForAutofill">no</item>
+        <item name="android:inputType">number</item>
+        <item name="android:maxLength">1</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <!--    <style name="custom_title_toolbar">-->
+    <!--        <item name="android:layout_width">wrap_content</item>-->
+    <!--        <item name="android:layout_height">wrap_content</item>-->
+    <!--        <item name="android:fontFamily">@font/nunito_extrabold</item>-->
+    <!--        <item name="android:textColor">@color/black</item>-->
+    <!--        <item name="android:textSize">35sp</item>-->
+    <!--    </style>-->
+
+    <!-- custom toolbar   -->
+    <style name="custom_toolbar">
+        <item name="fontFamily">@font/nunito_semibold</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="custom_line">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">2dp</item>
+        <item name="android:background">@color/bgr_screen</item>
+    </style>
+
+    <!--  sáng custom  -->
+
+    <!--Custom FAB-->
+    <style name="fabRounded">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="custom_rd_sort_filter">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <!--Custom custom_anim_bot_sheet-->
+    <style name="custom_anim_bot_sheet">
+        <item name="android:windowEnterAnimation">@anim/slide_in_bottom_sheet</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_bottom_sheet</item>
+    </style>
+
+    <style name="custom_img_btn_login">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">20dp</item>
+        <item name="android:background">@drawable/icon_login_selector</item>
+        <item name="android:contentDescription">null</item>
+    </style>
+
+    <style name="custom_img_back_toolbar">
+        <item name="android:layout_width">25dp</item>
+        <item name="android:layout_height">25dp</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:background">@drawable/baseline_arrow_back_ios_24</item>
+    </style>
+
+    <style name="custom_rlLogin">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_marginStart">30dp</item>
+        <item name="android:layout_marginEnd">30dp</item>
+    </style>
+
+    <style name="custom_llLogin">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_marginHorizontal">30dp</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="custom_tv_title_edt">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/nunito_bold</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="custom_bgr_edt">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/custom_bgr_edt</item>
+        <item name="android:fontFamily">@font/nunito_semibold</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorHint">@color/gray60</item>
+
+    </style>
+
+    <style name="custom_toggle_hidden_pass">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:src">@drawable/hidden</item>
+    </style>
+
+    <style name="custom_toggle_appear_pass">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:src">@drawable/appear</item>
+    </style>
+
+    <style name="custom_tvChkLogin">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:fontFamily">@font/nunito_semibold</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="custom_btn">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/custom_bgr_btn</item>
+        <item name="android:fontFamily">@font/nunito_bold</item>
+        <item name="android:text">@string/text_reset</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <!--    -->
+    <style name="custom_tv_forgot_pass">
+        <item name="android:layout_below">@id/img_back</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentStart">true</item>
+        <item name="android:layout_marginTop">30dp</item>
+        <item name="android:layout_marginStart">40dp</item>
+        <item name="android:fontFamily">@font/nunito_extrabold</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">40sp</item>
+    </style>
+
+    <style name="custom_img_back">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentStart">true</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_marginStart">15dp</item>
+        <item name="android:layout_marginTop">25dp</item>
+        <item name="android:src">@drawable/back_mini</item>
+    </style>
+
+    <style name="custom_bgr_select_forgot">
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_marginHorizontal">30dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/btn_forgot_pass</item>
+        <item name="android:padding">5dp</item>
+    </style>
+
+    <style name="custom_tv_send_otp">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_marginVertical">10dp</item>
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:fontFamily">@font/nunito_bold</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="custom_tvResetPwd">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:fontFamily">@font/nunito_semibold</item>
+        <item name="android:textColor">@color/gray60</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="custom_etPin">
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:background">@drawable/bgr_pin_view</item>
+        <item name="android:gravity">center</item>
+        <item name="android:imeOptions">actionNext</item>
+        <item name="android:importantForAutofill">no</item>
+        <item name="android:inputType">number</item>
+        <item name="android:maxLength">1</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/nunito_semibold</item>
+    </style>
+
+    <style name="custom_tv_title_dialog_success">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/nunito_extrabold</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">30sp</item>
+    </style>
+
+    <style name="custom_tv_content_dialog_noti">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:fontFamily">@font/nunito_semibold</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:layout_marginTop">5sp</item>
+    </style>
+
+    <style name="custom_tv_title_bot_sheet">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/nunito_bold</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="custom_rlt_bot_sheet">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_marginTop">10dp</item>
+    </style>
+
+
+    <style name="custom_tvBottomSheet">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/nunito_semibold</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+
+    <style name="custom_tv_date_time">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:fontFamily">@font/nunito_semibold</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="custom_rcv">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="layoutManager">androidx.recyclerview.widget.LinearLayoutManager</item>
+    </style>
+
+
+    <style name="custom_llInvoice">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="custom_bgr_layout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@color/bgr_screen</item>
+    </style>
+
+    <style name="custom_fab">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:backgroundTint">@color/bgr_btn</item>
+        <item name="iconTint">@color/white</item>
+        <item name="shapeAppearanceOverlay">@style/fabRounded</item>
+    </style>
+
+    <style name="custom_layout_supplier">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:background">@drawable/bgr_btn_menu</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingHorizontal">15dp</item>
+        <item name="android:paddingTop">15dp</item>
+    </style>
+
+    <style name="custom_tv_supplier">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingVertical">10dp</item>
+    </style>
+
+    <style name="custom_fab_tv">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:layout_marginBottom">15dp</item>
+        <item name="android:padding">8dp</item>
+        <item name="borderWidth">0dp</item>
+        <item name="android:background">@drawable/bgr_tv_fab</item>
+    </style>
+
+    <style name="custom_tvItem">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="custom_title_toolbar">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/nunito_extrabold</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">22dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+
+    <style name="custom_tv_invoice_detail">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="custom_tv_warning">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/red</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="custom_tv_mini_title">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/nunito_bold</item>
+    </style>
+    <!--  sáng custom  -->
+
+    <style name="custom_llProductFilter">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:background">@drawable/btn_effect</item>
+
+    </style>
+
+    <style name="custom_tvProductFilter">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentStart">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:fontFamily">@font/nunito_semibold</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="custom_imgVProductFilter">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+
+    <style name="custom_shape_img">
+        <item name="cornerSize">10%</item>
+    </style>
+
+    <style name="custom_shape_img_circle">
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="custom_title_product_detail">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/nunito_semibold</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="custom_ll_product_detail">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">10dp</item>
+    </style>
+
+    <style name="custom_tv_product_detail">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/nunito_semibold</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="custom_tv_number">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/nunito_bold</item>
+        <item name="android:textColor">@color/tv_blue_bold</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="custom_tv_total">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingHorizontal">10dp</item>
+        <item name="android:paddingVertical">16dp</item>
+        <item name="android:background">@drawable/custom_item_border_invoice_detail</item>
+        <item name="android:fontFamily">@font/nunito_bold</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+</resources>

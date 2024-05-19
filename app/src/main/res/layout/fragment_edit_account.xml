@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/custom_bgr_layout"
+    tools:context=".Menu.Account.Fragment.EditAccountFragment">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tb_account"
+        style="@style/custom_toolbar">
+
+        <ImageView
+            android:id="@+id/img_back"
+            style="@style/custom_img_back_toolbar" />
+
+        <TextView
+            android:id="@+id/tv_save"
+            style="@style/custom_tv_title"
+            android:layout_gravity="end"
+            android:layout_marginRight="20dp"
+            android:text="Lưu"
+            android:textColor="@color/tv_blue_bold" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="0dp"
+            android:layout_marginTop="80dp"
+            android:background="@drawable/bgr_bot_sheet"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="70dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    style="@style/custom_tv_app_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Đỗ Xuân Hiếu"
+                    android:textAlignment="center" />
+
+                <View
+                    style="@style/custom_line"
+                    android:background="@color/black" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/custom_tv_title"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="Họ tên"
+                        android:textAlignment="textStart" />
+
+                    <EditText
+                        style="@style/custom_tv_title"
+                        android:id="@id/edt_name"
+                        android:layout_width="0dp"
+                        android:layout_weight="1.5"
+                        android:text="Đỗ Xuân Hiếu" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_war_name"
+                    style="@style/custom_tv_warning" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/custom_tv_title"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="Ngày sinh"
+                        android:textAlignment="textStart" />
+
+                    <EditText
+                        style="@style/custom_tv_title"
+                        android:id="@+id/edt_birthday"
+                        android:layout_width="0dp"
+                        android:layout_weight="1.5"
+                        android:text="13/01/2003" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_war_bday"
+                    style="@style/custom_tv_warning" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/custom_tv_title"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="Điện thoại"
+                        android:textAlignment="textStart" />
+
+                    <EditText
+                        style="@style/custom_tv_title"
+                        android:id="@id/edt_phone"
+                        android:layout_width="0dp"
+                        android:layout_weight="1.5"
+                        android:text="0339731812" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_war_phone"
+                    style="@style/custom_tv_warning" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/custom_tv_title"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="Địa chỉ"
+                        android:textAlignment="textStart" />
+
+                    <EditText
+                        style="@style/custom_tv_title"
+                        android:id="@id/edt_address"
+                        android:layout_width="0dp"
+                        android:layout_weight="1.5"
+                        android:text="Hai Phong" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_war_address"
+                    style="@style/custom_tv_warning" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/img_avt"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0"
+            app:shapeAppearanceOverlay="@style/custom_shape_img_circle"
+            app:srcCompat="@drawable/avt"
+            app:strokeColor="@color/bgr_screen" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    style="@style/custom_bgr_layout"-->
+<!--    tools:context=".Menu.Account.Fragment.EditAccountFragment">-->
+
+<!--    <androidx.appcompat.widget.Toolbar-->
+<!--        android:id="@+id/tb_account"-->
+<!--        style="@style/custom_toolbar">-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/img_back"-->
+<!--            style="@style/custom_img_back_toolbar" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/tv_save"-->
+<!--            style="@style/custom_tv_title"-->
+<!--            android:layout_gravity="end"-->
+<!--            android:layout_marginRight="20dp"-->
+<!--            android:text="Lưu"-->
+<!--            android:textColor="@color/tv_blue_bold" />-->
+<!--    </androidx.appcompat.widget.Toolbar>-->
+
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_marginTop="100dp">-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_marginHorizontal="20dp"-->
+<!--            android:layout_marginTop="80dp"-->
+<!--            android:background="@drawable/bgr_bot_sheet"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent">-->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_marginTop="70dp"-->
+<!--                android:orientation="vertical">-->
+
+<!--                <TextView-->
+<!--                    style="@style/custom_tv_app_name"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Đỗ Xuân Hiếu"-->
+<!--                    android:textAlignment="center" />-->
+
+<!--                <View-->
+<!--                    style="@style/custom_line"-->
+<!--                    android:background="@color/black" />-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginHorizontal="30dp"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    android:orientation="horizontal">-->
+
+<!--                    <TextView-->
+<!--                        style="@style/custom_tv_title"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:text="Họ tên"-->
+<!--                        android:textAlignment="textStart" />-->
+
+<!--                    <EditText-->
+<!--                        style="@style/custom_tv_title"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_weight="1.5"-->
+<!--                        android:text="Đỗ Xuân Hiếu" />-->
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginHorizontal="30dp"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    android:orientation="horizontal">-->
+
+<!--                    <TextView-->
+<!--                        style="@style/custom_tv_title"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:text="Tài khoản"-->
+<!--                        android:textAlignment="textStart" />-->
+
+<!--                    <EditText-->
+<!--                        style="@style/custom_tv_title"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_weight="1.5"-->
+<!--                        android:text="hieudx" />-->
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginHorizontal="30dp"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    android:orientation="horizontal">-->
+
+<!--                    <TextView-->
+<!--                        style="@style/custom_tv_title"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:text="Email"-->
+<!--                        android:textAlignment="textStart" />-->
+
+<!--                    <EditText-->
+<!--                        style="@style/custom_tv_title"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_weight="1.5"-->
+<!--                        android:text="hieudxph21411" />-->
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginHorizontal="30dp"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    android:orientation="horizontal">-->
+
+<!--                    <TextView-->
+<!--                        style="@style/custom_tv_title"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:text="Ngày sinh"-->
+<!--                        android:textAlignment="textStart" />-->
+
+<!--                    <EditText-->
+<!--                        style="@style/custom_tv_title"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_weight="1.5"-->
+<!--                        android:text="13/01/2003" />-->
+<!--                </LinearLayout>-->
+<!--            </LinearLayout>-->
+<!--        </LinearLayout>-->
+
+<!--        <com.google.android.material.imageview.ShapeableImageView-->
+<!--            android:id="@+id/img"-->
+<!--            android:layout_width="150dp"-->
+<!--            android:layout_height="150dp"-->
+<!--            android:scaleType="fitXY"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintVertical_bias="0"-->
+<!--            app:shapeAppearanceOverlay="@style/custom_shape_img_circle"-->
+<!--            app:srcCompat="@drawable/img_import_account"-->
+<!--            app:strokeColor="@color/bgr_screen" />-->
+
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+<!--</LinearLayout>-->

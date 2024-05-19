@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/custom_rd_sort_filter"
+    android:background="@drawable/bgr_bot_sheet"
+    android:orientation="vertical">
+
+    <TextView
+        style="@style/custom_tv_title_bot_sheet"
+        android:text="@string/text_sort" />
+
+    <View
+        style="@style/custom_line"
+        android:background="@color/black" />
+
+    <RadioGroup
+        android:id="@+id/rd_gr"
+        style="@style/custom_rd_sort_filter">
+
+        <RadioButton
+            android:id="@+id/rd_sort_AZ"
+            style="@style/custom_rd_sort_filter"
+            android:text="A - Z" />
+
+        <RadioButton
+            android:id="@+id/rd_sort_ZA"
+            style="@style/custom_rd_sort_filter"
+            android:text="Z - A" />
+
+        <RadioButton
+            android:id="@+id/rd_sort_asc"
+            style="@style/custom_rd_sort_filter"
+            android:text="Tăng dần" />
+
+        <RadioButton
+            android:id="@+id/rd_sort_desc"
+            style="@style/custom_rd_sort_filter"
+            android:text="Giảm dần" />
+    </RadioGroup>
+</LinearLayout>

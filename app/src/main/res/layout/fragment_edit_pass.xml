@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/custom_bgr_layout"
+    android:background="@color/white"
+    tools:context=".Menu.Account.Fragment.EditPassFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tb_account"
+            style="@style/custom_toolbar"
+            android:background="@color/white">
+
+            <ImageView
+                android:id="@+id/img_back"
+                style="@style/custom_img_back_toolbar" />
+        </androidx.appcompat.widget.Toolbar>
+
+        <TextView
+            style="@style/custom_title_toolbar"
+            android:padding="15dp"
+            android:text="Đổi mật khẩu" />
+
+        <TextView
+            style="@style/custom_title_toolbar"
+            android:fontFamily="@font/nunito_semibold"
+            android:paddingHorizontal="15dp"
+            android:text="Mật khẩu hợp lệ cần có ít nhất 8 ký tự, chứa chữ hoa, chữ thường và số"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            style="@style/custom_llLogin"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="60dp">
+
+            <TextView
+                style="@style/custom_tv_title_edt"
+                android:text="Mật khẩu hiện tại:" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/edt_current_pass"
+                    style="@style/custom_bgr_edt"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/text_hint_password"
+                    android:inputType="textPassword" />
+
+                <ImageView
+                    android:id="@+id/img_hidden_current"
+                    style="@style/custom_toggle_hidden_pass" />
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/custom_llLogin"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="30dp">
+
+            <TextView
+                style="@style/custom_tv_title_edt"
+                android:text="@string/text_new_password" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/edt_new_pass"
+                    style="@style/custom_bgr_edt"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/text_hint_password"
+                    android:inputType="textPassword" />
+
+                <ImageView
+                    android:id="@+id/img_hidden_new"
+                    style="@style/custom_toggle_hidden_pass" />
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/custom_llLogin"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="30dp">
+
+            <TextView
+                style="@style/custom_tv_title_edt"
+                android:text="Nhập lại mật khẩu" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/edt_repass"
+                    style="@style/custom_bgr_edt"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/text_hint_re_password"
+                    android:inputType="textPassword" />
+
+                <ImageView
+                    android:id="@+id/img_hidden_repass"
+                    style="@style/custom_toggle_hidden_pass" />
+            </RelativeLayout>
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/bgr_btn_menu"
+        android:backgroundTint="@color/tv_blue_bold"
+        android:text="Hoàn thành"
+        android:textColor="@color/white" />
+</LinearLayout>

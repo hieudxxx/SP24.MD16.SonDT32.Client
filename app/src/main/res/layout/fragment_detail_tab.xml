@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/custom_bgr_layout"
+    tools:context=".Supplier.Fragment.DetailTabFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bgr_btn_menu"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:layout_marginTop="10dp"
+        android:paddingTop="15dp">
+
+        <LinearLayout style="@style/custom_tv_supplier">
+
+            <TextView
+                style="@style/custom_tv_title"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="Mã NCC" />
+
+            <TextView
+                android:id="@+id/tv_id"
+                style="@style/custom_tv_title"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="NCC004" />
+        </LinearLayout>
+
+        <View style="@style/custom_line" />
+
+        <LinearLayout style="@style/custom_tv_supplier">
+
+            <TextView
+                style="@style/custom_tv_title"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="Tên NCC" />
+
+            <TextView
+                android:id="@+id/tv_name"
+                style="@style/custom_tv_title"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="qửbnaokbnf" />
+        </LinearLayout>
+
+        <View style="@style/custom_line" />
+
+        <LinearLayout style="@style/custom_tv_supplier">
+
+            <TextView
+                style="@style/custom_tv_title"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="Điện thoại" />
+
+            <TextView
+                android:id="@+id/tv_phone"
+                style="@style/custom_tv_title"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="0973967774" />
+
+
+        </LinearLayout>
+
+        <View style="@style/custom_line" />
+
+        <LinearLayout style="@style/custom_tv_supplier">
+
+            <TextView
+                style="@style/custom_tv_title"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="Đia chỉ" />
+
+            <TextView
+                android:id="@+id/tv_address"
+                style="@style/custom_tv_title"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="" />
+
+
+        </LinearLayout>
+
+        <View style="@style/custom_line" />
+
+        <LinearLayout style="@style/custom_tv_supplier">
+
+            <TextView
+                style="@style/custom_tv_title"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="Mã số thuế" />
+
+            <TextView
+                android:id="@+id/tv_taxCode"
+                style="@style/custom_tv_title"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="" />
+
+
+        </LinearLayout>
+
+        <View
+            style="@style/custom_line"
+            android:layout_marginBottom="20dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/custom_tv_title"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="Ghi chú" />
+
+            <TextView
+                android:id="@+id/tv_note"
+                style="@style/custom_tv_title"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="" />
+        </LinearLayout>
+
+        <View
+            style="@style/custom_line"
+            android:layout_marginBottom="20dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="center">
+            <Button
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/layout_delete"
+                android:text="Xóa"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:textColor="#FF0000"
+                android:background="@drawable/vien_bo_goc"
+                android:shadowColor="@color/black"/>
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/img_edit"
+                android:layout_marginLeft="60dp"
+                android:text="Chỉnh sửa"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/vien_bo_goc"
+                android:shadowColor="@color/black"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/custom_bgr_layout"
+    tools:context=".Supplier.Fragment.SupplierEditFragment">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tb_account"
+        style="@style/custom_toolbar">
+
+        <ImageView
+            android:id="@+id/img_back"
+            style="@style/custom_img_back_toolbar" />
+
+        <TextView
+            style="@style/custom_title_toolbar"
+            android:text="Sửa nhà cung cấp" />
+
+        <TextView
+            android:id="@+id/tv_save"
+            style="@style/custom_tv_title"
+            android:layout_gravity="end"
+            android:layout_marginRight="20dp"
+            android:text="Lưu"
+            android:textColor="@color/tv_blue_bold" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout style="@style/custom_layout_supplier">
+
+        <LinearLayout style="@style/custom_tv_supplier">
+
+            <TextView
+                style="@style/custom_title_product_detail"
+                android:layout_weight="1"
+                android:text="Mã NCC" />
+
+            <EditText
+                android:id="@+id/edt_id"
+                style="@style/custom_title_product_detail"
+                android:layout_weight="2.5"
+                android:clickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:hint="Mã tự động" />
+        </LinearLayout>
+
+        <View style="@style/custom_line" />
+
+        <LinearLayout style="@style/custom_tv_supplier">
+
+            <TextView
+                style="@style/custom_title_product_detail"
+                android:layout_weight="1"
+                android:text="Tên NCC" />
+
+            <EditText
+                android:id="@+id/edt_name"
+                style="@style/custom_title_product_detail"
+                android:layout_weight="2.5"
+                android:hint="tên ncc" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_war_name"
+            style="@style/custom_tv_warning" />
+
+        <View style="@style/custom_line" />
+
+        <LinearLayout style="@style/custom_tv_supplier">
+
+            <TextView
+                style="@style/custom_title_product_detail"
+                android:layout_weight="1"
+                android:text="Điện thoại" />
+
+            <EditText
+                android:id="@+id/edt_phone"
+                style="@style/custom_title_product_detail"
+                android:layout_weight="2.5"
+                android:hint="số điện thoại" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_war_phone"
+            style="@style/custom_tv_warning" />
+
+        <View style="@style/custom_line" />
+
+        <LinearLayout style="@style/custom_tv_supplier">
+
+            <TextView
+                style="@style/custom_title_product_detail"
+                android:layout_weight="1"
+                android:text="Địa chỉ" />
+
+            <EditText
+                android:id="@+id/edt_address"
+                style="@style/custom_title_product_detail"
+                android:layout_weight="2.5"
+                android:hint="địa chỉ" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_war_address"
+            style="@style/custom_tv_warning" />
+
+        <View style="@style/custom_line" />
+
+        <LinearLayout style="@style/custom_tv_supplier">
+
+            <TextView
+                style="@style/custom_title_product_detail"
+                android:layout_weight="1"
+                android:text="Mã số thuế" />
+
+            <EditText
+                android:id="@+id/edt_taxCode"
+                style="@style/custom_title_product_detail"
+                android:layout_weight="2.5"
+                android:hint="mã số thuế" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_war_taxCode"
+            style="@style/custom_tv_warning" />
+
+        <View style="@style/custom_line" />
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
+
+            <RadioButton
+                android:id="@+id/radioButtonOption1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Đang hợp tác" />
+
+            <RadioButton
+                android:id="@+id/radioButtonOption2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ngừng hợp tác" />
+        </RadioGroup>
+
+        <View
+            style="@style/custom_line"
+            android:layout_marginBottom="20dp" />
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/edt_note"
+        style="@style/custom_title_product_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:height="50dp"
+        android:background="@color/white"
+        android:hint="Ghi chú"
+        android:paddingHorizontal="10dp" />
+</LinearLayout>

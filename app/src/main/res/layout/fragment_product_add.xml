@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Product.Fragment.ProductAddFragment">
+
+    <LinearLayout style="@style/custom_bgr_layout">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tb_product"
+            style="@style/custom_toolbar">
+
+            <ImageView
+                android:id="@+id/img_back"
+                style="@style/custom_img_back_toolbar" />
+
+            <TextView
+                style="@style/custom_title_toolbar"
+                android:text="Tạo sản phẩm" />
+
+            <TextView
+                android:id="@+id/tv_save"
+                style="@style/custom_tv_title"
+                android:layout_gravity="end"
+                android:layout_marginRight="20dp"
+                android:text="Lưu"
+                android:textColor="@color/tv_blue_bold" />
+        </androidx.appcompat.widget.Toolbar>
+
+        <LinearLayout style="@style/custom_layout_supplier">
+
+            <LinearLayout style="@style/custom_tv_supplier">
+
+                <EditText
+                    android:id="@+id/edt_name"
+                    style="@style/custom_title_product_detail"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/white"
+                    android:hint="Nhập tên sản phẩm" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/img_product"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:padding="5dp"
+                        android:src="@drawable/img_add"
+                        app:shapeAppearanceOverlay="@style/custom_shape_img"
+                        app:strokeColor="@color/bgr_screen"
+                        app:strokeWidth="2dp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="12dp"
+                        android:layout_marginBottom="10dp"
+                        android:src="@drawable/baseline_add_a_photo_24"
+                        app:layout_constraintBottom_toBottomOf="@id/img_product"
+                        app:layout_constraintEnd_toEndOf="@id/img_product" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_war_name"
+                style="@style/custom_tv_warning" />
+
+            <View
+                style="@style/custom_line"
+                android:layout_marginTop="10dp" />
+
+            <LinearLayout style="@style/custom_tv_supplier">
+
+                <TextView
+                    style="@style/custom_tv_title"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="Mã hàng:" />
+
+                <EditText
+                    android:id="@+id/edt_id"
+                    style="@style/custom_title_product_detail"
+                    android:layout_weight="2"
+                    android:backgroundTint="@color/white"
+                    android:clickable="false"
+                    android:contextClickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false" />
+            </LinearLayout>
+
+            <View
+                style="@style/custom_line"
+                android:layout_marginLeft="110dp" />
+
+            <LinearLayout style="@style/custom_tv_supplier">
+
+                <TextView
+                    style="@style/custom_tv_title"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="Loại hàng:" />
+
+                <TextView
+                    android:id="@id/tv_category"
+                    style="@style/custom_tv_title"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:clickable="false"
+                    android:contextClickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    app:drawableRightCompat="@drawable/next_forgot_bold" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_war_cat"
+                style="@style/custom_tv_warning" />
+
+            <View
+                style="@style/custom_line"
+                android:layout_marginLeft="110dp" />
+
+            <LinearLayout style="@style/custom_tv_supplier">
+
+                <TextView
+                    style="@style/custom_tv_title"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="Nhà cung \ncấp:" />
+
+                <TextView
+                    android:id="@+id/tv_supplier"
+                    style="@style/custom_tv_title"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:clickable="false"
+                    android:contextClickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    app:drawableRightCompat="@drawable/next_forgot_bold" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_war_sup"
+                style="@style/custom_tv_warning" />
+
+            <View
+                style="@style/custom_line"
+                android:layout_marginLeft="110dp" />
+
+            <LinearLayout style="@style/custom_tv_supplier">
+
+                <TextView
+                    style="@style/custom_tv_title"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="Giá bán:" />
+
+                <EditText
+                    android:id="@+id/edt_export_price"
+                    style="@style/custom_title_product_detail"
+                    android:layout_weight="2"
+                    android:backgroundTint="@color/white" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_war_export_price"
+                style="@style/custom_tv_warning" />
+
+            <View
+                style="@style/custom_line"
+                android:layout_marginLeft="110dp" />
+
+            <LinearLayout style="@style/custom_tv_supplier">
+
+                <TextView
+                    style="@style/custom_tv_title"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="Giá vốn:" />
+
+                <EditText
+                    android:id="@+id/edt_import_price"
+                    style="@style/custom_title_product_detail"
+                    android:layout_weight="2"
+                    android:backgroundTint="@color/white" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_war_import_price"
+                style="@style/custom_tv_warning" />
+
+            <View
+                style="@style/custom_line"
+                android:layout_marginLeft="110dp" />
+
+            <LinearLayout
+                style="@style/custom_tv_supplier"
+                android:paddingVertical="0dp"
+                android:paddingTop="10dp">
+
+                <TextView
+                    style="@style/custom_tv_title"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Đơn vị \nđo lường: " />
+
+                <EditText
+                    android:id="@+id/edt_unit"
+                    style="@style/custom_title_product_detail"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:backgroundTint="@color/white" />
+            </LinearLayout>
+
+            <View
+                style="@style/custom_line"
+                android:layout_marginLeft="110dp" />
+
+            <LinearLayout style="@style/custom_tv_supplier">
+
+                <TextView
+                    style="@style/custom_tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Vị trí: " />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/custom_tv_supplier"
+                android:gravity="center">
+
+                <Spinner
+                    android:id="@+id/spn_zone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <Spinner
+                    android:id="@+id/spn_shelf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <Spinner
+                    android:id="@+id/spn_level"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_war_unit"
+                style="@style/custom_tv_warning" />
+        </LinearLayout>
+
+        <TextView
+            style="@style/custom_tv_title"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Ghi chú" />
+
+        <EditText
+            style="@style/custom_title_product_detail"
+            android:layout_width="match_parent"
+            android:height="50dp"
+            android:background="@color/white" />
+
+        <EditText
+            style="@style/custom_title_product_detail"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="15dp"
+            android:background="@color/white"
+            android:drawableLeft="@drawable/add_properties"
+            android:gravity="center_vertical"
+            android:hint="thêm thuộc tính" />
+    </LinearLayout>
+</ScrollView>

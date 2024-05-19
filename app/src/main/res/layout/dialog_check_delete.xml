@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:cardCornerRadius="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/custom_tv_app_name"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:text="Thông báo"
+            android:textColor="@color/tv_blue_bold" />
+
+        <TextView
+            style="@style/custom_tv_date_time"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:text="Bạn có muốn xóa ?" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btn_ok"
+                style="@style/custom_tv_date_time"
+                android:layout_margin="10dp"
+                android:text="Có"
+                android:textColor="@color/black" />
+
+            <Button
+                android:id="@+id/btn_cancel"
+                style="@style/custom_tv_date_time"
+                android:layout_margin="10dp"
+                android:backgroundTint="@color/bgr_screen"
+                android:text="Không" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
