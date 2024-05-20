@@ -8,11 +8,14 @@ import fpoly.md16.depotlife.Category.Model.Category;
 import fpoly.md16.depotlife.Category.Model.CategoryResponse;
 import fpoly.md16.depotlife.Customers.Model.Customer;
 import fpoly.md16.depotlife.Customers.Model.CustomerResponse;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -26,7 +29,13 @@ public interface ApiCustomers {
     Call<ArrayList<Customer>> getCustomerList();
 
     @POST("customers/create")
-    Call<Customer> create(@Header("Authorization") String authToken, @Body Customer data);
+    Call<Customer> create(@Header("Authorization") String authToken,
+                          @Part("customerName") RequestBody customerName,
+                          @Part("customerPhone") RequestBody customerPhone,
+                          @Part("customerEmail") RequestBody customerEmail,
+                          @Part("address") RequestBody address,
+                          @Part MultipartBody.Part images
+                          );
     @POST("customers/update/{id}")
     Call<Customer> update(@Header("Authorization") String authToken, @Path("id") int id, @Body Customer data);
 

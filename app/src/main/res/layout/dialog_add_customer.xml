@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_margin="10dp"
+    android:padding="1dp">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_view"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="#FFA589"
+        app:cardCornerRadius="10dp">
+
+        <LinearLayout
+            android:layout_margin="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/tvReg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="THÊM KHÁCH HÀNG"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="36sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/img_product"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:padding="5dp"
+                    android:src="@drawable/img_add"
+                    app:shapeAppearanceOverlay="@style/custom_shape_img"
+                    app:strokeColor="@color/bgr_screen"
+                    app:strokeWidth="2dp"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    style="@style/custom_tv_title"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:layout_height="wrap_content"
+                    android:text="Ảnh đại diện" />
+            </LinearLayout>
+
+
+            <EditText
+                android:id="@+id/ed_FullName"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:drawablePadding="8dp"
+                android:hint="Họ tên"
+                android:padding="8dp"
+                android:textColorHighlight="@color/cardview_dark_background" />
+
+            <TextView
+                android:id="@+id/tv_war_name"
+                style="@style/custom_tv_warning" />
+
+            <EditText
+                android:id="@+id/ed_Email"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/white"
+                android:drawablePadding="8dp"
+                android:hint="Email"
+                android:padding="8dp"
+                android:textColorHighlight="@color/cardview_dark_background" />
+
+            <TextView
+                android:id="@+id/tv_war_email"
+                style="@style/custom_tv_warning" />
+
+            <EditText
+                android:id="@+id/ed_phone"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/white"
+                android:drawablePadding="8dp"
+                android:hint="Điện thoại"
+                android:padding="8dp"
+                android:textColorHighlight="@color/cardview_dark_background" />
+            <TextView
+                android:id="@+id/tv_war_phone"
+                style="@style/custom_tv_warning" />
+
+            <EditText
+                android:id="@+id/ed_address"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/white"
+                android:drawablePadding="8dp"
+                android:hint="Địa chỉ"
+                android:padding="8dp"
+                android:textColorHighlight="@color/cardview_dark_background" />
+            <TextView
+                android:id="@+id/tv_war_address"
+                style="@style/custom_tv_warning" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btnCancel"
+                    android:layout_width="150dp"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:backgroundTint="#FA5522"
+                    android:text="HUỶ"
+                    android:textSize="18sp"
+                    app:cornerRadius="20dp" />
+
+                <Button
+                    android:id="@+id/btnAdd"
+                    android:layout_width="150dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="20dp"
+                    android:backgroundTint="#FA5522"
+                    android:text="THÊM"
+                    android:textSize="18sp"
+                    app:cornerRadius="20dp" />
+
+
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+</LinearLayout>

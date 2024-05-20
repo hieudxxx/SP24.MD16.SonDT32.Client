@@ -8,6 +8,7 @@ import java.util.List;
 
 import fpoly.md16.depotlife.Customers.Model.InvoiceOwed;
 import fpoly.md16.depotlife.Customers.Model.InvoicePaid;
+import fpoly.md16.depotlife.Product.Model.Image;
 import fpoly.md16.depotlife.Product.Model.Product;
 
 public class Customer implements Serializable {
@@ -56,6 +57,7 @@ public class Customer implements Serializable {
 
     // Constructor, Getters and Setters
 
+
     public Customer(int id, String createdAt, String updatedAt, String customerName, String customerPhone, String customerEmail, String address, String avatar, int status, int invoiceQuantity, int totalInvoices, List<InvoicePaid> invoicesPaid, List<InvoiceOwed> invoicesOwed) {
         this.id = id;
         this.createdAt = createdAt;
@@ -70,6 +72,16 @@ public class Customer implements Serializable {
         this.totalInvoices = totalInvoices;
         this.invoicesPaid = invoicesPaid;
         this.invoicesOwed = invoicesOwed;
+    }
+
+    public Customer() {
+    }
+
+    public Customer(String customerName, String customerPhone, String customerEmail, String address) {
+        this.customerName = customerName;
+        this.customerPhone = customerPhone;
+        this.customerEmail = customerEmail;
+        this.address = address;
     }
 
     public int getId() {
