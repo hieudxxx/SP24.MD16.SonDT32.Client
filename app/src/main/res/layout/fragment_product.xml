@@ -65,6 +65,7 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcv_product"
+                android:visibility="visible"
                 style="@style/custom_rcv"
                 tools:listitem="@layout/item_product" />
 
