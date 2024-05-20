@@ -3,13 +3,8 @@ package fpoly.md16.depotlife.Invoice.Model;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
 
+import fpoly.md16.depotlife.Login.Model.UserResponse;
 import fpoly.md16.depotlife.Product.Model.Product;
 
 public class Invoice implements Serializable {
@@ -43,6 +38,9 @@ public class Invoice implements Serializable {
     private String date_created;
     @SerializedName("products")
     private ProductInvoice[] productInvoice;
+
+    @SerializedName("user")
+    private UserResponse.User user;
 
     public Invoice() {
     }
@@ -183,29 +181,45 @@ public class Invoice implements Serializable {
         this.productInvoice = productInvoice;
     }
 
+    public UserResponse.User getUser() {
+        return user;
+    }
+
+    public void setUser(UserResponse.User user) {
+        this.user = user;
+    }
+
     public static class ProductInvoice {
-        @SerializedName("productId")
-        private int productId;
+        @SerializedName("id")
+        private int id;
         @SerializedName("quantity")
         private int quantity;
-        @SerializedName("expiry")
-        private String expiry;
+        @SerializedName("invoice_id")
+        private int invoice_id;;
+
+        @SerializedName("product_id")
+        private int product_id;
+
+        @SerializedName("product")
+        private Product product;
 
         public ProductInvoice() {
         }
 
-        public ProductInvoice(int productId, int quantity, String expiry) {
-            this.productId = productId;
+        public ProductInvoice(int id, int quantity, int invoice_id, int product_id, Product product) {
+            this.id = id;
             this.quantity = quantity;
-            this.expiry = expiry;
+            this.invoice_id = invoice_id;
+            this.product_id = product_id;
+            this.product = product;
         }
 
-        public int getProductId() {
-            return productId;
+        public int getId() {
+            return id;
         }
 
-        public void setProductId(int productId) {
-            this.productId = productId;
+        public void setId(int id) {
+            this.id = id;
         }
 
         public int getQuantity() {
@@ -216,12 +230,28 @@ public class Invoice implements Serializable {
             this.quantity = quantity;
         }
 
-        public String getExpiry() {
-            return expiry;
+        public int getInvoice_id() {
+            return invoice_id;
         }
 
-        public void setExpiry(String expiry) {
-            this.expiry = expiry;
+        public void setInvoice_id(int invoice_id) {
+            this.invoice_id = invoice_id;
+        }
+
+        public int getProduct_id() {
+            return product_id;
+        }
+
+        public void setProduct_id(int product_id) {
+            this.product_id = product_id;
+        }
+
+        public Product getProduct() {
+            return product;
+        }
+
+        public void setProduct(Product product) {
+            this.product = product;
         }
     }
 

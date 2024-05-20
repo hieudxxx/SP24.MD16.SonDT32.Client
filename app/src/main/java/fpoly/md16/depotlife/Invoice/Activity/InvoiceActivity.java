@@ -1,7 +1,12 @@
 package fpoly.md16.depotlife.Invoice.Activity;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.AttributeSet;
+import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import fpoly.md16.depotlife.Helper.Helper;
@@ -19,6 +24,18 @@ public class InvoiceActivity extends AppCompatActivity {
         binding = ActivityInvoiceBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        Helper.loadFragment(getSupportFragmentManager(), new InvoiceAddFragment(),null, R.id.frag_container_invoice);
+        int typeInvoice = getIntent().getIntExtra("type_invoice", 0);
+
+        InvoiceAddFragment fragment = new InvoiceAddFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("type_invoice", typeInvoice);
+        Helper.loadFragment(getSupportFragmentManager(), fragment, bundle, R.id.frag_container_invoice);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull String name, @NonNull Context context, @NonNull AttributeSet attrs) {
+        return super.onCreateView(name, context, attrs);
+
     }
 }
