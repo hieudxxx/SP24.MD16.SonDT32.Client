@@ -71,6 +71,7 @@ public class ProductFragment extends Fragment {
         token = "Bearer " + Helper.getSharedPre(getContext(), "token", String.class);
         list = new ArrayList<>();
         adapter = new ProductAdapter(getContext(), token);
+        binding.rcvProduct.setAdapter(adapter);
 
         callApi();
         binding.rcvProduct.addOnScrollListener(new Pagination((LinearLayoutManager) binding.rcvProduct.getLayoutManager()) {
@@ -145,7 +146,6 @@ public class ProductFragment extends Fragment {
                 binding.layoutTotal.setVisibility(View.VISIBLE);
                 binding.tvEmpty.setVisibility(View.GONE);
                 binding.pbLoading.setVisibility(View.GONE);
-                binding.rcvProduct.setAdapter(adapter);
                 adapter.setData(list);
             } else {
                 binding.layoutTotal.setVisibility(View.GONE);
