@@ -2,10 +2,6 @@ package fpoly.md16.depotlife.Helper.Interfaces.Api;
 
 import static fpoly.md16.depotlife.Helper.Interfaces.Api.RetrofitRequest.getRetrofit;
 
-import java.util.ArrayList;
-
-import fpoly.md16.depotlife.Category.Model.Category;
-import fpoly.md16.depotlife.Category.Model.CategoryResponse;
 import fpoly.md16.depotlife.Customers.Model.Customer;
 import fpoly.md16.depotlife.Customers.Model.CustomerResponse;
 import okhttp3.MultipartBody;
@@ -14,6 +10,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
@@ -24,18 +21,16 @@ public interface ApiCustomers {
 
     @GET("customers")
     Call<CustomerResponse> getData(@Header("Authorization") String authToken, @Query("page") int page_index);
-
-    @GET("customers")
-    Call<ArrayList<Customer>> getCustomerList();
-
+    @Multipart
     @POST("customers/create")
     Call<Customer> create(@Header("Authorization") String authToken,
-                          @Part("customerName") RequestBody customerName,
-                          @Part("customerPhone") RequestBody customerPhone,
-                          @Part("customerEmail") RequestBody customerEmail,
+                          @Part("customer_name") RequestBody customerName,
+                          @Part("customer_phone") RequestBody customerPhone,
+                          @Part("customer_email") RequestBody customerEmail,
                           @Part("address") RequestBody address,
                           @Part MultipartBody.Part images
-                          );
+    );
+
     @POST("customers/update/{id}")
     Call<Customer> update(@Header("Authorization") String authToken, @Path("id") int id, @Body Customer data);
 

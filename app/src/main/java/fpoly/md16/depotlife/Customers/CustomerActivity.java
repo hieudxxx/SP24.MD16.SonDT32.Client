@@ -12,18 +12,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
 
-import java.io.IOException;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,14 +30,14 @@ import fpoly.md16.depotlife.Customers.Adapter.CustomerAdapter;
 import fpoly.md16.depotlife.Customers.Model.Customer;
 import fpoly.md16.depotlife.Customers.Model.CustomerResponse;
 import fpoly.md16.depotlife.Helper.Helper;
-import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiCategory;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiCustomers;
+import fpoly.md16.depotlife.Helper.RealPathUtil;
 import fpoly.md16.depotlife.R;
-import fpoly.md16.depotlife.databinding.ActivityCategoryBinding;
 import fpoly.md16.depotlife.databinding.ActivityCustomerBinding;
-import fpoly.md16.depotlife.databinding.DialogAddCategoryBinding;
 import fpoly.md16.depotlife.databinding.DialogAddCustomerBinding;
+import okhttp3.MediaType;
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -51,9 +49,8 @@ public class CustomerActivity extends AppCompatActivity {
     private CustomerAdapter adapter;
     private CustomerResponse customerResponse;
     private Uri uri;
-    private MultipartBody.Part listMultipartBody;
+    private MultipartBody.Part multipartBody;
     private int pageIndex = 1;
-    private int count = 0;
     private int perPage = 0;
     private String token;
 
@@ -75,7 +72,7 @@ public class CustomerActivity extends AppCompatActivity {
         binding = ActivityCustomerBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        token = "Bearer " +(String) Helper.getSharedPre(getApplicationContext(), "token", String.class);
+        token = "Bearer " + Helper.getSharedPre(getApplicationContext(), "token", String.class);
 
         list = new ArrayList<>();
         getData();
@@ -91,12 +88,10 @@ public class CustomerActivity extends AppCompatActivity {
             onAddCustomer();
         });
 
-
         binding.nestScoll.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
                 binding.pbLoadMore.setVisibility(View.VISIBLE);
                 if (pageIndex <= perPage) {
-                    Log.d("onScrollChange", "onScrollChange: " + pageIndex);
                     getData();
                     binding.pbLoadMore.setVisibility(View.GONE);
                 } else {
@@ -114,41 +109,16 @@ public class CustomerActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.item_search) {
-            Helper.onSearch(item, adapter);
-            return true;
-        } else if (id == R.id.item_sort) {
-            Helper.onSort(this, list, adapter, null, Customer.sortByNameAZ);
-
-//            showSortDialogCategory();
-            return true;
-        } else {
-            return super.onOptionsItemSelected(item);
-        }
-    }
-
     private void getData() {
         ApiCustomers.API_CUSTOMERS.getData(token, pageIndex).enqueue(new Callback<CustomerResponse>() {
             @Override
             public void onResponse(Call<CustomerResponse> call, Response<CustomerResponse> response) {
-                Log.d("onResponse_supplier", "response_code: " + response.code());
                 if (response.isSuccessful()) {
                     customerResponse = response.body();
                     if (customerResponse != null) {
                         perPage = customerResponse.getLast_page();
                         onCheckList(customerResponse);
                     }
-                } else {
-                    try {
-                        String errorBody = response.errorBody().string();
-                        Log.e("onResponse", "errorBody: " + errorBody);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Toast.makeText(CustomerActivity.this, "Không thể lấy dữ liệu danh mục", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -160,10 +130,9 @@ public class CustomerActivity extends AppCompatActivity {
         });
     }
 
-
     private void onCheckList(CustomerResponse customerResponse) {
         if (customerResponse.getData() != null) {
-            List<Customer> tempList = Arrays.asList(customerResponse.getData()); // hoặc có thể dùng foreach để check từng item
+            List<Customer> tempList = Arrays.asList(customerResponse.getData());
             list.addAll(tempList);
             binding.rcvCategory.setVisibility(View.VISIBLE);
             binding.tvEmpty.setVisibility(View.GONE);
@@ -180,8 +149,6 @@ public class CustomerActivity extends AppCompatActivity {
         }
     }
 
-
-
     private void onAddCustomer() {
         addBinding = DialogAddCustomerBinding.inflate(LayoutInflater.from(this));
         AlertDialog.Builder builder = new AlertDialog.Builder(CustomerActivity.this);
@@ -191,54 +158,57 @@ public class CustomerActivity extends AppCompatActivity {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
 
-        addBinding.imgProduct.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onRequestPermission();
-            }
-        });
+        addBinding.imgProduct.setOnClickListener(view -> onRequestPermission());
 
         addBinding.btnAdd.setOnClickListener(v -> {
             String name = addBinding.edFullName.getText().toString().trim();
             String email = addBinding.edEmail.getText().toString().trim();
             String phone = addBinding.edPhone.getText().toString().trim();
             String address = addBinding.edAddress.getText().toString().trim();
-            Log.d("imgg", "imgg: "+ addBinding.imgProduct);
+            Log.d("imgg", "imgg: " + addBinding.imgProduct);
 
 
-
-            if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || address.isEmpty()){
+            if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || address.isEmpty()) {
                 Toast.makeText(this, "Hãy nhập đủ dữ liệu", Toast.LENGTH_SHORT).show();
-            }else {
+            } else {
                 Helper.isContainSpace(name, addBinding.tvWarName);
                 Helper.isEmailValid(email, addBinding.tvWarEmail);
                 Helper.isPhoneValid(phone, addBinding.tvWarPhone);
                 Helper.isContainSpace(address, addBinding.tvWarAddress);
 
                 if (addBinding.tvWarName.getText().toString().isEmpty() &&
-                    addBinding.tvWarEmail.getText().toString().isEmpty() &&
-                    addBinding.tvWarPhone.getText().toString().isEmpty() &&
-                    addBinding.tvWarAddress.getText().toString().isEmpty()
-                ){
-                    if (uri != null) listMultipartBody = new MultipartBody.Part(Helper.getRealPathFileImageCustomer(this, uri));
+                        addBinding.tvWarEmail.getText().toString().isEmpty() &&
+                        addBinding.tvWarPhone.getText().toString().isEmpty() &&
+                        addBinding.tvWarAddress.getText().toString().isEmpty()
+                ) {
 
-                    Customer customer = new Customer(name,phone,email,address);
+                    if (uri != null){
+                        String realPath = RealPathUtil.getRealPath(this, uri);
+                        File file = new File(realPath);
+                        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+                        multipartBody = MultipartBody.Part.createFormData("avatar", file.getName(), requestBody);
+                    }
+
+                    Customer customer = new Customer(name, phone, email, address);
 
                     ApiCustomers.API_CUSTOMERS.create(token,
                             Helper.createStringPart(customer.getCustomerName()),
                             Helper.createStringPart(customer.getCustomerPhone()),
                             Helper.createStringPart(customer.getCustomerEmail()),
                             Helper.createStringPart(customer.getAddress()),
-                            listMultipartBody).enqueue(new Callback<Customer>() {
+                            multipartBody).enqueue(new Callback<Customer>() {
                         @Override
                         public void onResponse(Call<Customer> call, Response<Customer> response) {
+                            Log.d("tag_kiemTra", "onResponse: "+response);
+                            Log.d("tag_kiemTra", "onResponse: "+response.code());
+                            Log.d("tag_kiemTra", "onResponse: "+response.body());
                             if (response.isSuccessful()) {
                                 Toast.makeText(CustomerActivity.this, "Thêm khách hàng thành công!", Toast.LENGTH_SHORT).show();
                                 addBinding.edFullName.setText("");
                                 addBinding.edPhone.setText("");
                                 addBinding.edEmail.setText("");
                                 addBinding.edAddress.setText("");
-                                getData();
+//                                getData();
                                 dialog.dismiss();
                             }
                         }
@@ -249,7 +219,7 @@ public class CustomerActivity extends AppCompatActivity {
                             Toast.makeText(CustomerActivity.this, "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
                         }
                     });
-                }else {
+                } else {
                     Toast.makeText(CustomerActivity.this, "Thêm khách hàng thất bại!", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -259,8 +229,6 @@ public class CustomerActivity extends AppCompatActivity {
             dialog.cancel();
         });
     }
-
-
     private void onRequestPermission() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             Helper.openGallery(this, launcher);

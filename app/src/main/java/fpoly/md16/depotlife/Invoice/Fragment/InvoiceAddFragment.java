@@ -1,7 +1,5 @@
 package fpoly.md16.depotlife.Invoice.Fragment;
 
-import static android.app.Activity.RESULT_OK;
-
 import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -16,7 +14,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -25,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -33,13 +31,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.File;
@@ -59,12 +54,11 @@ import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiProduct;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiSupplier;
 import fpoly.md16.depotlife.Invoice.Adapter.ChooseProductAdapter;
 import fpoly.md16.depotlife.Invoice.Adapter.DialogProductAdapter;
-import fpoly.md16.depotlife.Product.Model.Expiry;
 import fpoly.md16.depotlife.Invoice.Adapter.DialogSupplierAdapter;
+import fpoly.md16.depotlife.Product.Model.Expiry;
 import fpoly.md16.depotlife.Product.Model.Product;
 import fpoly.md16.depotlife.Product.Model.ProductResponse;
 import fpoly.md16.depotlife.R;
-import fpoly.md16.depotlife.Invoice.Adapter.DialogSupplierAdapter;
 import fpoly.md16.depotlife.Supplier.Model.Supplier;
 import fpoly.md16.depotlife.Supplier.Model.SupplierResponse;
 import fpoly.md16.depotlife.databinding.DialogLayoutBinding;
@@ -78,9 +72,6 @@ import retrofit2.Response;
 public class InvoiceAddFragment extends Fragment {
     private FragmentInvoiceAddBinding binding;
     public String token;
-    private static final int PICK_IMAGE = 100;
-
-    private static final int PERMISSION_REQUEST_CODE = 2000;
     private Uri imageUri;
     private int invoiceType;
     public String invoiceCreator;
@@ -94,7 +85,6 @@ public class InvoiceAddFragment extends Fragment {
     private DialogSupplierAdapter dialogSupplierAdapter;
     private DialogProductAdapter dialogProductAdapter;
     private ChooseProductAdapter chooseProductAdapter;
-    private final int count = 0;
     public static boolean isLoadData = false;
     final int SEARCH_ID = R.id.action_search;
 
@@ -128,7 +118,6 @@ public class InvoiceAddFragment extends Fragment {
         String currentDate = dateFormat.format(new Date());
 
         binding.tvDateTime.setText(currentDate);
-
 
         binding.imgBack.setOnClickListener(view1 -> requireActivity().finish());
         list = new ArrayList<>();
