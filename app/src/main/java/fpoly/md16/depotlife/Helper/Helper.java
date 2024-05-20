@@ -448,6 +448,15 @@ public class Helper {
         return multipartBody;
     }
 
+    public static MultipartBody.Part getRealPathFileImageCustomer(Context context, Uri uri) {
+        MultipartBody.Part multipartBody;
+        String realPath = RealPathUtil.getRealPath(context, uri);
+        File file = new File(realPath);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        multipartBody = MultipartBody.Part.createFormData("avatar", file.getName(), requestBody);
+        return multipartBody;
+    }
+
     public static void onSetIntSpn(Context context, List<Integer> listInt, Spinner spinner, int index) {
         ArrayAdapter<Integer> adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, listInt);
         spinner.setAdapter(adapter);

@@ -24,7 +24,7 @@
             android:layout_marginBottom="30dp"
             app:cardCornerRadius="60dp">
 
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/img_avt"
                 android:layout_width="70dp"
                 android:layout_height="70dp"

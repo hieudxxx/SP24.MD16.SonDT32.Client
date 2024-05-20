@@ -37,7 +37,7 @@
             <TextView
                 style="@style/custom_tv_date_time"
                 android:fontFamily="@font/nunito_bold"
-                android:text="Thể loại"
+                android:text="khách hàng"
                 android:textColor="@color/black" />
 
             <TextView

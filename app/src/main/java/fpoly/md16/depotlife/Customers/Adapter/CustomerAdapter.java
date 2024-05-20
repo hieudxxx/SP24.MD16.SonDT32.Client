@@ -2,6 +2,7 @@ package fpoly.md16.depotlife.Customers.Adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +24,9 @@ import java.util.List;
 import fpoly.md16.depotlife.Customers.CustomerActivity;
 import fpoly.md16.depotlife.Customers.Model.Customer;
 import fpoly.md16.depotlife.Helper.Helper;
+import fpoly.md16.depotlife.Helper.Interfaces.Api.API;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiCategory;
+import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiCustomers;
 import fpoly.md16.depotlife.R;
 import fpoly.md16.depotlife.databinding.BottomsheetcustomerBinding;
 import fpoly.md16.depotlife.databinding.BottomsheetstatisticBinding;
@@ -62,8 +65,19 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
     public void onBindViewHolder(@NonNull CustomerViewHolder holder, int position) {
         Customer customer = customerList.get(position);
 
-        String ava = customer.getAvatar().replace("public","storage");
-        Picasso.get().load("https://warehouse.sinhvien.io.vn/public/" +ava).into(holder.customerBinding.imgAvt);
+
+        if (customer.getAvatar() == null) {
+            holder.customerBinding.imgAvt.setImageResource(R.drawable.avatar);
+        } else {
+            Picasso.get().load(API.URL_IMG + customer.getAvatar().replaceFirst("public", "")).into(holder.customerBinding.imgAvt);
+
+//            String ava = customer.getAvatar().replace("public", "storage");
+//            Helper.setImgProduct(, holder.customerBinding.imgAvt);
+//            Picasso.get().load("https://warehouse.sinhvien.io.vn/public/" + ava).into(holder.customerBinding.imgAvt);
+        }
+
+//        Helper.setImgProduct(customer.getAvatar(), holder.customerBinding.imgAvt);
+
 
         holder.customerBinding.tvName.setText(customer.getCustomerName());
         holder.customerBinding.tvPhone.setText(customer.getCustomerPhone());
@@ -121,15 +135,15 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
 
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.bottomsheetcustomer, null);
-        binding = BottomsheetcustomerBinding.inflate(inflater,view,false);
+        binding = BottomsheetcustomerBinding.inflate(inflater, view, false);
 
         binding.tvName.setText(customer.getCustomerName());
         binding.tvPhone.setText(customer.getCustomerPhone());
         binding.tvEmail.setText(customer.getCustomerEmail());
-        binding.tvQtyInvoice.setText(customer.getInvoiceQuantity()+"");
+        binding.tvQtyInvoice.setText(customer.getInvoiceQuantity() + "");
 //        binding.tvDebt.setText(customer.getTotalInvoices());
         binding.tvDebt.setText("12222");
-        binding.tvPayment.setText(customer.getTotalInvoices()+"");
+        binding.tvPayment.setText(customer.getTotalInvoices() + "");
 
         bottomSheetDialog.setContentView(binding.getRoot());
         bottomSheetDialog.show();
@@ -144,7 +158,26 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
         binding.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Helper.onCheckdeleteDialog(context, () -> {
+                    ApiCustomers.API_CUSTOMERS.delete(token, customer.getId()).enqueue(new Callback<Customer>() {
+                        @Override
+                        public void onResponse(Call<Customer> call, Response<Customer> response) {
+                            if (response.isSuccessful() || response.code() == 200) {
+                                Toast.makeText(context, "Xóa khách hàng thành công!", Toast.LENGTH_SHORT).show();
+                                customerList.remove(customer);
+                                CustomerActivity.isLoadData = true;
+                                notifyDataSetChanged();
+                                bottomSheetDialog.cancel();
+                            }
+                        }
 
+                        @Override
+                        public void onFailure(Call<Customer> call, Throwable throwable) {
+                            Log.d("onFailure", "onFailure: " + throwable.getMessage());
+                            Toast.makeText(context, "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                });
             }
         });
     }
@@ -249,7 +282,6 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
             }
         };
     }
-
 
 
     public class CustomerViewHolder extends RecyclerView.ViewHolder {
