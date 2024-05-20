@@ -15,16 +15,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiProduct;
+import fpoly.md16.depotlife.Helper.Pagination;
 import fpoly.md16.depotlife.Product.Activity.ProductActivity;
 import fpoly.md16.depotlife.Product.Adapter.ProductAdapter;
 import fpoly.md16.depotlife.Product.Model.Product;
@@ -39,13 +39,15 @@ public class ProductFragment extends Fragment {
     private FragmentProductBinding binding;
     private ProductAdapter adapter;
     private Context context;
-    private final ArrayList<Product> list = new ArrayList<>();
+    private ArrayList<Product> list;
     private List<Product> listSearch = new ArrayList<>();
     private ProductResponse productResponse;
     private int pageIndex = 1;
     private int perPage = 0;
     private String token;
     public static boolean isLoadData = false;
+    private boolean isLoading;
+    private boolean isLastPage;
     private Runnable runnable;
     private final Handler handler = new Handler();
 
@@ -59,8 +61,6 @@ public class ProductFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        context = view.getContext();
-
         ((AppCompatActivity) getActivity()).setSupportActionBar(binding.tbProduct);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
 
@@ -69,25 +69,110 @@ public class ProductFragment extends Fragment {
         });
 
         token = "Bearer " + Helper.getSharedPre(getContext(), "token", String.class);
-
+        list = new ArrayList<>();
         adapter = new ProductAdapter(getContext(), token);
 
-        getData();
+        callApi();
+        binding.rcvProduct.addOnScrollListener(new Pagination((LinearLayoutManager) binding.rcvProduct.getLayoutManager()) {
+            @Override
+            public void loadMore() {
+                isLoading = true;
+                pageIndex += 1;
+                loadNextPage();
+            }
 
-        //onSearch();
+            @Override
+            public boolean isLoading() {
+                return isLoading;
+            }
 
-        binding.nestScoll.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-            if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
-                binding.pbLoadMore.setVisibility(View.VISIBLE);
-                if (pageIndex <= perPage) {
-                    getData();
-                    binding.pbLoadMore.setVisibility(View.GONE);
-                } else {
-                    binding.pbLoadMore.setVisibility(View.GONE);
-                }
+            @Override
+            public boolean isLaspage() {
+                return isLastPage;
             }
         });
     }
+
+    private void loadNextPage() {
+        handler.postDelayed(() -> {
+            adapter.removeFooterLoading();
+            callApi();
+
+            isLoading = false;
+            if (pageIndex < perPage) {
+                adapter.addFooterLoading();
+            } else {
+                isLastPage = true;
+            }
+        }, 500);
+
+
+    }
+
+    private void callApi() {
+        ApiProduct.apiProduct.getData(token, pageIndex).enqueue(new Callback<ProductResponse>() {
+            @Override
+            public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
+                if (response.isSuccessful()) {
+                    productResponse = response.body();
+                    if (productResponse != null) {
+                        binding.tvTotalProduct.setText(productResponse.getTotal() + "");
+                        perPage = productResponse.getLast_page();
+                        onCheckList(productResponse);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ProductResponse> call, Throwable throwable) {
+                Log.d("onFailure", "onFailure: " + throwable.getMessage());
+                Toast.makeText(getActivity(), "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+//        isLastPage = false;
+//        if (pageIndex < perPage) {
+//            adapter.addFooterLoading();
+//        } else {
+//            isLastPage = true;
+//        }
+//        return productList;
+    }
+    private void onCheckList(ProductResponse productResponse) {
+        if (productResponse.getData() != null) {
+            list.addAll(Arrays.asList(productResponse.getData()));
+            if (!list.isEmpty()) {
+                binding.layoutTotal.setVisibility(View.VISIBLE);
+                binding.tvEmpty.setVisibility(View.GONE);
+                binding.pbLoading.setVisibility(View.GONE);
+                binding.rcvProduct.setAdapter(adapter);
+                adapter.setData(list);
+            } else {
+                binding.layoutTotal.setVisibility(View.GONE);
+                binding.pbLoading.setVisibility(View.GONE);
+                binding.tvEmpty.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.toolbar_menu, menu);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (isLoadData) {
+            pageIndex = 1;
+            list.clear();
+            adapter.notifyDataSetChanged();
+            callApi();
+            isLoadData = false;
+        }
+    }
+
 
 // private void onSearch() {
 //        SearchManager searchManager = (SearchManager) getContext().getSystemService(Context.SEARCH_SERVICE);
@@ -126,9 +211,9 @@ public class ProductFragment extends Fragment {
 //        }
 
 
- //   }
+    //   }
 
-//    private void getDataSearch(String keyword) {
+    //    private void getDataSearch(String keyword) {
 //        ApiProduct.apiProduct.searchByName(token, keyword).enqueue(new Callback<List<Product>>() {
 //            @Override
 //            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
@@ -166,76 +251,5 @@ public class ProductFragment extends Fragment {
 //        }
 //    }
 //
-    private void getData() {
-        ApiProduct.apiProduct.getData(token, pageIndex).enqueue(new Callback<ProductResponse>() {
-            @Override
-            public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
-                if (response.isSuccessful()) {
-                    productResponse = response.body();
-                    if (productResponse != null) {
-                        binding.tvTotalProduct.setText(productResponse.getTotal() + "");
-                        perPage = productResponse.getLast_page();
-                        onCheckList(productResponse);
-                    }
-                } else {
-                    try {
-                        String errorBody = response.errorBody().string();
-                        Log.e("onResponse", "errorBody: " + errorBody);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Toast.makeText(getActivity(), "Không thể lấy dữ liệu danh mục", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ProductResponse> call, Throwable throwable) {
-                Log.d("onFailure", "onFailure: " + throwable.getMessage());
-                Toast.makeText(getActivity(), "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void onCheckList(ProductResponse productResponse) {
-        if (productResponse.getData() != null) {
-            list.addAll(Arrays.asList(productResponse.getData()));
-            if (!list.isEmpty()) {
-                binding.rcvProduct.setVisibility(View.VISIBLE);
-                binding.layoutTotal.setVisibility(View.VISIBLE);
-                binding.tvEmpty.setVisibility(View.GONE);
-                binding.pbLoading.setVisibility(View.GONE);
-                binding.pbLoadMore.setVisibility(View.GONE);
-                pageIndex++;
-                binding.rcvProduct.setAdapter(adapter);
-                adapter.setData(list);
-            } else {
-                binding.rcvProduct.setVisibility(View.INVISIBLE);
-                binding.layoutTotal.setVisibility(View.GONE);
-                binding.pbLoading.setVisibility(View.GONE);
-                binding.pbLoadMore.setVisibility(View.GONE);
-                binding.tvEmpty.setVisibility(View.VISIBLE);
-            }
-
-        }
-    }
-
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.toolbar_menu, menu);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        if (isLoadData) {
-            pageIndex = 1;
-            list.clear();
-            adapter.notifyDataSetChanged();
-            getData();
-            isLoadData = false;
-        }
-    }
 
 }

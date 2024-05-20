@@ -15,7 +15,6 @@ import fpoly.md16.depotlife.databinding.ItemCategoryProductFilterBinding;
 public class ProductCategoryAdapter extends RecyclerView.Adapter<ProductCategoryAdapter.CategoryViewHolder> {
     private Context context;
     private List<Category> categoryList;
-
     public ProductCategoryAdapter(Context context, List<Category> categoryList) {
         this.context = context;
         this.categoryList = categoryList;
