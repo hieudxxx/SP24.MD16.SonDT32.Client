@@ -122,7 +122,6 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     public void addFooterLoading() {
         isLoading = true;
-        list.add(new Product());
     }
 
     public void removeFooterLoading() {
