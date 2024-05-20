@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.SearchManager;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -37,10 +36,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.textfield.TextInputEditText;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -64,6 +60,7 @@ import fpoly.md16.depotlife.Supplier.Model.SupplierResponse;
 import fpoly.md16.depotlife.databinding.DialogLayoutBinding;
 import fpoly.md16.depotlife.databinding.DialogProductLayoutBinding;
 import fpoly.md16.depotlife.databinding.FragmentInvoiceAddBinding;
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -87,12 +84,17 @@ public class InvoiceAddFragment extends Fragment {
     private ChooseProductAdapter chooseProductAdapter;
     public static boolean isLoadData = false;
     final int SEARCH_ID = R.id.action_search;
+    private MultipartBody.Part multipartBody;
+
 
     private ActivityResultLauncher<Intent> launcher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                     imageUri = result.getData().getData();
+                    binding.iconSignature.setVisibility(View.GONE);
+                    binding.tvSignature.setVisibility(View.GONE);
+                    binding.imgSignature.setVisibility(View.VISIBLE);
                     binding.imgSignature.setImageURI(imageUri);
                 }
             }
@@ -110,37 +112,32 @@ public class InvoiceAddFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        token = "Bearer " + Helper.getSharedPre(getContext(), "token", String.class);
-        invoiceCreator = (String) Helper.getSharedPre(getContext(), "name", String.class);
-        binding.tvInvoiceCreator.setText(invoiceCreator);
+        init();
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        String currentDate = dateFormat.format(new Date());
-
-        binding.tvDateTime.setText(currentDate);
+        initSupplier();
 
         binding.imgBack.setOnClickListener(view1 -> requireActivity().finish());
-        list = new ArrayList<>();
-        listProduct = new ArrayList<>();
-        listChooseProduct = new ArrayList<>();
 
-        if (invoiceType == 0) {
-            binding.spnInvoiceType.setText("Hóa đơn nhập");
-            binding.idCustomer.setVisibility(View.GONE);
-            binding.idSupplier.setVisibility(View.VISIBLE);
-        } else {
-            binding.btnAddProduct.setVisibility(View.VISIBLE);
-            binding.spnInvoiceType.setText("Hóa đơn xuất");
-            binding.idCustomer.setVisibility(View.VISIBLE);
-            binding.idSupplier.setVisibility(View.GONE);
-        }
+        binding.btnAddProduct.setOnClickListener(view13 -> {
+            showDialogProduct(view.getContext(), binding);
+        });
 
-        String[] items_status_payment = new String[]{"Chưa thanh toán", "Đã thanh toán"};
-        ArrayAdapter<String> adapter_status = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_dropdown_item_1line, items_status_payment);
-        binding.spnPaymentStatus.setAdapter(adapter_status);
+        binding.edDueDate.setOnClickListener(view12 -> showDatePickerDialog(view12.getContext(), binding.edDueDate));
 
+        binding.idSignature.setOnClickListener(view14 -> {
+            onRequestPermission();
+        });
+
+        binding.btnAddInvoice.setOnClickListener(view15 -> {
+            if (imageUri != null) {
+                multipartBody = Helper.getRealPathFile(getContext(), imageUri, "signature");
+            }
+        });
+    }
+
+    private void initSupplier() {
         binding.spnSupName.setOnClickListener(view12 -> {
-            showDialog(view.getContext());
+            showDialog(getContext());
         });
 
         binding.spnSupName.addTextChangedListener(new TextWatcher() {
@@ -159,21 +156,35 @@ public class InvoiceAddFragment extends Fragment {
                 binding.btnAddProduct.setVisibility(View.VISIBLE);
             }
         });
+    }
 
-        binding.btnAddProduct.setOnClickListener(view13 -> {
-            showDialogProduct(view.getContext(), binding);
-        });
+    private void init() {
+        token = "Bearer " + Helper.getSharedPre(getContext(), "token", String.class);
+        invoiceCreator = (String) Helper.getSharedPre(getContext(), "name", String.class);
+        binding.tvInvoiceCreator.setText(invoiceCreator);
 
-        binding.edDueDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDatePickerDialog(view.getContext(), binding.edDueDate);
-            }
-        });
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        String currentDate = dateFormat.format(new Date());
+        binding.tvDateTime.setText(currentDate);
 
-        binding.idSignature.setOnClickListener(view14 -> {
-            onRequestPermission();
-        });
+        list = new ArrayList<>();
+        listProduct = new ArrayList<>();
+        listChooseProduct = new ArrayList<>();
+
+        if (invoiceType == 0) {
+            binding.spnInvoiceType.setText("Hóa đơn nhập");
+            binding.idCustomer.setVisibility(View.GONE);
+            binding.idSupplier.setVisibility(View.VISIBLE);
+        } else {
+            binding.btnAddProduct.setVisibility(View.VISIBLE);
+            binding.spnInvoiceType.setText("Hóa đơn xuất");
+            binding.idCustomer.setVisibility(View.VISIBLE);
+            binding.idSupplier.setVisibility(View.GONE);
+        }
+
+        String[] items_status_payment = new String[]{"Chưa thanh toán", "Đã thanh toán"};
+        ArrayAdapter<String> adapter_status = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, items_status_payment);
+        binding.spnPaymentStatus.setAdapter(adapter_status);
     }
 
     private void onRequestPermission() {
@@ -187,26 +198,6 @@ public class InvoiceAddFragment extends Fragment {
             String permission = (Manifest.permission.READ_EXTERNAL_STORAGE);
             requestPermissions(new String[]{permission}, 10);
         }
-    }
-
-    private File convertUriToFile(Uri uri) {
-        File file = null;
-        try {
-            ContentResolver contentResolver = getActivity().getContentResolver();
-            InputStream inputStream = contentResolver.openInputStream(uri);
-            file = new File(getActivity().getCacheDir(), "temp_image.jpg");
-            FileOutputStream outputStream = new FileOutputStream(file);
-            byte[] buffer = new byte[1024];
-            int length;
-            while ((length = inputStream.read(buffer)) > 0) {
-                outputStream.write(buffer, 0, length);
-            }
-            outputStream.close();
-            inputStream.close();
-        } catch (Exception e) {
-            Log.e("File Conversion", "Error converting URI to file", e);
-        }
-        return file;
     }
 
     public void getChooseProdut(FragmentInvoiceAddBinding binding, Context context) {

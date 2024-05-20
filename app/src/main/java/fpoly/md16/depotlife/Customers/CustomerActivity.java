@@ -21,7 +21,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -31,13 +30,10 @@ import fpoly.md16.depotlife.Customers.Model.Customer;
 import fpoly.md16.depotlife.Customers.Model.CustomerResponse;
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiCustomers;
-import fpoly.md16.depotlife.Helper.RealPathUtil;
 import fpoly.md16.depotlife.R;
 import fpoly.md16.depotlife.databinding.ActivityCustomerBinding;
 import fpoly.md16.depotlife.databinding.DialogAddCustomerBinding;
-import okhttp3.MediaType;
 import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -182,11 +178,8 @@ public class CustomerActivity extends AppCompatActivity {
                         addBinding.tvWarAddress.getText().toString().isEmpty()
                 ) {
 
-                    if (uri != null){
-                        String realPath = RealPathUtil.getRealPath(this, uri);
-                        File file = new File(realPath);
-                        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-                        multipartBody = MultipartBody.Part.createFormData("avatar", file.getName(), requestBody);
+                    if (uri != null) {
+                        multipartBody = Helper.getRealPathFile(this, uri, "avatar");
                     }
 
                     Customer customer = new Customer(name, phone, email, address);
@@ -199,9 +192,9 @@ public class CustomerActivity extends AppCompatActivity {
                             multipartBody).enqueue(new Callback<Customer>() {
                         @Override
                         public void onResponse(Call<Customer> call, Response<Customer> response) {
-                            Log.d("tag_kiemTra", "onResponse: "+response);
-                            Log.d("tag_kiemTra", "onResponse: "+response.code());
-                            Log.d("tag_kiemTra", "onResponse: "+response.body());
+                            Log.d("tag_kiemTra", "onResponse: " + response);
+                            Log.d("tag_kiemTra", "onResponse: " + response.code());
+                            Log.d("tag_kiemTra", "onResponse: " + response.body());
                             if (response.isSuccessful()) {
                                 Toast.makeText(CustomerActivity.this, "Thêm khách hàng thành công!", Toast.LENGTH_SHORT).show();
                                 addBinding.edFullName.setText("");
@@ -229,6 +222,7 @@ public class CustomerActivity extends AppCompatActivity {
             dialog.cancel();
         });
     }
+
     private void onRequestPermission() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             Helper.openGallery(this, launcher);

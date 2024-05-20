@@ -451,21 +451,12 @@ public class Helper {
                 });
     }
 
-    public static MultipartBody.Part getRealPathFile(Context context, Uri uri) {
+    public static MultipartBody.Part getRealPathFile(Context context, Uri uri, String name) {
         MultipartBody.Part multipartBody;
         String realPath = RealPathUtil.getRealPath(context, uri);
         File file = new File(realPath);
         RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-        multipartBody = MultipartBody.Part.createFormData("images[]", file.getName(), requestBody);
-        return multipartBody;
-    }
-
-    public static MultipartBody.Part getRealPathFileImageCustomer(Context context, Uri uri) {
-        MultipartBody.Part multipartBody;
-        String realPath = RealPathUtil.getRealPath(context, uri);
-        File file = new File(realPath);
-        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-        multipartBody = MultipartBody.Part.createFormData("avatar", file.getName(), requestBody);
+        multipartBody = MultipartBody.Part.createFormData(name, file.getName(), requestBody);
         return multipartBody;
     }
 
