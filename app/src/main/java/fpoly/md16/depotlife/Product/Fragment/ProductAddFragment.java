@@ -172,6 +172,7 @@ public class ProductAddFragment extends Fragment {
             }
         });
 
+
         binding.imgProduct.setOnClickListener(view14 -> {
             onRequestPermission();
         });

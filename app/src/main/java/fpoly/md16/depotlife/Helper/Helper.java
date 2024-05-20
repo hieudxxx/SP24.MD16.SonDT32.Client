@@ -390,18 +390,21 @@ public class Helper {
     }
 
     public static void setImgProduct(Image[] url, ShapeableImageView img) {
-        if (url.length == 0 || url == null) {
+        if (url == null){
             img.setImageResource(R.drawable.img_add);
         } else {
-            if (url.length == 1) {
-                Picasso.get().load(API.URL_IMG + url[0].getPath().replaceFirst("public", "")).into(img);
+            if (url.length == 0) {
+                img.setImageResource(R.drawable.img_add);
             } else {
                 for (int i = 0; i < url.length; i++) {
                     if (url[i].getIs_pined() == 1) {
                         Picasso.get().load(API.URL_IMG + url[i].getPath().replaceFirst("public", "")).into(img);
+                    } else {
+                        Picasso.get().load(API.URL_IMG + url[0].getPath().replaceFirst("public", "")).into(img);
                     }
                 }
             }
+
         }
     }
 
@@ -454,6 +457,15 @@ public class Helper {
         File file = new File(realPath);
         RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         multipartBody = MultipartBody.Part.createFormData("images[]", file.getName(), requestBody);
+        return multipartBody;
+    }
+
+    public static MultipartBody.Part getRealPathFileImageCustomer(Context context, Uri uri) {
+        MultipartBody.Part multipartBody;
+        String realPath = RealPathUtil.getRealPath(context, uri);
+        File file = new File(realPath);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        multipartBody = MultipartBody.Part.createFormData("avatar", file.getName(), requestBody);
         return multipartBody;
     }
 

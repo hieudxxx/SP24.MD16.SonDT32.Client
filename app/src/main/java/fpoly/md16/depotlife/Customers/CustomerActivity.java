@@ -1,7 +1,13 @@
 package fpoly.md16.depotlife.Customers;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +16,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,22 +38,36 @@ import fpoly.md16.depotlife.R;
 import fpoly.md16.depotlife.databinding.ActivityCategoryBinding;
 import fpoly.md16.depotlife.databinding.ActivityCustomerBinding;
 import fpoly.md16.depotlife.databinding.DialogAddCategoryBinding;
+import fpoly.md16.depotlife.databinding.DialogAddCustomerBinding;
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CustomerActivity extends AppCompatActivity {
     private ActivityCustomerBinding binding;
+    private DialogAddCustomerBinding addBinding;
     private ArrayList<Customer> list;
     private CustomerAdapter adapter;
     private CustomerResponse customerResponse;
-
+    private Uri uri;
+    private MultipartBody.Part listMultipartBody;
     private int pageIndex = 1;
     private int count = 0;
     private int perPage = 0;
     private String token;
 
     public static boolean isLoadData = false;
+
+    private ActivityResultLauncher<Intent> launcher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    uri = result.getData().getData();
+                    addBinding.imgProduct.setImageURI(uri);
+                }
+            }
+    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +88,9 @@ public class CustomerActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         binding.fab.setOnClickListener(v -> {
-//            onAddCategory();
+            onAddCustomer();
         });
+
 
         binding.nestScoll.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
@@ -159,53 +182,97 @@ public class CustomerActivity extends AppCompatActivity {
 
 
 
-//    private void onAddCategory() {
-//        DialogAddCategoryBinding addBinding = DialogAddCategoryBinding.inflate(LayoutInflater.from(this));
-//        AlertDialog.Builder builder = new AlertDialog.Builder(CustomerActivity.this);
-//        builder.setView(addBinding.getRoot());
-//        AlertDialog dialog = builder.create();
-//
-//        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//        dialog.show();
-//
-//        addBinding.btnAddCateogry.setOnClickListener(v -> {
-//            String name = addBinding.edtAddCategory.getText().toString().trim();
-//            if (name.isEmpty()){
-//                Toast.makeText(CustomerActivity.this, "Vui lòng nhập tên loại hàng hoá!", Toast.LENGTH_SHORT).show();
-//            }else {
-//                Helper.isContainSpace(name, addBinding.tvWarName);
-//
-//                if (addBinding.tvWarName.getText().toString().isEmpty()){
-//                    Customer cate = new Customer();
-//                    cate.setName(name);
-//                    cate.setStatus(1);
-//                    ApiCategory.apiCategory.create(token, cate).enqueue(new Callback<Customer>() {
-//                        @Override
-//                        public void onResponse(Call<Customer> call, Response<Customer> response) {
-//                            if (response.isSuccessful()) {
-//                                Toast.makeText(CustomerActivity.this, "Thêm loại hàng hoá thành công!", Toast.LENGTH_SHORT).show();
-//                                addBinding.edtAddCategory.setText("");
-//                                dialog.dismiss();
-//                                isLoadData = true;
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onFailure(Call<Customer> call, Throwable throwable) {
-//                            Log.d("onFailure", "onFailure: " + throwable.getMessage());
-//                            Toast.makeText(CustomerActivity.this, "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-//                }else {
-//                    Toast.makeText(CustomerActivity.this, "Thêm loại hàng hoá thất bại!", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-//
-//        addBinding.imgClose.setOnClickListener(v -> {
-//            dialog.cancel();
-//        });
-//    }
+    private void onAddCustomer() {
+        addBinding = DialogAddCustomerBinding.inflate(LayoutInflater.from(this));
+        AlertDialog.Builder builder = new AlertDialog.Builder(CustomerActivity.this);
+        builder.setView(addBinding.getRoot());
+        AlertDialog dialog = builder.create();
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+
+        addBinding.imgProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onRequestPermission();
+            }
+        });
+
+        addBinding.btnAdd.setOnClickListener(v -> {
+            String name = addBinding.edFullName.getText().toString().trim();
+            String email = addBinding.edEmail.getText().toString().trim();
+            String phone = addBinding.edPhone.getText().toString().trim();
+            String address = addBinding.edAddress.getText().toString().trim();
+            Log.d("imgg", "imgg: "+ addBinding.imgProduct);
+
+
+
+            if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || address.isEmpty()){
+                Toast.makeText(this, "Hãy nhập đủ dữ liệu", Toast.LENGTH_SHORT).show();
+            }else {
+                Helper.isContainSpace(name, addBinding.tvWarName);
+                Helper.isEmailValid(email, addBinding.tvWarEmail);
+                Helper.isPhoneValid(phone, addBinding.tvWarPhone);
+                Helper.isContainSpace(address, addBinding.tvWarAddress);
+
+                if (addBinding.tvWarName.getText().toString().isEmpty() &&
+                    addBinding.tvWarEmail.getText().toString().isEmpty() &&
+                    addBinding.tvWarPhone.getText().toString().isEmpty() &&
+                    addBinding.tvWarAddress.getText().toString().isEmpty()
+                ){
+                    if (uri != null) listMultipartBody = new MultipartBody.Part(Helper.getRealPathFileImageCustomer(this, uri));
+
+                    Customer customer = new Customer(name,phone,email,address);
+
+                    ApiCustomers.API_CUSTOMERS.create(token,
+                            Helper.createStringPart(customer.getCustomerName()),
+                            Helper.createStringPart(customer.getCustomerPhone()),
+                            Helper.createStringPart(customer.getCustomerEmail()),
+                            Helper.createStringPart(customer.getAddress()),
+                            listMultipartBody).enqueue(new Callback<Customer>() {
+                        @Override
+                        public void onResponse(Call<Customer> call, Response<Customer> response) {
+                            if (response.isSuccessful()) {
+                                Toast.makeText(CustomerActivity.this, "Thêm khách hàng thành công!", Toast.LENGTH_SHORT).show();
+                                addBinding.edFullName.setText("");
+                                addBinding.edPhone.setText("");
+                                addBinding.edEmail.setText("");
+                                addBinding.edAddress.setText("");
+                                getData();
+                                dialog.dismiss();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Customer> call, Throwable throwable) {
+                            Log.d("onFailure", "onFailure: " + throwable.getMessage());
+                            Toast.makeText(CustomerActivity.this, "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }else {
+                    Toast.makeText(CustomerActivity.this, "Thêm khách hàng thất bại!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        addBinding.btnCancel.setOnClickListener(v -> {
+            dialog.cancel();
+        });
+    }
+
+
+    private void onRequestPermission() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            Helper.openGallery(this, launcher);
+            return;
+        }
+        if (this.checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            Helper.openGallery(this, launcher);
+        } else {
+            String permission = (Manifest.permission.READ_EXTERNAL_STORAGE);
+            requestPermissions(new String[]{permission}, 10);
+        }
+    }
 
     @Override
     public void onResume() {

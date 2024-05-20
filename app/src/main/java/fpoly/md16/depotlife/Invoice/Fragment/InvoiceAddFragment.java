@@ -24,9 +24,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -62,6 +60,7 @@ import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiSupplier;
 import fpoly.md16.depotlife.Invoice.Adapter.ChooseProductAdapter;
 import fpoly.md16.depotlife.Invoice.Adapter.DialogProductAdapter;
 import fpoly.md16.depotlife.Product.Model.Expiry;
+import fpoly.md16.depotlife.Invoice.Adapter.DialogSupplierAdapter;
 import fpoly.md16.depotlife.Product.Model.Product;
 import fpoly.md16.depotlife.Product.Model.ProductResponse;
 import fpoly.md16.depotlife.R;
@@ -78,7 +77,6 @@ import retrofit2.Response;
 
 public class InvoiceAddFragment extends Fragment {
     private FragmentInvoiceAddBinding binding;
-
     public String token;
     private static final int PICK_IMAGE = 100;
 
@@ -86,27 +84,18 @@ public class InvoiceAddFragment extends Fragment {
     private Uri imageUri;
     private int invoiceType;
     public String invoiceCreator;
-
     private final Handler handler = new Handler();
     private Runnable runnable;
     private int pageIndex = 1;
-
     private int perPage = 0;
-
     private List<Supplier> list;
     private List<Product> listProduct;
     private List<Product> listChooseProduct;
-
     private DialogSupplierAdapter dialogSupplierAdapter;
-
     private DialogProductAdapter dialogProductAdapter;
-
     private ChooseProductAdapter chooseProductAdapter;
-
     private final int count = 0;
-
     public static boolean isLoadData = false;
-
     final int SEARCH_ID = R.id.action_search;
 
     private ActivityResultLauncher<Intent> launcher = registerForActivityResult(
@@ -124,7 +113,6 @@ public class InvoiceAddFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentInvoiceAddBinding.inflate(inflater, container, false);
         setHasOptionsMenu(true);
-        invoiceType = getArguments().getInt("type_invoice", 0);
         return binding.getRoot();
     }
 
@@ -378,12 +366,9 @@ public class InvoiceAddFragment extends Fragment {
 
         LinearLayoutManager manager = new LinearLayoutManager(dialog.getContext());
         dialogLayoutBinding.rcvDialogSupplier.setLayoutManager(manager);
-        dialogSupplierAdapter = new DialogSupplierAdapter(new DialogSupplierAdapter.InterClickItemData() {
-            @Override
-            public void chooseItem(Supplier supplier) {
-                binding.spnSupName.setText(supplier.getName());
-                dialog.dismiss();
-            }
+        dialogSupplierAdapter = new DialogSupplierAdapter(supplier -> {
+            binding.spnSupName.setText(supplier.getName());
+            dialog.dismiss();
         });
 
         getData(dialogLayoutBinding);
@@ -456,14 +441,11 @@ public class InvoiceAddFragment extends Fragment {
         LinearLayoutManager manager = new LinearLayoutManager(dialog.getContext());
         dialogProductLayoutBinding.rcvDialogProduct.setLayoutManager(manager);
 
-        dialogProductAdapter = new DialogProductAdapter(new DialogProductAdapter.InterClickItemData() {
-            @Override
-            public void chooseItem(Product product, Boolean aBoolean) {
-                if (aBoolean) {
-                    listChooseProduct.add(product);
-                } else {
-                    listChooseProduct.remove(product);
-                }
+        dialogProductAdapter = new DialogProductAdapter((product, aBoolean) -> {
+            if (aBoolean) {
+                listChooseProduct.add(product);
+            } else {
+                listChooseProduct.remove(product);
             }
         }, listChooseProduct);
         getDataProduct(dialogProductLayoutBinding);
