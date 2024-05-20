@@ -289,6 +289,15 @@ public class Helper {
         return money;
     }
 
+    public static String formatVNDLong(long sum) {
+        DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
+
+        Locale locale = new Locale("vi", "VN");
+        NumberFormat nf = NumberFormat.getInstance(locale);
+        String money = decimalFormat.format(sum) + " đ";
+        return money;
+    }
+
     public static void onSearch(MenuItem menuItem, Filterable filterableAdapter) {
         SearchView searchView = (SearchView) menuItem.getActionView();
         searchView.setQueryHint("Tìm kiếm");

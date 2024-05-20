@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -17,24 +18,30 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Invoice.Activity.InvoiceActivity;
 import fpoly.md16.depotlife.Invoice.Model.Invoice;
+import fpoly.md16.depotlife.Product.Model.Product;
 import fpoly.md16.depotlife.R;
 import fpoly.md16.depotlife.databinding.ItemInvoiceBinding;
 
-public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.InvoiceViewHolder> implements Filterable {
-    private Context context;
+public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.InvoiceViewHolder> {
     private ArrayList<Invoice> list;
-    private ArrayList<Invoice> mList;
-    private FragmentManager fragmentManager;
 
-    public InvoiceAdapter(Context context, ArrayList<Invoice> list, FragmentManager fragmentManager) {
-        this.context = context;
-        this.list = list;
-        this.mList = list;
-        this.fragmentManager = fragmentManager;
+    private final InterClickItemData interClickItemData;
+
+    public interface InterClickItemData {
+        void clickItem(Invoice invoice);
+    }
+    public void setData(List<Invoice> list) {
+        this.list = (ArrayList<Invoice>) list;
+        notifyDataSetChanged();
+    }
+
+    public InvoiceAdapter(InterClickItemData interClickItemData) {
+        this.interClickItemData = interClickItemData;
     }
 
     @NonNull
@@ -48,36 +55,27 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.InvoiceV
     @Override
     public void onBindViewHolder(@NonNull InvoiceViewHolder holder, int position) {
 
-//        holder.binding.tvIdInvoice.setText(list.get(position).getId() + "");
-//        if (list.get(position).getStatusPayment() == 0) {
-//            holder.binding.tvStatusInvoice.setText("Phiếu tạm");
-//            holder.binding.tvStatusInvoice.setTextColor(Color.YELLOW);
-//        } else {
-//            holder.binding.tvStatusInvoice.setText("Hoàn thành");
-//            holder.binding.tvStatusInvoice.setTextColor(Color.GRAY);
-//        }
-//        holder.binding.tvIdUserInvoice.setText(list.get(position).getUser_id() + "");
-//        holder.binding.tvDateCreated.setText(list.get(position).getDate_created());
-//        if (list.get(position).getType() == 0) {
-//            holder.binding.tvTypeInvoice.setText("Phiếu nhập");
-//        } else {
-//            holder.binding.tvTypeInvoice.setText("Phiếu xuất");
-//        }
-//        holder.binding.tvTotalInvoice.setText(String.valueOf(list.get(position).getTotal()));
-//        holder.binding.tvTotalInvoice.setText(Helper.formatVND(list.get(position).getTotal()));
-//        holder.binding.tvTotalInvoice.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.tv_blue_bold));
-//        holder.itemView.setOnClickListener(view -> {
-//            Bundle bundle = new Bundle();
-//            bundle.putSerializable("invoice",list.get(holder.getAdapterPosition()));
-//            context.startActivity(new Intent(context, InvoiceActivity.class).putExtras(bundle));
-//        });
+        Invoice invoice = list.get(position);
+        if (invoice == null) return;
 
-//        Double totalBill = invoice.getTotal_bill();
-//        Locale locale = new Locale("vi", "VN");
-//        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
-//        String formatTotalBill = numberFormat.format(totalBill);
-//        formatTotalBill = formatTotalBill.replaceAll("[^\\x00-\\x7F]", "");
-//        holder.invoiceBinding.tvTotalBillItem.setText(formatTotalBill);
+        holder.binding.tvIdInvoice.setText("HD"+invoice.getId());
+        if (invoice.getInvoiceType() == 0) {
+            holder.binding.tvTypeInvoice.setText("Hóa đơn nhập");
+        }else {
+            holder.binding.tvTypeInvoice.setText("Hóa đơn xuất");
+        }
+
+        holder.binding.tvDateCreated.setText(invoice.getDate_created());
+        if (invoice.getStatusPayment() == 0) {
+            holder.binding.tvStatusInvoice.setText("Chưa thanh toán");
+        }else {
+            holder.binding.tvStatusInvoice.setText("Đã thanh toán");
+        }
+        holder.binding.tvTotalInvoice.setText(Helper.formatVNDLong(invoice.getTotalAmount()));
+
+        holder.itemView.setOnClickListener(view -> {
+            interClickItemData.clickItem(invoice);
+        });
 
     }
 
@@ -87,36 +85,6 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.InvoiceV
             return list.size();
         }
         return 0;
-    }
-
-    @Override
-    public Filter getFilter() {
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                String strSearch = constraint.toString();
-                if (TextUtils.isEmpty(strSearch)) {
-                    list = mList;
-                } else {
-                    ArrayList<Invoice> listFilter = new ArrayList<>();
-                    for (Invoice invoice : mList) {
-//                        if (invoice.getId().toLowerCase().contains(strSearch.toLowerCase())) {
-//                            listFilter.add(invoice);
-//                        }
-                    }
-                    list = listFilter;
-                }
-                FilterResults results = new FilterResults();
-                results.values = list;
-                return results;
-            }
-
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                list = (ArrayList<Invoice>) results.values;
-                notifyDataSetChanged();
-            }
-        };
     }
 
     public class InvoiceViewHolder extends RecyclerView.ViewHolder {

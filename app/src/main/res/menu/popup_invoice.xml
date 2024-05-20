@@ -1,0 +1,10 @@
+<!-- res/menu/popup_menu.xml -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/invoice_import"
+        android:title="Nhập" />
+    <item
+        android:id="@+id/invoice_export"
+        android:title="Xuất" />
+</menu>
