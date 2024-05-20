@@ -14,6 +14,7 @@ import java.util.List;
 
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Invoice.Model.Invoice;
+import fpoly.md16.depotlife.Product.Model.Expiry;
 import fpoly.md16.depotlife.Product.Model.Product;
 import fpoly.md16.depotlife.databinding.ItemChooseProductBinding;
 import fpoly.md16.depotlife.databinding.ItemProductDialogBinding;
@@ -22,14 +23,12 @@ public class ChooseProductAdapter extends RecyclerView.Adapter<ChooseProductAdap
     private ArrayList<Product> list;
     private final InterClickItemData interClickItemData;
 
-    private Invoice.ProductInvoice productInvoice;
-
     private int Quantity = 1;
 
     private int valInvoiceType = 0;
 
     public interface InterClickItemData {
-        void ProductInvoice(Invoice.ProductInvoice productInvoice);
+        void Expiry(Expiry expiry);
     }
     public void setData(List<Product> list) {
         this.list = (ArrayList<Product>) list;
@@ -57,8 +56,8 @@ public class ChooseProductAdapter extends RecyclerView.Adapter<ChooseProductAdap
 
         Quantity = Integer.parseInt(holder.binding.edQuantity.getText().toString());
 
-        Invoice.ProductInvoice productInvoice = new Invoice.ProductInvoice(); // Khởi tạo mới cho mỗi sản phẩm
-        productInvoice.setProductId(product.getId());
+        Expiry expiry = new Expiry(); // Khởi tạo mới cho mỗi sản phẩm
+        expiry.setProduct_id(product.getId());
 
         holder.binding.tvName.setText(product.getProduct_name());
         holder.binding.tvInventory.setText(String.valueOf(product.getInventory()));
@@ -70,16 +69,16 @@ public class ChooseProductAdapter extends RecyclerView.Adapter<ChooseProductAdap
             if (Quantity > 1){
                 Quantity--;
                 holder.binding.edQuantity.setText(String.valueOf(Quantity));
-                productInvoice.setQuantity(Quantity);
-                interClickItemData.ProductInvoice(productInvoice); // Gửi dữ liệu khi có thay đổi
+                expiry.setQuantity_exp(Quantity);
+                interClickItemData.Expiry(expiry); // Gửi dữ liệu khi có thay đổi
             }
         });
 
         holder.binding.btnPlus.setOnClickListener(view -> {
             Quantity++;
             holder.binding.edQuantity.setText(String.valueOf(Quantity));
-            productInvoice.setQuantity(Quantity);
-            interClickItemData.ProductInvoice(productInvoice); // Gửi dữ liệu khi có thay đổi
+            expiry.setQuantity_exp(Quantity);
+            interClickItemData.Expiry(expiry); // Gửi dữ liệu khi có thay đổi
         });
 
         holder.binding.edExpiryDate.addTextChangedListener(new TextWatcher() {
@@ -87,8 +86,8 @@ public class ChooseProductAdapter extends RecyclerView.Adapter<ChooseProductAdap
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                productInvoice.setExpiry(s.toString());
-                interClickItemData.ProductInvoice(productInvoice); // Gửi dữ liệu khi có thay đổi
+                expiry.setExpiry_date(s.toString());
+                interClickItemData.Expiry(expiry); // Gửi dữ liệu khi có thay đổi
             }
 
             @Override
