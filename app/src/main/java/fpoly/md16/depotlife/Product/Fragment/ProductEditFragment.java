@@ -230,7 +230,7 @@ public class ProductEditFragment extends Fragment implements onItemRcvClick<Inte
                             }
 
                             if (uri != null)
-                                listMultipartBody = new MultipartBody.Part[]{Helper.getRealPathFile(getContext(), uri)};
+                                listMultipartBody = new MultipartBody.Part[]{Helper.getRealPathFile(getContext(), uri, "images[]")};
 
                             if (pin_image == null)
                                 pin_image = listImages.get(positonItem).getName();

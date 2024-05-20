@@ -202,7 +202,7 @@ public class ProductAddFragment extends Fragment {
                         binding.tvWarImportPrice.getText().toString().isEmpty() &&
                         binding.tvWarUnit.getText().toString().isEmpty()
                 ) {
-                    if (uri != null) listMultipartBody = new MultipartBody.Part[]{Helper.getRealPathFile(getContext(), uri)};
+                    if (uri != null) listMultipartBody = new MultipartBody.Part[]{Helper.getRealPathFile(getContext(), uri, "images[]")};
 
                     if (category == null || supplier == null)
                         Toast.makeText(getContext(), "Hãy nhập đủ dữ liệu", Toast.LENGTH_SHORT).show();
