@@ -13,9 +13,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -42,12 +40,10 @@ import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiProduct;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiSupplier;
 import fpoly.md16.depotlife.Invoice.Adapter.ChooseProductAdapter;
 import fpoly.md16.depotlife.Invoice.Adapter.DialogProductAdapter;
-import fpoly.md16.depotlife.Invoice.Model.Invoice;
+import fpoly.md16.depotlife.Invoice.Adapter.DialogSupplierAdapter;
 import fpoly.md16.depotlife.Product.Model.Product;
 import fpoly.md16.depotlife.Product.Model.ProductResponse;
 import fpoly.md16.depotlife.R;
-import fpoly.md16.depotlife.Invoice.Adapter.DialogSupplierAdapter;
-import fpoly.md16.depotlife.Supplier.Adapter.SupplierAdapter;
 import fpoly.md16.depotlife.Supplier.Model.Supplier;
 import fpoly.md16.depotlife.Supplier.Model.SupplierResponse;
 import fpoly.md16.depotlife.databinding.DialogLayoutBinding;
@@ -60,31 +56,21 @@ import retrofit2.Response;
 
 public class InvoiceAddFragment extends Fragment {
     private FragmentInvoiceAddBinding binding;
-
     public String token;
     private int invoiceType;
     public String invoiceCreator;
-
     private final Handler handler = new Handler();
     private Runnable runnable;
     private int pageIndex = 1;
-
     private int perPage = 0;
-
     private List<Supplier> list;
     private List<Product> listProduct;
     private List<Product> listChooseProduct;
-
     private DialogSupplierAdapter dialogSupplierAdapter;
-
     private DialogProductAdapter dialogProductAdapter;
-
     private ChooseProductAdapter chooseProductAdapter;
-
     private final int count = 0;
-
     public static boolean isLoadData = false;
-
     final int SEARCH_ID = R.id.action_search;
 
     @Override
@@ -99,46 +85,15 @@ public class InvoiceAddFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        token = "Bearer " + Helper.getSharedPre(getContext(), "token", String.class);
-        invoiceCreator = (String) Helper.getSharedPre(getContext(), "name", String.class);
-        binding.edInvoiceCreator.setText(invoiceCreator);
+        init();
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        String currentDate = dateFormat.format(new Date());
-
-        binding.tvDateTime.setText(currentDate);
-
-
-        binding.imgBack.setOnClickListener(view1 -> requireActivity().finish());
-        list = new ArrayList<>();
-        listProduct = new ArrayList<>();
-        listChooseProduct = new ArrayList<>();
-
-
-        String[] items = new String[]{"Hóa đơn nhập", "Hóa đơn xuất"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_dropdown_item_1line, items);
-        binding.spnInvoiceType.setAdapter(adapter);
-
-        binding.spnInvoiceType.setText(items[0], false);
-        binding.spnInvoiceType.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                listChooseProduct.clear();
-                if (position == 0) {
-                    invoiceType = position;
-                    binding.idCustomer.setVisibility(View.GONE);
-                    binding.idSupplier.setVisibility(View.VISIBLE);
-                } else {
-                    invoiceType = position;
-                    binding.idCustomer.setVisibility(View.VISIBLE);
-                    binding.idSupplier.setVisibility(View.GONE);
-                }
-            }
-        });
+        initInvoiceType();
 
         String[] items_status_payment = new String[]{"Chưa thanh toán", "Đã thanh toán"};
-        ArrayAdapter<String> adapter_status = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_dropdown_item_1line, items_status_payment);
+        ArrayAdapter<String> adapter_status = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, items_status_payment);
         binding.spnPaymentStatus.setAdapter(adapter_status);
+
+        binding.imgBack.setOnClickListener(view1 -> requireActivity().finish());
 
         binding.spnSupName.setOnClickListener(view12 -> {
             showDialog(view.getContext());
@@ -148,23 +103,49 @@ public class InvoiceAddFragment extends Fragment {
             showDialogProduct(view.getContext(), binding);
         });
 
-        binding.edDueDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDatePickerDialog(view.getContext(), binding.edDueDate);
+        binding.edDueDate.setOnClickListener(view15 -> showDatePickerDialog(view15.getContext(), binding.edDueDate));
+    }
+
+    private void initInvoiceType() {
+        String[] items = new String[]{"Hóa đơn nhập", "Hóa đơn xuất"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, items);
+        binding.spnInvoiceType.setAdapter(adapter);
+
+        binding.spnInvoiceType.setOnItemClickListener((parent, view14, position, id) -> {
+            listChooseProduct.clear();
+            if (position == 0) {
+                invoiceType = position;
+                binding.idCustomer.setVisibility(View.GONE);
+                binding.idSupplier.setVisibility(View.VISIBLE);
+            } else {
+                invoiceType = position;
+                binding.idCustomer.setVisibility(View.VISIBLE);
+                binding.idSupplier.setVisibility(View.GONE);
             }
         });
+
+        binding.spnInvoiceType.setText(items[0], false);
+
+    }
+
+    private void init() {
+        token = "Bearer " + Helper.getSharedPre(getContext(), "token", String.class);
+        invoiceCreator = (String) Helper.getSharedPre(getContext(), "name", String.class);
+        binding.edInvoiceCreator.setText(invoiceCreator);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        String currentDate = dateFormat.format(new Date());
+        binding.tvDateTime.setText(currentDate);
+
+        list = new ArrayList<>();
+        listProduct = new ArrayList<>();
+        listChooseProduct = new ArrayList<>();
     }
 
     public void getChooseProdut(FragmentInvoiceAddBinding binding, Context context) {
         LinearLayoutManager manager = new LinearLayoutManager(context);
         binding.rcvListChooseProduct.setLayoutManager(manager);
-        chooseProductAdapter = new ChooseProductAdapter(new ChooseProductAdapter.InterClickItemData() {
-            @Override
-            public void ProductInvoice(Invoice.ProductInvoice productInvoice) {
-                Log.d("dataaaaaaaaaa", "expiry: " + productInvoice);
-            }
-        }, invoiceType);
+        chooseProductAdapter = new ChooseProductAdapter(productInvoice -> Log.d("dataaaaaaaaaa", "expiry: " + productInvoice), invoiceType);
 
         binding.rcvListChooseProduct.setAdapter(chooseProductAdapter);
         chooseProductAdapter.setData(listChooseProduct);
@@ -179,12 +160,9 @@ public class InvoiceAddFragment extends Fragment {
 
         // Tạo và hiển thị DatePickerDialog
         DatePickerDialog datePickerDialog = new DatePickerDialog(context,
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
-                        String formattedDate = String.format(Locale.getDefault(), "%d-%02d-%02d", year, monthOfYear + 1, dayOfMonth);
-                        editText.setText(formattedDate);
-                    }
+                (datePicker, year1, monthOfYear, dayOfMonth) -> {
+                    String formattedDate = String.format(Locale.getDefault(), "%d-%02d-%02d", year1, monthOfYear + 1, dayOfMonth);
+                    editText.setText(formattedDate);
                 }, year, month, day);
 
         datePickerDialog.show();
@@ -301,12 +279,9 @@ public class InvoiceAddFragment extends Fragment {
 
         LinearLayoutManager manager = new LinearLayoutManager(dialog.getContext());
         dialogLayoutBinding.rcvDialogSupplier.setLayoutManager(manager);
-        dialogSupplierAdapter = new DialogSupplierAdapter(new DialogSupplierAdapter.InterClickItemData() {
-            @Override
-            public void chooseItem(Supplier supplier) {
-                binding.spnSupName.setText(supplier.getName());
-                dialog.dismiss();
-            }
+        dialogSupplierAdapter = new DialogSupplierAdapter(supplier -> {
+            binding.spnSupName.setText(supplier.getName());
+            dialog.dismiss();
         });
 
         getData(dialogLayoutBinding);
@@ -379,14 +354,11 @@ public class InvoiceAddFragment extends Fragment {
         LinearLayoutManager manager = new LinearLayoutManager(dialog.getContext());
         dialogProductLayoutBinding.rcvDialogProduct.setLayoutManager(manager);
 
-        dialogProductAdapter = new DialogProductAdapter(new DialogProductAdapter.InterClickItemData() {
-            @Override
-            public void chooseItem(Product product, Boolean aBoolean) {
-                if (aBoolean) {
-                    listChooseProduct.add(product);
-                } else {
-                    listChooseProduct.remove(product);
-                }
+        dialogProductAdapter = new DialogProductAdapter((product, aBoolean) -> {
+            if (aBoolean) {
+                listChooseProduct.add(product);
+            } else {
+                listChooseProduct.remove(product);
             }
         }, listChooseProduct);
         getDataProduct(dialogProductLayoutBinding);
