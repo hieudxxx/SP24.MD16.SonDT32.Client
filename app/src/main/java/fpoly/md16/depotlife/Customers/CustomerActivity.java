@@ -2,6 +2,7 @@ package fpoly.md16.depotlife.Customers;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -13,13 +14,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,7 +34,9 @@ import fpoly.md16.depotlife.Customers.Adapter.CustomerAdapter;
 import fpoly.md16.depotlife.Customers.Model.Customer;
 import fpoly.md16.depotlife.Customers.Model.CustomerResponse;
 import fpoly.md16.depotlife.Helper.Helper;
+import fpoly.md16.depotlife.Helper.Interfaces.Api.API;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiCustomers;
+import fpoly.md16.depotlife.Helper.Interfaces.onClickListener.onItemRcvClick;
 import fpoly.md16.depotlife.R;
 import fpoly.md16.depotlife.databinding.ActivityCustomerBinding;
 import fpoly.md16.depotlife.databinding.DialogAddCustomerBinding;
@@ -38,7 +45,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CustomerActivity extends AppCompatActivity {
+public class CustomerActivity extends AppCompatActivity implements onItemRcvClick {
     private ActivityCustomerBinding binding;
     private DialogAddCustomerBinding addBinding;
     private ArrayList<Customer> list;
@@ -52,7 +59,8 @@ public class CustomerActivity extends AppCompatActivity {
 
     public static boolean isLoadData = false;
 
-    private ActivityResultLauncher<Intent> launcher = registerForActivityResult(
+
+    public ActivityResultLauncher<Intent> launcher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
@@ -81,7 +89,7 @@ public class CustomerActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         binding.fab.setOnClickListener(v -> {
-            onAddCustomer();
+            onAddCustomer(null);
         });
 
         binding.nestScoll.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
@@ -134,7 +142,7 @@ public class CustomerActivity extends AppCompatActivity {
             binding.tvEmpty.setVisibility(View.GONE);
             binding.pbLoading.setVisibility(View.GONE);
             binding.pbLoadMore.setVisibility(View.GONE);
-            adapter = new CustomerAdapter(this, list, token);
+            adapter = new CustomerAdapter(this, list, token, this);
             binding.rcvCategory.setAdapter(adapter);
             adapter.notifyDataSetChanged();
             pageIndex++;
@@ -145,85 +153,166 @@ public class CustomerActivity extends AppCompatActivity {
         }
     }
 
-    private void onAddCustomer() {
+    private void onAddCustomer(Customer customer) {
         addBinding = DialogAddCustomerBinding.inflate(LayoutInflater.from(this));
         AlertDialog.Builder builder = new AlertDialog.Builder(CustomerActivity.this);
         builder.setView(addBinding.getRoot());
         AlertDialog dialog = builder.create();
-
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        if (customer != null) {
+            addBinding.tvReg.setText("SỬA KHÁCH HÀNG");
+            addBinding.btnAdd.setText("SỬA");
+            addBinding.edFullName.setText(customer.getCustomerName());
+            addBinding.edPhone.setText(customer.getCustomerPhone());
+            addBinding.edEmail.setText(customer.getCustomerEmail());
+            addBinding.edAddress.setText(customer.getAddress());
+            if ( customer.getAvatar() == null){
+                addBinding.imgProduct.setImageResource(R.drawable.img_add);
+            } else {
+                String ava = customer.getAvatar().replace("public","storage");
+                Picasso.get().load("https://warehouse.sinhvien.io.vn/public/" +ava).into(addBinding.imgProduct);
+            }
+
+
+
+
+            addBinding.imgProduct.setOnClickListener(view -> onRequestPermission());
+
+            addBinding.btnAdd.setOnClickListener(v -> {
+                String name = addBinding.edFullName.getText().toString().trim();
+                String email = addBinding.edEmail.getText().toString().trim();
+                String phone = addBinding.edPhone.getText().toString().trim();
+                String address = addBinding.edAddress.getText().toString().trim();
+
+
+                if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || address.isEmpty()) {
+                    Toast.makeText(this, "Hãy nhập đủ dữ liệu", Toast.LENGTH_SHORT).show();
+                } else {
+                    Helper.isContainSpace(name, addBinding.tvWarName);
+                    Helper.isEmailValid(email, addBinding.tvWarEmail);
+                    Helper.isPhoneValid(phone, addBinding.tvWarPhone);
+//                    Helper.isContainSpace(address, addBinding.tvWarAddress);
+
+                    if (addBinding.tvWarName.getText().toString().isEmpty() &&
+                            addBinding.tvWarEmail.getText().toString().isEmpty() &&
+                            addBinding.tvWarPhone.getText().toString().isEmpty() &&
+                            addBinding.tvWarAddress.getText().toString().isEmpty()
+                    ) {
+
+                        if (uri != null) {
+                            multipartBody = Helper.getRealPathFile(this, uri, "avatar");
+                        }
+
+                        Customer customer1 = new Customer(name, phone, email, address);
+
+                        ApiCustomers.API_CUSTOMERS.update(token,customer.getId(),
+                                Helper.createStringPart(customer1.getCustomerName()),
+                                Helper.createStringPart(customer1.getCustomerPhone()),
+                                Helper.createStringPart(customer1.getCustomerEmail()),
+                                Helper.createStringPart(customer1.getAddress()),
+                                multipartBody).enqueue(new Callback<Customer>() {
+                            @Override
+                            public void onResponse(Call<Customer> call, Response<Customer> response) {
+                                if (response.isSuccessful()) {
+                                    Toast.makeText(CustomerActivity.this, "Sửa khách hàng thành công!", Toast.LENGTH_SHORT).show();
+                                    addBinding.edFullName.setText("");
+                                    addBinding.edPhone.setText("");
+                                    addBinding.edEmail.setText("");
+                                    addBinding.edAddress.setText("");
+                                    dialog.dismiss();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Customer> call, Throwable throwable) {
+                                Log.d("onFailure", "onFailure: " + throwable.getMessage());
+                                Toast.makeText(CustomerActivity.this, "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else {
+                        Toast.makeText(CustomerActivity.this, "Sửa khách hàng thất bại!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+            addBinding.btnCancel.setOnClickListener(v -> {
+                dialog.cancel();
+            });
+
+        } else {
+            addBinding.tvReg.setText("THÊM KHÁCH HÀNG");
+
+
+            addBinding.imgProduct.setOnClickListener(view -> onRequestPermission());
+
+            addBinding.btnAdd.setOnClickListener(v -> {
+                String name = addBinding.edFullName.getText().toString().trim();
+                String email = addBinding.edEmail.getText().toString().trim();
+                String phone = addBinding.edPhone.getText().toString().trim();
+                String address = addBinding.edAddress.getText().toString().trim();
+
+
+                if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || address.isEmpty()) {
+                    Toast.makeText(this, "Hãy nhập đủ dữ liệu", Toast.LENGTH_SHORT).show();
+                } else {
+                    Helper.isContainSpace(name, addBinding.tvWarName);
+                    Helper.isEmailValid(email, addBinding.tvWarEmail);
+                    Helper.isPhoneValid(phone, addBinding.tvWarPhone);
+                    Helper.isContainSpace(address, addBinding.tvWarAddress);
+
+                    if (addBinding.tvWarName.getText().toString().isEmpty() &&
+                            addBinding.tvWarEmail.getText().toString().isEmpty() &&
+                            addBinding.tvWarPhone.getText().toString().isEmpty() &&
+                            addBinding.tvWarAddress.getText().toString().isEmpty()
+                    ) {
+
+                        if (uri != null) {
+                            multipartBody = Helper.getRealPathFile(this, uri, "avatar");
+                        }
+
+                        Customer customer1 = new Customer(name, phone, email, address);
+
+                        ApiCustomers.API_CUSTOMERS.create(token,
+                                Helper.createStringPart(customer1.getCustomerName()),
+                                Helper.createStringPart(customer1.getCustomerPhone()),
+                                Helper.createStringPart(customer1.getCustomerEmail()),
+                                Helper.createStringPart(customer1.getAddress()),
+                                multipartBody).enqueue(new Callback<Customer>() {
+                            @Override
+                            public void onResponse(Call<Customer> call, Response<Customer> response) {
+                                if (response.isSuccessful()) {
+                                    Toast.makeText(CustomerActivity.this, "Thêm khách hàng thành công!", Toast.LENGTH_SHORT).show();
+                                    addBinding.edFullName.setText("");
+                                    addBinding.edPhone.setText("");
+                                    addBinding.edEmail.setText("");
+                                    addBinding.edAddress.setText("");
+                                    dialog.dismiss();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Customer> call, Throwable throwable) {
+                                Log.d("onFailure", "onFailure: " + throwable.getMessage());
+                                Toast.makeText(CustomerActivity.this, "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else {
+                        Toast.makeText(CustomerActivity.this, "Thêm khách hàng thất bại!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
+            addBinding.btnCancel.setOnClickListener(v -> {
+                dialog.cancel();
+            });
+        }
+
         dialog.show();
 
-        addBinding.imgProduct.setOnClickListener(view -> onRequestPermission());
 
-        addBinding.btnAdd.setOnClickListener(v -> {
-            String name = addBinding.edFullName.getText().toString().trim();
-            String email = addBinding.edEmail.getText().toString().trim();
-            String phone = addBinding.edPhone.getText().toString().trim();
-            String address = addBinding.edAddress.getText().toString().trim();
-            Log.d("imgg", "imgg: " + addBinding.imgProduct);
-
-
-            if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || address.isEmpty()) {
-                Toast.makeText(this, "Hãy nhập đủ dữ liệu", Toast.LENGTH_SHORT).show();
-            } else {
-                Helper.isContainSpace(name, addBinding.tvWarName);
-                Helper.isEmailValid(email, addBinding.tvWarEmail);
-                Helper.isPhoneValid(phone, addBinding.tvWarPhone);
-                Helper.isContainSpace(address, addBinding.tvWarAddress);
-
-                if (addBinding.tvWarName.getText().toString().isEmpty() &&
-                        addBinding.tvWarEmail.getText().toString().isEmpty() &&
-                        addBinding.tvWarPhone.getText().toString().isEmpty() &&
-                        addBinding.tvWarAddress.getText().toString().isEmpty()
-                ) {
-
-                    if (uri != null) {
-                        multipartBody = Helper.getRealPathFile(this, uri, "avatar");
-                    }
-
-                    Customer customer = new Customer(name, phone, email, address);
-
-                    ApiCustomers.API_CUSTOMERS.create(token,
-                            Helper.createStringPart(customer.getCustomerName()),
-                            Helper.createStringPart(customer.getCustomerPhone()),
-                            Helper.createStringPart(customer.getCustomerEmail()),
-                            Helper.createStringPart(customer.getAddress()),
-                            multipartBody).enqueue(new Callback<Customer>() {
-                        @Override
-                        public void onResponse(Call<Customer> call, Response<Customer> response) {
-                            Log.d("tag_kiemTra", "onResponse: " + response);
-                            Log.d("tag_kiemTra", "onResponse: " + response.code());
-                            Log.d("tag_kiemTra", "onResponse: " + response.body());
-                            if (response.isSuccessful()) {
-                                Toast.makeText(CustomerActivity.this, "Thêm khách hàng thành công!", Toast.LENGTH_SHORT).show();
-                                addBinding.edFullName.setText("");
-                                addBinding.edPhone.setText("");
-                                addBinding.edEmail.setText("");
-                                addBinding.edAddress.setText("");
-//                                getData();
-                                dialog.dismiss();
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<Customer> call, Throwable throwable) {
-                            Log.d("onFailure", "onFailure: " + throwable.getMessage());
-                            Toast.makeText(CustomerActivity.this, "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                } else {
-                    Toast.makeText(CustomerActivity.this, "Thêm khách hàng thất bại!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        addBinding.btnCancel.setOnClickListener(v -> {
-            dialog.cancel();
-        });
     }
 
-    private void onRequestPermission() {
+    public void onRequestPermission() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             Helper.openGallery(this, launcher);
             return;
@@ -237,6 +326,16 @@ public class CustomerActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 10) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Helper.openGallery(this, launcher);
+            }
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
 
@@ -246,6 +345,14 @@ public class CustomerActivity extends AppCompatActivity {
             adapter.notifyDataSetChanged();
             getData();
             isLoadData = false;
+        }
+    }
+
+    @Override
+    public void onClick(Object item) {
+        if (item != null) {
+            Customer customer = (Customer) item;
+            onAddCustomer(customer);
         }
     }
 }

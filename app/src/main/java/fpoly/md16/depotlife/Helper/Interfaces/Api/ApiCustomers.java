@@ -30,9 +30,19 @@ public interface ApiCustomers {
                           @Part("address") RequestBody address,
                           @Part MultipartBody.Part images
     );
-
+    @Multipart
     @POST("customers/update/{id}")
-    Call<Customer> update(@Header("Authorization") String authToken, @Path("id") int id, @Body Customer data);
+    Call<Customer> update(@Header("Authorization") String authToken,
+                          @Path("id") int id,
+                          @Part("customer_name") RequestBody customerName,
+                          @Part("customer_phone") RequestBody customerPhone,
+                          @Part("customer_email") RequestBody customerEmail,
+                          @Part("address") RequestBody address,
+                          @Part MultipartBody.Part images
+    );
+
+//    @POST("customers/update/{id}")
+//    Call<Customer> update(@Header("Authorization") String authToken, @Path("id") int id, @Body Customer data);
 
     @GET("customers/delete/{id}")
     Call<Customer> delete(@Header("Authorization") String authToken, @Path("id") int id);
