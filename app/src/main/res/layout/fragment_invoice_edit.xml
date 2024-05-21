@@ -2,14 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/custom_bgr_layout"
-    tools:context=".Invoice.Fragment.InvoiceEditFragment">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Invoice.Fragment.InvoiceAddFragment">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="vertical">
+    <LinearLayout style="@style/custom_bgr_layout">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/tb_invoice"
@@ -20,151 +18,149 @@
                 style="@style/custom_img_back_toolbar" />
 
             <TextView
-                android:id="@+id/tv_id_invoice"
+                android:id="@+id/tv_toolbar"
                 style="@style/custom_title_toolbar"
-                android:text="PN12312" />
+                android:text="Sửa hoá đơn" />
 
-            <ImageView
-                android:id="@+id/img_infor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <TextView
+                android:layout_marginEnd="20dp"
                 android:layout_gravity="end"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/about_us" />
+                android:id="@+id/tv_Save"
+                android:textColor="@color/bgr_btn"
+                style="@style/custom_title_toolbar"
+                android:textSize="20dp"
+                android:text="Lưu" />
+
         </androidx.appcompat.widget.Toolbar>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@drawable/custom_bgr_edt"
-            android:orientation="horizontal">
-
-            <SearchView
-                android:id="@+id/sv_product"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:queryHint="Chọn hàng nhập" />
-
-            <ImageView
-                android:id="@+id/img_category"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/category_add_invoice" />
-
-            <ImageView
-                android:id="@+id/img_add_product"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/baseline_add_24" />
-        </LinearLayout>
-    </LinearLayout>
-
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tb_invoice"
-        android:layout_marginTop="30dp"
-        app:cardCornerRadius="10dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="5dp">
+            android:layout_marginTop="10dp"
+            android:background="@color/gray"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/layout_supplier"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:hint="Trạng thái thanh toán">
+
+                        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                            android:id="@+id/spnPaymentStatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:inputType="none" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/borderDuedate"
+                        android:visibility="gone"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:hint="Ngày hết hạn"
+                        app:startIconDrawable="@drawable/baseline_date_range_24">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/ed_due_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="false" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:hint="Ghi chú">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/ed_notes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:hint="Các điều khoản">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/ed_Terms"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:hint="Chữ ký"
+                    app:boxBackgroundColor="@color/white">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/ed_SigName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.5"
-                    android:orientation="horizontal">
+                    android:id="@+id/idSignature"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/custom_bgr_edt"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+<!--                    <ImageView-->
+<!--                        android:id="@+id/iconSignature"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:src="@drawable/baseline_upload_file_24" />-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/tvSignature"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="Nhấp để tải lên chữ ký"-->
+<!--                        android:textColor="@color/white"-->
+<!--                        android:textSize="18sp"-->
+<!--                        android:textStyle="bold" />-->
 
                     <ImageView
+                        android:id="@+id/imgSignature"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:src="@drawable/supplier" />
+                        android:layout_height="match_parent"
+                        android:paddingVertical="10dp"
+                        android:src="@drawable/app_icon" />
 
-                    <TextView
-                        style="@style/custom_tv_date_time"
-                        android:text="Công ty cổ phần thời trang Mantis" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1">
-
-                    <TextView
-                        android:id="@+id/tv_total"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:fontFamily="@font/nunito_bold"
-                        android:gravity="end"
-                        android:text="0973967774"
-                        android:textColor="@color/black"
-                        android:textSize="20sp" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/next_32" />
-                </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcv_add_invoice"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="10dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_product_invoice" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bgr_btn_menu"
-        android:backgroundTint="@color/tv_blue_bold"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="10dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tổng 5"
-            android:textColor="@color/white"
-            android:textSize="20sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="end"
-            android:text="157.000"
-            android:textColor="@color/white"
-            android:textSize="20sp" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/next_add_invoice" />
     </LinearLayout>
 
+
 </LinearLayout>
+

@@ -104,7 +104,10 @@ public class InvoiceAddFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentInvoiceAddBinding.inflate(inflater, container, false);
-        setHasOptionsMenu(true);
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            invoiceType = bundle.getInt("type_invoice");
+        }
         return binding.getRoot();
     }
 

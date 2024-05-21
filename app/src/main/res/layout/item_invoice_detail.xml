@@ -2,49 +2,58 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="0dp">
+    android:paddingVertical="8dp"
+    android:weightSum="10"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/tv_id_product"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="#1"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="12dp" />'
 
     <TextView
         android:id="@+id/tv_name_product"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="7"
-        android:background="@drawable/custom_item_border_invoice_detail"
-        android:paddingHorizontal="10dp"
-        android:paddingVertical="5dp"
-        android:text="1. B0001 - Bột mì Baker's Choice số 11 - nhà cc"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
+        android:textAlignment="center"
+        android:text="Bột bánh bao"
         android:textColor="@color/black"
-        android:textSize="14dp" />
+        android:textSize="12dp" />
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/tv_quantity_product"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="3"
-        android:background="@drawable/custom_item_border_invoice_detail"
-        android:orientation="vertical"
-        android:paddingVertical="4dp">
+        android:layout_weight="1"
+        android:textAlignment="center"
+        android:text="12"
+        android:textColor="@color/black"
+        android:textSize="12dp" />
 
-        <TextView
-            android:id="@+id/tv_price"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="1dp"
-            android:text="26.000 x 3"
-            android:textColor="@color/black"
-            android:textSize="14dp" />
+    <TextView
+        android:id="@+id/tv_price_product"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:textAlignment="center"
+        android:text="120000"
+        android:textColor="@color/black"
+        android:textSize="12dp" />
 
-        <TextView
-            android:id="@+id/tv_total"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="1dp"
-            android:text="78.000"
-            android:textColor="@color/black"
-            android:textSize="14dp"
-            android:textStyle="bold" />
-    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_total_amount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:textAlignment="center"
+        android:text="450000"
+        android:textColor="@color/black"
+        android:textSize="12dp" />
+
 </LinearLayout>

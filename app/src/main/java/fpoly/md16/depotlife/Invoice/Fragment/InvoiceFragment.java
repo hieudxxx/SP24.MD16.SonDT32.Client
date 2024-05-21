@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiInvoice;
@@ -66,7 +67,7 @@ public class InvoiceFragment extends Fragment {
         adapter = new InvoiceAdapter(new InvoiceAdapter.InterClickItemData() {
             @Override
             public void clickItem(Invoice invoice) {
-
+                getContext().startActivity(new Intent(getContext(), InvoiceActivity.class).putExtra("invoice",invoice));
             }
         });
 

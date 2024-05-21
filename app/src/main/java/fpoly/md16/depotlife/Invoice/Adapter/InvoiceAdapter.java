@@ -65,7 +65,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.InvoiceV
             holder.binding.tvTypeInvoice.setText("Hóa đơn xuất");
         }
 
-        holder.binding.tvDateCreated.setText(invoice.getDate_created());
+        holder.binding.tvDateCreated.setText(invoice.getDate_created().substring(0, 10));
         if (invoice.getStatusPayment() == 0) {
             holder.binding.tvStatusInvoice.setText("Chưa thanh toán");
         }else {
