@@ -69,6 +69,15 @@ public class Invoice implements Serializable {
         this.productInvoice = productInvoice;
     }
 
+    public Invoice(int statusPayment, String dueDate, String note, String term, String signature_name, String signature_img) {
+        this.statusPayment = statusPayment;
+        this.dueDate = dueDate;
+        this.note = note;
+        this.term = term;
+        this.signature_name = signature_name;
+        this.signature_img = signature_img;
+    }
+
     public int getId() {
         return id;
     }

@@ -28,13 +28,13 @@ public class InvoiceActivity extends AppCompatActivity {
         binding = ActivityInvoiceBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        Invoice invoice = (Invoice) getIntent().getSerializableExtra("invoice");
+        int invoiceId = getIntent().getIntExtra("invoiceId",0);
         Invoice invoiceDetail = (Invoice) getIntent().getSerializableExtra("invoiceDetail");
         int typeInvoice = getIntent().getIntExtra("type_invoice", 0);
 
-        if (invoice != null) {
+        if (invoiceId != 0) {
             Bundle bundle = new Bundle();
-            bundle.putSerializable("invoice", invoice);
+            bundle.putInt("invoiceId", invoiceId);
             Helper.loadFragment(getSupportFragmentManager(), new InvoiceDetailFragment(), bundle, R.id.frag_container_invoice);
         } else if (invoiceDetail != null) {
             Bundle bundle = new Bundle();

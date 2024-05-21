@@ -67,7 +67,7 @@ public class InvoiceFragment extends Fragment {
         adapter = new InvoiceAdapter(new InvoiceAdapter.InterClickItemData() {
             @Override
             public void clickItem(Invoice invoice) {
-                getContext().startActivity(new Intent(getContext(), InvoiceActivity.class).putExtra("invoice",invoice));
+                getContext().startActivity(new Intent(getContext(), InvoiceActivity.class).putExtra("invoiceId",invoice.getId()));
             }
         });
 

@@ -2,48 +2,39 @@ package fpoly.md16.depotlife.Invoice.Fragment;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.io.IOException;
 import java.util.List;
 
 import fpoly.md16.depotlife.Helper.Helper;
-import fpoly.md16.depotlife.Helper.Interfaces.Api.API;
+import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiInvoice;
 import fpoly.md16.depotlife.Invoice.Activity.InvoiceActivity;
 import fpoly.md16.depotlife.Invoice.Adapter.InvoiceDetailAdapter;
 import fpoly.md16.depotlife.Invoice.Model.Invoice;
-import fpoly.md16.depotlife.Product.Model.Product;
-import fpoly.md16.depotlife.R;
-import fpoly.md16.depotlife.databinding.DialogCheckDeleteBinding;
 import fpoly.md16.depotlife.databinding.FragmentInvoiceDetailBinding;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class InvoiceDetailFragment extends Fragment {
     private FragmentInvoiceDetailBinding binding;
-    private Invoice invoice;
     private InvoiceDetailAdapter adapter;
-    private List<Invoice.ProductInvoice> list;
-    private Bundle bundle;
+    private String token;
+    private int ID;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,7 +42,8 @@ public class InvoiceDetailFragment extends Fragment {
         binding = FragmentInvoiceDetailBinding.inflate(inflater, container, false);
         Bundle bundle = getArguments();
         if (bundle != null) {
-            invoice = (Invoice) bundle.get("invoice");
+            ID = bundle.getInt("invoiceId");
+            token = "Bearer " + Helper.getSharedPre(getContext(), "token", String.class);
         }
         return binding.getRoot();
     }
@@ -60,30 +52,23 @@ public class InvoiceDetailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
         binding.imgBack.setOnClickListener(v -> {
             requireActivity().finish();
         });
 
-        list = invoice.getProductInvoice();
+    }
 
-        setInit(invoice);
-
-        LinearLayoutManager manager = new LinearLayoutManager(view.getContext());
+    private void setupAdapter(List<Invoice.ProductInvoice> list, Invoice invoice) {
+        LinearLayoutManager manager = new LinearLayoutManager(getContext());
         binding.rcvProductList.setLayoutManager(manager);
         adapter = new InvoiceDetailAdapter(invoice.getInvoiceType());
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(view.getContext(), LinearLayoutManager.VERTICAL);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL);
         binding.rcvProductList.addItemDecoration(dividerItemDecoration);
 
 
         binding.rcvProductList.setAdapter(adapter);
         adapter.setData(list);
-
-        binding.imgEdit.setOnClickListener(view1 -> {
-            getContext().startActivity(new Intent(getContext(), InvoiceActivity.class).putExtra("invoiceDetail",invoice));
-        });
-
     }
 
     private void setInit(Invoice invoice) {
@@ -131,5 +116,45 @@ public class InvoiceDetailFragment extends Fragment {
 // Set the text to the calculated taxable amount, cast to an int
         binding.tvTotalTaxable.setText(Helper.formatVND((int) Math.ceil(totalTaxable)));
         binding.tvTotalAmount.setText(Helper.formatVND((int) invoice.getTotalAmount()));
+
+        binding.imgEdit.setOnClickListener(view1 -> {
+            getContext().startActivity(new Intent(getContext(), InvoiceActivity.class).putExtra("invoiceDetail", invoice));
+        });
+
+    }
+
+    private void getData(){
+        ApiInvoice.apiInvoice.getDetail("Bearer " + token,ID).enqueue(new Callback<Invoice>() {
+            @Override
+            public void onResponse(Call<Invoice> call, Response<Invoice> response) {
+                Log.d("zzzzzzzzzzzzzzzz", "onResponse: "+response.code());
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        setupAdapter(response.body().getProductInvoice(),response.body());
+                        setInit(response.body());
+                    }
+                } else {
+                    try {
+                        String errorBody = response.errorBody().string();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Toast.makeText(getActivity(), "Không thể lấy dữ liệu danh mục", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Invoice> call, Throwable throwable) {
+                Log.d("onFailure", "onFailure: " + throwable.getMessage());
+                Toast.makeText(getActivity(), "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getData();
     }
 }
