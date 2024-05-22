@@ -21,6 +21,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import fpoly.md16.depotlife.Category.Model.Category;
 import fpoly.md16.depotlife.Customers.CustomerActivity;
 import fpoly.md16.depotlife.Customers.Model.Customer;
 import fpoly.md16.depotlife.Helper.Helper;
@@ -50,6 +51,11 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
         this.oldcustomerList = customerList;
         this.token = token;
         this.onItemRcvClick = onItemRcvClick;
+    }
+
+    public void setData(List<Customer> list) {
+        this.customerList = (ArrayList<Customer>) list;
+        notifyDataSetChanged();
     }
 
 
@@ -107,6 +113,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
             @Override
             public void onClick(View view) {
                 if (onItemRcvClick != null){
+                    bottomSheetDialog.cancel();
                     onItemRcvClick.onClick(customer);
                 }
             }

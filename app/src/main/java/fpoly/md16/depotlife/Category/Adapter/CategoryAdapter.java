@@ -49,6 +49,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         this.token = token;
     }
 
+    public void setData(List<Category> list) {
+        this.categoryList = (ArrayList<Category>) list;
+        notifyDataSetChanged();
+    }
+
 
     @NonNull
     @Override
@@ -73,8 +78,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
                             if (response.isSuccessful() || response.code() == 200) {
                                 Toast.makeText(context, "Xóa thể loại thành công!", Toast.LENGTH_SHORT).show();
                                 categoryList.remove(category);
-                                CategoryActivity.isLoadData = true;
-                                notifyDataSetChanged();
+
                             }
                         }
 
@@ -133,8 +137,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
                                 if (response.isSuccessful()) {
                                     Toast.makeText(context, "Sửa thể loại thành công!", Toast.LENGTH_SHORT).show();
                                     alertDialog.dismiss();
-                                    notifyDataSetChanged();
-                                    CategoryActivity.isLoadData = true;
+
                                 }
                             }
 

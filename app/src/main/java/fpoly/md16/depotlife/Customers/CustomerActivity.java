@@ -2,6 +2,7 @@ package fpoly.md16.depotlife.Customers;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,6 +11,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,19 +24,24 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.widget.NestedScrollView;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import fpoly.md16.depotlife.Category.CategoryActivity;
+import fpoly.md16.depotlife.Category.Model.Category;
 import fpoly.md16.depotlife.Customers.Adapter.CustomerAdapter;
 import fpoly.md16.depotlife.Customers.Model.Customer;
 import fpoly.md16.depotlife.Customers.Model.CustomerResponse;
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.API;
+import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiCategory;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiCustomers;
 import fpoly.md16.depotlife.Helper.Interfaces.onClickListener.onItemRcvClick;
 import fpoly.md16.depotlife.R;
@@ -56,6 +63,9 @@ public class CustomerActivity extends AppCompatActivity implements onItemRcvClic
     private int pageIndex = 1;
     private int perPage = 0;
     private String token;
+
+    private Runnable runnable;
+    private final Handler handler = new Handler();
 
     public static boolean isLoadData = false;
 
@@ -106,12 +116,7 @@ public class CustomerActivity extends AppCompatActivity implements onItemRcvClic
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
-        menu.findItem(R.id.item_filter).setVisible(false);
-        return true;
-    }
+
 
     private void getData() {
         ApiCustomers.API_CUSTOMERS.getData(token, pageIndex).enqueue(new Callback<CustomerResponse>() {
@@ -120,6 +125,7 @@ public class CustomerActivity extends AppCompatActivity implements onItemRcvClic
                 if (response.isSuccessful()) {
                     customerResponse = response.body();
                     if (customerResponse != null) {
+                        binding.tvTotalInvoice.setText(customerResponse.getTotal()+"");
                         perPage = customerResponse.getLast_page();
                         onCheckList(customerResponse);
                     }
@@ -218,6 +224,10 @@ public class CustomerActivity extends AppCompatActivity implements onItemRcvClic
                                     addBinding.edEmail.setText("");
                                     addBinding.edAddress.setText("");
                                     dialog.dismiss();
+                                    pageIndex = 1;
+                                    list.clear();
+                                    adapter.notifyDataSetChanged();
+                                    getData();
                                 }
                             }
 
@@ -238,7 +248,6 @@ public class CustomerActivity extends AppCompatActivity implements onItemRcvClic
 
         } else {
             addBinding.tvReg.setText("THÊM KHÁCH HÀNG");
-
 
             addBinding.imgProduct.setOnClickListener(view -> onRequestPermission());
 
@@ -284,6 +293,10 @@ public class CustomerActivity extends AppCompatActivity implements onItemRcvClic
                                     addBinding.edEmail.setText("");
                                     addBinding.edAddress.setText("");
                                     dialog.dismiss();
+                                    pageIndex = 1;
+                                    list.clear();
+                                    adapter.notifyDataSetChanged();
+                                    getData();
                                 }
                             }
 
@@ -332,6 +345,107 @@ public class CustomerActivity extends AppCompatActivity implements onItemRcvClic
         }
     }
 
+
+
+    private void onCheckSearch(List<Customer> customers) {
+        if (customers != null) {
+            list.clear();
+            list.addAll(customers);
+            binding.rcvCategory.setVisibility(View.VISIBLE);
+            binding.tvTotalInvoice.setVisibility(View.VISIBLE);
+            binding.tvEmpty.setVisibility(View.GONE);
+            binding.pbLoading.setVisibility(View.GONE);
+            binding.pbLoadMore.setVisibility(View.GONE);
+            binding.rcvCategory.setAdapter(adapter);
+            adapter.setData(list);
+        } else {
+            binding.rcvCategory.setVisibility(View.INVISIBLE);
+            binding.tvTotalInvoice.setVisibility(View.GONE);
+            binding.pbLoading.setVisibility(View.GONE);
+            binding.pbLoadMore.setVisibility(View.GONE);
+            binding.tvEmpty.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.invoice_menu,menu);
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (androidx.appcompat.widget.SearchView) menu.findItem(R.id.item_search).getActionView();
+
+        if (searchView != null) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+            searchView.setMaxWidth(Integer.MAX_VALUE);
+
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    if (newText.isEmpty()) {
+                        list.clear();
+                        getData();
+                    } else {
+                        debounceSearch(newText, 500);
+                        return true;
+                    }
+                    return false;
+                }
+            });
+        }
+        return true;
+    }
+
+    private void debounceSearch(final String newText, long delayMillis) {
+        // Hủy bỏ Runnable trước đó
+        if (runnable != null) {
+            handler.removeCallbacks(runnable);
+        }
+
+        // Tạo Runnable mới để thực hiện tìm kiếm
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                searchData(newText);
+            }
+        };
+
+        // Lên lịch thực hiện tìm kiếm sau một khoảng thời gian delay
+        handler.postDelayed(runnable, delayMillis);
+    }
+
+    private void searchData(String keyword) {
+        ApiCustomers.API_CUSTOMERS.getDataSearch(token, keyword).enqueue(new Callback<List<Customer>>() {
+            @Override
+            public void onResponse(Call<List<Cust                omer>> call, Response<List<Customer>> response) {
+                if (response.isSuccessful()) {
+                    List<Customer> customers = response.body();
+                    if (customers != null) {
+                        binding.tvTotalInvoice.setText("1");
+                        onCheckSearch(customers);
+                    }
+                } else {
+                    try {
+                        String errorBody = response.errorBody().string();
+                        Log.e("onResponse", "errorBody: " + errorBody);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    //Toast.makeText(getActivity(), "Không thể lấy dữ liệu danh mục", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Customer>> call, Throwable t) {
+                Log.d("tag_kiemTra", "onFailure: " + t.getMessage());
+                Toast.makeText(CustomerActivity.this, "thất bại", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -344,6 +458,8 @@ public class CustomerActivity extends AppCompatActivity implements onItemRcvClic
             isLoadData = false;
         }
     }
+
+
 
     @Override
     public void onClick(Object item) {
