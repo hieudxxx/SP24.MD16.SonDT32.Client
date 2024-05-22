@@ -13,6 +13,8 @@ import java.util.List;
 
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Invoice.Model.Invoice;
+import fpoly.md16.depotlife.Product.Model.Product;
+import fpoly.md16.depotlife.R;
 import fpoly.md16.depotlife.databinding.ItemInvoiceBinding;
 
 public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.InvoiceViewHolder> {
@@ -53,12 +55,18 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.InvoiceV
             holder.binding.tvTypeInvoice.setText("Hóa đơn xuất");
         }
 
-        holder.binding.tvDateCreated.setText(invoice.getDate_created());
+        holder.binding.tvDateCreated.setText(invoice.getDate_created().substring(0, 10));
         if (invoice.getStatusPayment() == 0) {
             holder.binding.tvStatusInvoice.setText("Chưa thanh toán");
+        } else if (invoice.getStatusPayment() == 1) {
             holder.binding.tvStatusInvoice.setTextColor(Color.RED);
         } else {
             holder.binding.tvStatusInvoice.setText("Đã thanh toán");
+        }
+        if (invoice.getStatusPayment() == 2) {
+            holder.binding.tvStatusInvoice.setText("Quá hạn");
+        } else {
+            holder.binding.tvStatusInvoice.setText("Đã xóa");
             holder.binding.tvStatusInvoice.setTextColor(Color.parseColor("#6AA84F"));
         }
         holder.binding.tvTotalInvoice.setText(Helper.formatVNDLong(invoice.getTotalAmount()));

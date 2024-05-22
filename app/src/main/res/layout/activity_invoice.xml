@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/custom_bgr_layout"
+    android:orientation="vertical"
     tools:context=".Invoice.Activity.InvoiceActivity">
 
     <androidx.fragment.app.FragmentContainerView
