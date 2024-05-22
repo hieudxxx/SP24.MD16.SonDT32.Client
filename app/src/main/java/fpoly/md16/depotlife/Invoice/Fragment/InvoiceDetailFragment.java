@@ -1,5 +1,6 @@
 package fpoly.md16.depotlife.Invoice.Fragment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,11 +12,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.List;
@@ -26,6 +30,7 @@ import fpoly.md16.depotlife.Invoice.Activity.InvoiceActivity;
 import fpoly.md16.depotlife.Invoice.Adapter.InvoiceDetailAdapter;
 import fpoly.md16.depotlife.Invoice.Model.Invoice;
 import fpoly.md16.depotlife.databinding.FragmentInvoiceDetailBinding;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -99,7 +104,7 @@ public class InvoiceDetailFragment extends Fragment {
             binding.tvPaymentStatus.setTextColor(Color.RED);
         } else {
             binding.tvDueDate.setVisibility(View.INVISIBLE);
-            binding.tvInvoiceType.setText("Payment Status: PAID");
+            binding.tvPaymentStatus.setText("Payment Status: PAID");
             binding.tvPaymentStatus.setTextColor(Color.GREEN);
         }
         binding.tvDiscount.setText(invoice.getDiscount() + "%");
@@ -121,16 +126,20 @@ public class InvoiceDetailFragment extends Fragment {
             getContext().startActivity(new Intent(getContext(), InvoiceActivity.class).putExtra("invoiceDetail", invoice));
         });
 
+        binding.imgDelete.setOnClickListener(view -> {
+            clickDeleteData(invoice);
+        });
+
     }
 
-    private void getData(){
-        ApiInvoice.apiInvoice.getDetail("Bearer " + token,ID).enqueue(new Callback<Invoice>() {
+    private void getData() {
+        ApiInvoice.apiInvoice.getDetail("Bearer " + token, ID).enqueue(new Callback<Invoice>() {
             @Override
             public void onResponse(Call<Invoice> call, Response<Invoice> response) {
-                Log.d("zzzzzzzzzzzzzzzz", "onResponse: "+response.code());
+                Log.d("zzzzzzzzzzzzzzzz", "onResponse: " + response.code());
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        setupAdapter(response.body().getProductInvoice(),response.body());
+                        setupAdapter(response.body().getProductInvoice(), response.body());
                         setInit(response.body());
                     }
                 } else {
@@ -151,6 +160,86 @@ public class InvoiceDetailFragment extends Fragment {
         });
     }
 
+    private void clickDeleteData(Invoice invoice) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Xóa sản phẩm");
+        builder.setMessage("Bạn có muốn xóa hóa đơn (" + invoice.getId() + ") không ?");
+        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                deleteInvoice(invoice.getId());
+            }
+        });
+        builder.setNegativeButton("Không", null);
+        builder.show();
+    }
+
+    private void deleteInvoice(int id) {
+        ApiInvoice apiInvoice = ApiInvoice.apiInvoice;
+
+// Gọi phương thức delete
+        ApiInvoice.apiInvoice.delete("Bearer " + token, id).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    try {
+                        // Lấy phản hồi JSON từ API
+                        String jsonResponse = response.body().string();
+                        JSONObject jsonObject = new JSONObject(jsonResponse);
+
+                        // Lấy thông báo từ phản hồi JSON
+                        String message = jsonObject.getString("success");
+
+
+                        // Hiển thị thông báo cho người dùng
+                        alert(message);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
+                        // Lấy phản hồi lỗi JSON từ API
+                        String errorResponse = response.errorBody().string();
+                        JSONObject jsonObject = new JSONObject(errorResponse);
+
+                        // Lấy thông báo lỗi từ phản hồi JSON
+                        String errorMessage = jsonObject.getString("error");
+                        alertFail(errorMessage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                // Xử lý lỗi khi gọi API
+                Log.e("API", "Error: " + t.getMessage());
+                Toast.makeText(getContext(), "Failed to connect to the server", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void alert(String msg) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Thông báo");
+        builder.setMessage(msg);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                requireActivity().finish();
+            }
+        });
+        builder.show();
+    }
+
+    private void alertFail(String msg) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Thông báo");
+        builder.setMessage(msg);
+        builder.setPositiveButton("OK", null);
+        builder.show();
+    }
 
     @Override
     public void onResume() {

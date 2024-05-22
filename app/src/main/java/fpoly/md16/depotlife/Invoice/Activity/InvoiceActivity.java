@@ -4,11 +4,15 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
+import android.view.WindowManager;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Invoice.Fragment.InvoiceAddFragment;
@@ -54,4 +58,5 @@ public class InvoiceActivity extends AppCompatActivity {
         return super.onCreateView(name, context, attrs);
 
     }
+
 }

@@ -22,6 +22,7 @@
                 android:background="@color/white">
 
                 <TextView
+                    android:id="@+id/tvTitle"
                     style="@style/custom_title_toolbar"
                     android:text="@string/text_invoice" />
 
@@ -31,6 +32,17 @@
                     android:fontFamily="@font/nunito_extrabold"
                     android:text="(0)"
                     android:textColor="@color/gray" />
+
+                <ImageButton
+                    android:layout_marginRight="10dp"
+                    android:layout_gravity="end"
+                    android:id="@+id/filter"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:backgroundTint="@color/white"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/filter"
+                    android:padding="20dp"/>
 
                 <ImageButton
                     android:layout_marginRight="10dp"
@@ -45,6 +57,50 @@
                     android:padding="20dp"/>
 
             </androidx.appcompat.widget.Toolbar>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/layoutSpn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="10"
+                android:padding="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_weight="5"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Loại hóa đơn">
+
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                        android:id="@+id/spnInvoiceType"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="5"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Trạng thái">
+
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                        android:id="@+id/spnPaymentStatus"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/layout_calendar"

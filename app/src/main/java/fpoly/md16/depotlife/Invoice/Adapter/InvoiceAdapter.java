@@ -35,6 +35,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.InvoiceV
     public interface InterClickItemData {
         void clickItem(Invoice invoice);
     }
+
     public void setData(List<Invoice> list) {
         this.list = (ArrayList<Invoice>) list;
         notifyDataSetChanged();
@@ -58,18 +59,22 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.InvoiceV
         Invoice invoice = list.get(position);
         if (invoice == null) return;
 
-        holder.binding.tvIdInvoice.setText("HD"+invoice.getId());
+        holder.binding.tvIdInvoice.setText("HD" + invoice.getId());
         if (invoice.getInvoiceType() == 0) {
             holder.binding.tvTypeInvoice.setText("Hóa đơn nhập");
-        }else {
+        } else {
             holder.binding.tvTypeInvoice.setText("Hóa đơn xuất");
         }
 
         holder.binding.tvDateCreated.setText(invoice.getDate_created().substring(0, 10));
         if (invoice.getStatusPayment() == 0) {
             holder.binding.tvStatusInvoice.setText("Chưa thanh toán");
-        }else {
+        } else if (invoice.getStatusPayment() == 1) {
             holder.binding.tvStatusInvoice.setText("Đã thanh toán");
+        } else if (invoice.getStatusPayment() == 2) {
+            holder.binding.tvStatusInvoice.setText("Quá hạn");
+        } else {
+            holder.binding.tvStatusInvoice.setText("Đã xóa");
         }
         holder.binding.tvTotalInvoice.setText(Helper.formatVNDLong(invoice.getTotalAmount()));
 
