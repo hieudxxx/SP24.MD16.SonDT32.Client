@@ -270,8 +270,19 @@ public class Helper {
     }
 
     public static RequestBody createStringPart(String value) {
-        return RequestBody.create(MediaType.parse("multipart/form-data"), value);
+        RequestBody requestBody;
+        if (value != null) {
+            requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), value);
+            return requestBody;
+        } else {
+            requestBody = null;
+            return requestBody;
+        }
     }
+
+//    public static RequestBody[] createListPart(List<> value) {
+//        return RequestBody.create(MediaType.parse("multipart/form-data"), value);
+//    }
 
     public static RequestBody createIntPart(int value) {
         return createStringPart(String.valueOf(value));
@@ -387,7 +398,7 @@ public class Helper {
     }
 
     public static void setImgProduct(Image[] url, ShapeableImageView img) {
-        if (url == null){
+        if (url == null) {
             img.setImageResource(R.drawable.img_add);
         } else {
             if (url.length == 0) {
@@ -406,7 +417,7 @@ public class Helper {
     }
 
     public static void setImgCustomer(String url, ShapeableImageView img) {
-        if (url == null){
+        if (url == null) {
             img.setImageResource(R.drawable.img_add);
         } else {
             Picasso.get().load(API.URL_IMG + url.replaceFirst("public", "")).into(img);
