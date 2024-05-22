@@ -3,9 +3,13 @@ package fpoly.md16.depotlife.Invoice.Model;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
 
+import fpoly.md16.depotlife.Customers.Model.Customer;
 import fpoly.md16.depotlife.Login.Model.UserResponse;
 import fpoly.md16.depotlife.Product.Model.Product;
+import fpoly.md16.depotlife.Supplier.Model.Supplier;
 
 public class Invoice implements Serializable {
     @SerializedName("id")
@@ -36,16 +40,20 @@ public class Invoice implements Serializable {
     private String signature_img;
     @SerializedName("created_at")
     private String date_created;
-    @SerializedName("products")
-    private ProductInvoice[] productInvoice;
+    @SerializedName("product_invoices")
+    private List<ProductInvoice> productInvoice;
 
     @SerializedName("user")
     private UserResponse.User user;
+    @SerializedName("supplier")
+    private Supplier supplier;
+    @SerializedName("customer")
+    private Customer customer;
 
     public Invoice() {
     }
 
-    public Invoice(int user_id, int invoiceType, int customer_id, int supplier_id, int statusPayment, int discount, String dueDate, String note, String term, String signature_name, String signature_img, String date_created, ProductInvoice[] productInvoice) {
+    public Invoice(int user_id, int invoiceType, int customer_id, int supplier_id, int statusPayment, int discount, String dueDate, String note, String term, String signature_name, String signature_img, String date_created, List<ProductInvoice> productInvoice) {
         this.user_id = user_id;
         this.invoiceType = invoiceType;
         this.customer_id = customer_id;
@@ -59,6 +67,15 @@ public class Invoice implements Serializable {
         this.signature_img = signature_img;
         this.date_created = date_created;
         this.productInvoice = productInvoice;
+    }
+
+    public Invoice(int statusPayment, String dueDate, String note, String term, String signature_name, String signature_img) {
+        this.statusPayment = statusPayment;
+        this.dueDate = dueDate;
+        this.note = note;
+        this.term = term;
+        this.signature_name = signature_name;
+        this.signature_img = signature_img;
     }
 
     public int getId() {
@@ -173,11 +190,11 @@ public class Invoice implements Serializable {
         this.date_created = date_created;
     }
 
-    public ProductInvoice[] getProductInvoice() {
+    public List<ProductInvoice> getProductInvoice() {
         return productInvoice;
     }
 
-    public void setProductInvoice(ProductInvoice[] productInvoice) {
+    public void setProductInvoice(List<ProductInvoice> productInvoice) {
         this.productInvoice = productInvoice;
     }
 
@@ -189,7 +206,23 @@ public class Invoice implements Serializable {
         this.user = user;
     }
 
-    public static class ProductInvoice {
+    public Supplier getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public static class ProductInvoice  implements Serializable{
         @SerializedName("id")
         private int id;
         @SerializedName("quantity")
@@ -270,6 +303,40 @@ public class Invoice implements Serializable {
         public void setExpiry(String expiry) {
             this.expiry = expiry;
         }
+
+        @Override
+        public String toString() {
+            return "ProductInvoice{" +
+                    "id=" + id +
+                    ", quantity=" + quantity +
+                    ", invoice_id=" + invoice_id +
+                    ", product_id=" + product_id +
+                    ", product=" + product +
+                    '}';
+        }
     }
 
+    @Override
+    public String toString() {
+        return "Invoice{" +
+                "id=" + id +
+                ", user_id=" + user_id +
+                ", totalAmount=" + totalAmount +
+                ", invoiceType=" + invoiceType +
+                ", customer_id=" + customer_id +
+                ", supplier_id=" + supplier_id +
+                ", statusPayment=" + statusPayment +
+                ", discount=" + discount +
+                ", dueDate='" + dueDate + '\'' +
+                ", note='" + note + '\'' +
+                ", term='" + term + '\'' +
+                ", signature_name='" + signature_name + '\'' +
+                ", signature_img='" + signature_img + '\'' +
+                ", date_created='" + date_created + '\'' +
+                ", productInvoice=" + productInvoice +
+                ", user=" + user +
+                ", supplier=" + supplier +
+                ", customer=" + customer +
+                '}';
+    }
 }

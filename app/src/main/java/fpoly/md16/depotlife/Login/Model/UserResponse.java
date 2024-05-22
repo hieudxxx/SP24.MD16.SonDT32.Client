@@ -2,9 +2,10 @@ package fpoly.md16.depotlife.Login.Model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class UserResponse {
+public class UserResponse implements Serializable {
     @SerializedName("user")
     private User user;
     @SerializedName("token")
@@ -67,7 +68,7 @@ public class UserResponse {
 
     // Getters and Setters
 
-    public static class User {
+    public static class User implements Serializable{
         @SerializedName("id")
         private int id;
         @SerializedName("name")
