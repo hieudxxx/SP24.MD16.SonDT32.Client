@@ -10,45 +10,43 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-import fpoly.md16.depotlife.Supplier.Model.Supplier;
-import fpoly.md16.depotlife.databinding.ItemSupplierBinding;
+import fpoly.md16.depotlife.Customers.Model.Customer;
+import fpoly.md16.depotlife.databinding.ItemCustomterSelectBinding;
 
-public class DialogSupplierAdapter extends RecyclerView.Adapter<DialogSupplierAdapter.ViewHolder> {
-    private ArrayList<Supplier> list;
+public class AdapterCusSelect extends RecyclerView.Adapter<AdapterCusSelect.ViewHolder> {
+    private ArrayList<Customer> list;
     private InterClickItemData interClickItemData;
 
     public interface InterClickItemData {
-        void chooseItem(Supplier supplier);
+        void chooseItem(Customer Customer);
     }
 
-    public void setData(List<Supplier> list) {
-        this.list = (ArrayList<Supplier>) list;
+    public void setData(List<Customer> list) {
+        this.list = (ArrayList<Customer>) list;
         notifyDataSetChanged();
     }
 
-
-    public DialogSupplierAdapter(InterClickItemData interClickItemData) {
+    public AdapterCusSelect(InterClickItemData interClickItemData) {
         this.interClickItemData = interClickItemData;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemSupplierBinding binding = ItemSupplierBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        ItemCustomterSelectBinding binding = ItemCustomterSelectBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         return new ViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.binding.tvName.setText(list.get(position).getCustomerName());
 
-        holder.binding.tvName.setText(list.get(position).getName());
-
-        holder.binding.tvStatus.setText(list.get(position).getStatus() == 1 ? "Hợp tác" : "Đã hủy");
+        holder.binding.tvStatus.setText(list.get(position).getStatus() == 1 ? "Active" : "Inactive");
         holder.binding.tvStatus.setTextColor(list.get(position).getStatus() == 1 ? Color.GREEN : Color.RED);
 
-        holder.binding.tvPhone.setText(list.get(position).getPhone());
-        holder.binding.tvTax.setText(list.get(position).getTax_code());
-        holder.binding.tvTotalMoney.setText(String.valueOf(list.get(position).getTotal()));
+        holder.binding.tvPhone.setText(list.get(position).getCustomerPhone());
+        holder.binding.tvTotalInvoice.setText(list.get(position).getTotalInvoices());
+        holder.binding.email.setText(list.get(position).getCustomerEmail());
 
         holder.itemView.setOnClickListener(view -> {
             interClickItemData.chooseItem(list.get(position));
@@ -64,11 +62,12 @@ public class DialogSupplierAdapter extends RecyclerView.Adapter<DialogSupplierAd
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private ItemSupplierBinding binding;
+        private ItemCustomterSelectBinding binding;
 
-        public ViewHolder(@NonNull ItemSupplierBinding binding) {
+        public ViewHolder(@NonNull ItemCustomterSelectBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
     }
+
 }

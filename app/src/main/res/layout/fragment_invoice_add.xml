@@ -84,26 +84,26 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
-                        android:visibility="visible"
                         android:id="@+id/tv_war_sup"
-                        style="@style/custom_tv_warning" />
+                        style="@style/custom_tv_warning"
+                        android:visibility="visible" />
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/idCustomer"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:hint="Khách hàng"
-                        android:visibility="gone">
+<!--                    <com.google.android.material.textfield.TextInputLayout-->
+<!--                        android:id="@+id/idCustomer"-->
+<!--                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="10dp"-->
+<!--                        android:hint="Khách hàng"-->
+<!--                        android:visibility="gone">-->
 
-                        <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                            android:id="@+id/spnCustomer"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="none" />
+<!--                        <com.google.android.material.textfield.MaterialAutoCompleteTextView-->
+<!--                            android:id="@+id/spnCustomer"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:inputType="none" />-->
 
-                    </com.google.android.material.textfield.TextInputLayout>
+<!--                    </com.google.android.material.textfield.TextInputLayout>-->
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -135,6 +135,11 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <TextView
+                        android:id="@+id/tv_war_discount"
+                        style="@style/custom_tv_warning"
+                        android:visibility="visible" />
+
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                         android:layout_width="match_parent"
@@ -151,9 +156,9 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
-                        android:visibility="visible"
                         android:id="@+id/tv_war_payment"
-                        style="@style/custom_tv_warning" />
+                        style="@style/custom_tv_warning"
+                        android:visibility="visible" />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/borderDueDate"
@@ -174,9 +179,9 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
-                        android:visibility="visible"
                         android:id="@+id/tv_war_date"
-                        style="@style/custom_tv_warning" />
+                        style="@style/custom_tv_warning"
+                        android:visibility="visible" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -207,9 +212,9 @@
             </LinearLayout>
 
             <TextView
-                android:visibility="visible"
                 android:id="@+id/tv_war_product"
-                style="@style/custom_tv_warning" />
+                style="@style/custom_tv_warning"
+                android:visibility="visible" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcvListProduct"
@@ -239,6 +244,11 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <TextView
+                    android:id="@+id/tv_war_note"
+                    style="@style/custom_tv_warning"
+                    android:visibility="visible" />
+
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
@@ -252,6 +262,11 @@
                         android:layout_height="wrap_content" />
 
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tv_war_term"
+                    style="@style/custom_tv_warning"
+                    android:visibility="visible" />
 
             </LinearLayout>
 
@@ -304,7 +319,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="5"
                         android:gravity="end"
-                        android:text="1200đ"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -328,7 +342,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="5"
                         android:gravity="end"
-                        android:text="10%"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -376,7 +389,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="5"
                         android:gravity="end"
-                        android:text="1200000đ"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
@@ -403,8 +415,12 @@
                         android:id="@+id/ed_SigName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
-
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tv_war_sigName"
+                    style="@style/custom_tv_warning"
+                    android:visibility="visible" />
 
                 <LinearLayout
                     android:id="@+id/idSignature"
@@ -440,6 +456,11 @@
 
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/tv_war_sigImg"
+                    style="@style/custom_tv_warning"
+                    android:visibility="visible" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -470,7 +491,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="end"
-                        android:text="1200000đ"
                         android:textColor="@color/bgr_btn"
                         android:textSize="22sp"
                         android:textStyle="bold" />
