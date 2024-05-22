@@ -2,19 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layout_dialog"
-    android:layout_width="350dp"
+    android:layout_width="300dp"
     android:layout_height="600dp"
+    android:id="@+id/dialog_select"
+    android:layout_gravity="center"
     android:background="@color/bgr_dialog"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        app:title="@string/text_suppplier"
-        app:titleTextColor="@color/white"
-        android:background="@color/bgr_btn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:background="@color/bgr_btn"
+        app:titleTextColor="@color/white">
+
+    </androidx.appcompat.widget.Toolbar>
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestScroll"
@@ -31,27 +33,28 @@
                 android:layout_height="wrap_content">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rcvDialogSupplier"
+                    android:id="@+id/rcv"
                     style="@style/custom_rcv"
-                    tools:listitem="@layout/item_supplier"
-                    tools:ignore="MissingConstraints" />
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:ignore="MissingConstraints"
+                    tools:listitem="@layout/item_supplier" />
 
                 <ProgressBar
-                    android:layout_marginTop="10dp"
                     android:id="@+id/pbLoadMore"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/rcvDialogSupplier" />
+                    app:layout_constraintTop_toBottomOf="@id/rcv" />
 
                 <ProgressBar
-                    android:layout_marginTop="10dp"
                     android:id="@+id/pbLoading"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

@@ -23,6 +23,7 @@
     <string name="text_category">Loại hàng hóa</string>
     <string name="text_staff">Nhân viên</string>
     <string name="sharedpreferences">ACC</string>
+    <string name="not_empty">* Không được để trống</string>
 
 
     <string name="text_hint_re_password">Repassword</string>

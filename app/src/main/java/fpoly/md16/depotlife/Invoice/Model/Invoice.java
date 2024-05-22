@@ -200,6 +200,8 @@ public class Invoice implements Serializable {
         @SerializedName("product_id")
         private int product_id;
 
+        private String expiry;
+
         @SerializedName("product")
         private Product product;
 
@@ -212,6 +214,13 @@ public class Invoice implements Serializable {
             this.invoice_id = invoice_id;
             this.product_id = product_id;
             this.product = product;
+        }
+
+        public ProductInvoice(int quantity, int invoice_id, int product_id, String expiry) {
+            this.quantity = quantity;
+            this.invoice_id = invoice_id;
+            this.product_id = product_id;
+            this.expiry = expiry;
         }
 
         public int getId() {
@@ -252,6 +261,14 @@ public class Invoice implements Serializable {
 
         public void setProduct(Product product) {
             this.product = product;
+        }
+
+        public String getExpiry() {
+            return expiry;
+        }
+
+        public void setExpiry(String expiry) {
+            this.expiry = expiry;
         }
     }
 

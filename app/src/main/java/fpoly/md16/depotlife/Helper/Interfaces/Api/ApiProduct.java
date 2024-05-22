@@ -31,19 +31,16 @@ public interface ApiProduct {
     Call<List<Product>> getProductById(@Header("Authorization") String authToken, @Path("id") int id);
 
     @GET("products/search")
-    Call<List<Product>> productSearch(@Header("Authorization") String authToken, @Query("keyword") String keyword);
+    Call<List<Product>> productSearch(@Header("Authorization") String authToken, @Query("keyword") String keyword, @Query("supplier_id") int supplier_id);
 
-    @GET("products/filter-supplier")
-    Call<List<Product>> productFilterBySupplier(@Header("Authorization") String authToken, @Query("supplier_id") int supplier_id);
+    @GET("products/get-product-by-supplier")
+    Call<ProductResponse> getProductBySupplier(@Header("Authorization") String authToken, @Query("page") int page_index, @Query("supplier_id") int supplier_id);
 
     @GET("products/getBatch/{id}")
     Call<List<BatchResponse>> getBatch(@Header("Authorization") String authToken, @Path("id") int id);
 
     @GET("products/delete-image/{id}")
     Call<Product> deleteImage(@Header("Authorization") String authToken, @Path("id") int id);
-
-    @GET("products/search")
-    Call<List<Product>> searchByName(@Header("Authorization") String authToken, @Query("keyword") String keyword);
 
     @Multipart
     @POST("products/update/{id}")
