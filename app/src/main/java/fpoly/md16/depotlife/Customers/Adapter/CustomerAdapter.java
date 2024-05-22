@@ -107,6 +107,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
             @Override
             public void onClick(View view) {
                 if (onItemRcvClick != null){
+                    bottomSheetDialog.cancel();
                     onItemRcvClick.onClick(customer);
                 }
             }

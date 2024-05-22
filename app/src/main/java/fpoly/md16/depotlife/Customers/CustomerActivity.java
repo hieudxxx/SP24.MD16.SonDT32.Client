@@ -221,6 +221,10 @@ public class CustomerActivity extends AppCompatActivity implements onItemRcvClic
                                     addBinding.edEmail.setText("");
                                     addBinding.edAddress.setText("");
                                     dialog.dismiss();
+                                    pageIndex = 1;
+                                    list.clear();
+                                    adapter.notifyDataSetChanged();
+                                    getData();
                                 }
                             }
 
@@ -241,7 +245,6 @@ public class CustomerActivity extends AppCompatActivity implements onItemRcvClic
 
         } else {
             addBinding.tvReg.setText("THÊM KHÁCH HÀNG");
-
 
             addBinding.imgProduct.setOnClickListener(view -> onRequestPermission());
 
@@ -287,6 +290,10 @@ public class CustomerActivity extends AppCompatActivity implements onItemRcvClic
                                     addBinding.edEmail.setText("");
                                     addBinding.edAddress.setText("");
                                     dialog.dismiss();
+                                    pageIndex = 1;
+                                    list.clear();
+                                    adapter.notifyDataSetChanged();
+                                    getData();
                                 }
                             }
 
@@ -347,6 +354,8 @@ public class CustomerActivity extends AppCompatActivity implements onItemRcvClic
             isLoadData = false;
         }
     }
+
+
 
     @Override
     public void onClick(Object item) {
