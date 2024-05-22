@@ -6,21 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,21 +21,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiInvoice;
+import fpoly.md16.depotlife.Helper.Pagination;
 import fpoly.md16.depotlife.Invoice.Activity.InvoiceActivity;
 import fpoly.md16.depotlife.Invoice.Adapter.InvoiceAdapter;
 import fpoly.md16.depotlife.Invoice.Model.Invoice;
 import fpoly.md16.depotlife.Invoice.Model.InvoiceResponse;
 import fpoly.md16.depotlife.R;
 import fpoly.md16.depotlife.databinding.FragmentInvoiceBinding;
-import fpoly.md16.depotlife.databinding.LayoutMenuBinding;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -52,22 +44,21 @@ public class InvoiceFragment extends Fragment {
     private FragmentInvoiceBinding binding;
     private InvoiceAdapter adapter;
     private Runnable runnable;
-
     private final Handler handler = new Handler();
-    private ArrayList<Invoice> list;
-
-    public String token;
-
     private InvoiceResponse invoiceResponse;
-
-    private int pageIndex = 1;
-
+    private ArrayList<Invoice> list;
+    public String token;
     private String invoiceType = null;
-
     private String payMentStatus = null;
-
+    private int pageIndex = 1;
     private int perPage = 0;
     private final Boolean isExpanded = false;
+    public static boolean isLoadData = false;
+    private boolean isLoading;
+    private boolean isLastPage;
+
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -91,14 +82,28 @@ public class InvoiceFragment extends Fragment {
             Helper.onShowCaledar(binding.tvDate, getContext(), "%d-%02d-%02d");
         });
 
-        adapter = new InvoiceAdapter(new InvoiceAdapter.InterClickItemData() {
+        list = new ArrayList<>();
+        adapter = new InvoiceAdapter(getContext(), list);
+        binding.rcvInvoice.setAdapter(adapter);
+        getData();
+        binding.rcvInvoice.addOnScrollListener(new Pagination((LinearLayoutManager) binding.rcvInvoice.getLayoutManager()) {
             @Override
-            public void clickItem(Invoice invoice) {
-                getContext().startActivity(new Intent(getContext(), InvoiceActivity.class).putExtra("invoiceId", invoice.getId()));
+            public void loadMore() {
+                isLoading = true;
+                pageIndex += 1;
+                loadNextPage();
+            }
+
+            @Override
+            public boolean isLoading() {
+                return isLoading;
+            }
+
+            @Override
+            public boolean isLaspage() {
+                return isLastPage;
             }
         });
-
-        list = new ArrayList<>();
 
         binding.filter.setOnClickListener(view1 -> {
             if (binding.layoutSpn.getVisibility() == View.GONE) {
@@ -134,6 +139,21 @@ public class InvoiceFragment extends Fragment {
             filterData();
         });
     }
+    private void loadNextPage() {
+        handler.postDelayed(() -> {
+            adapter.removeFooterLoading();
+            getData();
+
+            isLoading = false;
+            if (pageIndex < perPage) {
+                adapter.addFooterLoading();
+            } else {
+                isLastPage = true;
+            }
+        }, 500);
+    }
+
+
 
     private void showPopupMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
@@ -160,7 +180,7 @@ public class InvoiceFragment extends Fragment {
                 binding.pbLoading.setVisibility(View.GONE);
                 binding.pbLoadMore.setVisibility(View.GONE);
                 pageIndex++;
-                binding.rcvInvoice.setAdapter(adapter);
+//                binding.rcvInvoice.setAdapter(adapter);
                 adapter.setData(list);
             } else {
                 binding.rcvInvoice.setVisibility(View.INVISIBLE);
@@ -340,7 +360,15 @@ public class InvoiceFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        list.clear();
-        getData();
+//        list.clear();
+//        getData();
+
+        if (isLoadData) {
+            pageIndex = 1;
+            list.clear();
+            adapter.notifyDataSetChanged();
+            getData();
+            isLoadData = false;
+        }
     }
 }
