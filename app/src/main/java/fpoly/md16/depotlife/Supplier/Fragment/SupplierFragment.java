@@ -1,6 +1,10 @@
 package fpoly.md16.depotlife.Supplier.Fragment;
 
+import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -8,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiSupplier;
@@ -27,6 +33,7 @@ import fpoly.md16.depotlife.Supplier.Adapter.SupplierAdapter;
 import fpoly.md16.depotlife.Supplier.Model.Supplier;
 import fpoly.md16.depotlife.Supplier.Model.SupplierResponse;
 import fpoly.md16.depotlife.databinding.BotSheetFilterSupplierBinding;
+import fpoly.md16.depotlife.databinding.DialogSelectBinding;
 import fpoly.md16.depotlife.databinding.FragmentSupplierBinding;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -41,6 +48,9 @@ public class SupplierFragment extends Fragment {
     private int count = 0;
     private int perPage = 0;
     private String token;
+
+    private Runnable runnable;
+    private final Handler handler = new Handler();
 
     public static boolean isLoadData = false;
 
@@ -71,6 +81,8 @@ public class SupplierFragment extends Fragment {
         binding.rcv.setLayoutManager(manager);
         adapter = new SupplierAdapter(getContext(), getParentFragmentManager());
         getData();
+
+        onSearch();
 
         binding.nestScoll.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
@@ -143,38 +155,73 @@ public class SupplierFragment extends Fragment {
         inflater.inflate(R.menu.toolbar_menu, menu);
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        int id = item.getItemId();
-//        if (id == R.id.item_search) {
-//            Helper.onSearch(item, adapter);
-//            return true;
-//        } else if (id == R.id.item_sort) {
-//            Helper.onSort(getContext(), list, adapter, Supplier.sortByAsc, Supplier.sortByNameAZ);
-//            return true;
-//        } else if (id == R.id.item_filter) {
-////            Intent intent = new Intent(getActivity(), ProductFilterActivity.class);
-////            startActivity(intent);
-//            return true;
-//        } else {
-//            return super.onOptionsItemSelected(item);
-//        }
-//    }
+ private void onSearch() {
+     SearchManager searchManager = (SearchManager) getContext().getSystemService(Context.SEARCH_SERVICE);
+     MenuItem searchItem = binding.tbSupplier.getMenu().findItem(R.id.item_search); // Đảm bảo rằng ID này khớp với ID trong file menu của bạn
+     SearchView searchView = (SearchView) searchItem.getActionView();
+     if (searchView != null) {
+         searchView.setSearchableInfo(searchManager.getSearchableInfo(((Activity) getContext()).getComponentName()));
+         searchView.setMaxWidth(Integer.MAX_VALUE);
+     }
 
-    private void onFilter() {
-        BotSheetFilterSupplierBinding filterBinding = BotSheetFilterSupplierBinding.inflate(LayoutInflater.from(getActivity()));
-        filterBinding.rdGr.setOnCheckedChangeListener((radioGroup, i) -> {
-            if (i == R.id.rd_filter_active) {
-                adapter.setData(Supplier.filterByStatus(list, true));
-            } else if (i == R.id.rd_filter_inactive) {
-                adapter.setData(Supplier.filterByStatus(list, true));
-            } else if (i == R.id.rd_filter_all) {
-                adapter.setData(list);
+     if (searchView != null) {
+         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+             @Override
+             public boolean onQueryTextSubmit(String query) {
+                 return false;
+             }
+
+             @Override
+             public boolean onQueryTextChange(String newText) {
+                 if (!newText.isEmpty()) {
+                     if (runnable != null) handler.removeCallbacks(runnable);
+                     runnable = () -> getDataSearchSup(newText);
+                     handler.postDelayed(runnable, 500);
+                     return true;
+                 } else {
+                     list.clear();
+                     getData();
+                 }
+                 return false;
+             }
+         });
+     }
+ }
+
+    private void getDataSearchSup(String keyword) {
+        ApiSupplier.apiSupplier.getDataSearch("Bearer " + token, keyword).enqueue(new Callback<List<Supplier>>() {
+            @Override
+            public void onResponse(Call<List<Supplier>> call, Response<List<Supplier>> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        onCheckListSearchSup(response.body());
+                    }
+                }
             }
-            binding.rcv.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
+
+            @Override
+            public void onFailure(Call<List<Supplier>> call, Throwable throwable) {
+                Log.d("onFailure", "onFailure: " + throwable.getMessage());
+            }
         });
-        Helper.onSettingsBotSheet(getContext(), filterBinding);
+    }
+
+    public void onCheckListSearchSup(List<Supplier> supplier) {
+        if (supplier != null) {
+            list.clear();
+            list.addAll(supplier);
+            binding.rcv.setVisibility(View.VISIBLE);
+            binding.layoutTotal.setVisibility(View.VISIBLE);
+            binding.tvEmpty.setVisibility(View.GONE);
+            binding.pbLoading.setVisibility(View.GONE);
+            binding.pbLoadMore.setVisibility(View.GONE);
+            setHasOptionsMenu(true);
+            binding.rcv.setAdapter(adapter);
+            adapter.setData(list);
+        } else {
+            list.clear();
+            getData();
+        }
     }
 
     @Override
