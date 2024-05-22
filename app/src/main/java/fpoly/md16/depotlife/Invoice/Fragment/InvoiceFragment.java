@@ -136,6 +136,18 @@ public class InvoiceFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onDetach() {
+        Log.d("TAG", "onDetach: ");
+        super.onDetach();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("TAG", "onPause: ");
+    }
+
 
 
     private void showPopupMenu(View view) {
