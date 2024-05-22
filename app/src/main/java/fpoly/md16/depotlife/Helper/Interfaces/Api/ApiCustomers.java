@@ -2,6 +2,9 @@ package fpoly.md16.depotlife.Helper.Interfaces.Api;
 
 import static fpoly.md16.depotlife.Helper.Interfaces.Api.RetrofitRequest.getRetrofit;
 
+import java.util.List;
+
+import fpoly.md16.depotlife.Category.Model.Category;
 import fpoly.md16.depotlife.Customers.Model.Customer;
 import fpoly.md16.depotlife.Customers.Model.CustomerResponse;
 import okhttp3.MultipartBody;
@@ -46,5 +49,8 @@ public interface ApiCustomers {
 
     @GET("customers/delete/{id}")
     Call<Customer> delete(@Header("Authorization") String authToken, @Path("id") int id);
+
+    @GET("customers/search")
+    Call<List<Customer>> getDataSearch(@Header("Authorization") String authToken, @Query("keyword") String keyword);
 
 }

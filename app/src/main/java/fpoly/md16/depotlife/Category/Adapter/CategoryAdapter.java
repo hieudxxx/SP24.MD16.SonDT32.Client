@@ -49,6 +49,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         this.token = token;
     }
 
+    public void setData(List<Category> list) {
+        this.categoryList = (ArrayList<Category>) list;
+        notifyDataSetChanged();
+    }
+
 
     @NonNull
     @Override

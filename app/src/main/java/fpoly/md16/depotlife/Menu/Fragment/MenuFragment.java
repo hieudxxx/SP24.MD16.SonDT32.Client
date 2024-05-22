@@ -73,16 +73,7 @@ public class MenuFragment extends Fragment {
         });
 
         binding.btnCensor.setOnClickListener(v -> {
-            DialogCheckFeatureBinding feature_binding = DialogCheckFeatureBinding.inflate(LayoutInflater.from(getActivity()));
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setView(feature_binding.getRoot());
-            AlertDialog dialog = builder.create();
-            dialog.show();
-            feature_binding.btnRetry.setOnClickListener(view1 -> {
-                dialog.cancel();
-
-            });
-
+            noti_dialog();
         });
 
         binding.btnSupplier.setOnClickListener(v -> startActivity(new Intent(getContext(), SupplierActivity.class)));
@@ -116,42 +107,53 @@ public class MenuFragment extends Fragment {
         binding.btnCustomer.setOnClickListener(v -> startActivity(new Intent(getContext(), CustomerActivity.class)));
 
         binding.btnInfo.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), ThongTinGianHang.class);
-            startActivity(intent);
+            noti_dialog();
         });
 
         binding.btnPolicy.setOnClickListener(v -> {
-
+            noti_dialog();
         });
 
         binding.btnAbout.setOnClickListener(v -> {
-            startActivity(new Intent(getActivity(), VeChungToi.class));
+            noti_dialog();
         });
 
         binding.btnReport.setOnClickListener(v -> {
-            startActivity(new Intent(getActivity(), BaoLoi.class));
+            noti_dialog();
         });
 
         binding.btnFeedback.setOnClickListener(v -> {
-            startActivity(new Intent(getActivity(), TroGiupVaPhanHoi.class));
+            noti_dialog();
         });
 
         binding.btnSetting.setOnClickListener(v -> {
-            startActivity(new Intent(getActivity(), CaiDat.class));
+            noti_dialog();
         });
 
         binding.btnCall.setOnClickListener(v -> {
-            startActivity(new Intent(getActivity(), Goi_Hotline.class));
+            noti_dialog();
         });
 
         binding.btnClause.setOnClickListener(v -> {
-            startActivity(new Intent(getActivity(), DieuKhoan.class));
+            noti_dialog();
         });
 
         binding.btnLogout.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), LoginActivity.class);
             startActivity(intent);
             requireActivity().finish();
+        });
+    }
+
+    private void noti_dialog(){
+        DialogCheckFeatureBinding feature_binding = DialogCheckFeatureBinding.inflate(LayoutInflater.from(getActivity()));
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setView(feature_binding.getRoot());
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        feature_binding.btnRetry.setOnClickListener(view1 -> {
+            dialog.cancel();
+
         });
     }
 

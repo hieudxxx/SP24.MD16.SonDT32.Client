@@ -190,7 +190,7 @@ public class ProductAddFragment extends Fragment {
             } else {
                 Helper.isContainSpace(name, binding.tvWarName);
                 Helper.isContainSpace(tvcategory, binding.tvWarCat);
-                Helper.isContainSpace(tvsupplier, binding.tvWarSup);
+//                Helper.isContainSpace(tvsupplier, binding.tvWarSup);
                 Helper.isNumberValid(export_price, binding.tvWarExportPrice);
                 Helper.isNumberValid(import_price, binding.tvWarImportPrice);
                 Helper.isContainSpace(unit, binding.tvWarUnit);
