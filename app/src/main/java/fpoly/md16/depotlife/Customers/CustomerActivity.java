@@ -174,9 +174,6 @@ public class CustomerActivity extends AppCompatActivity implements onItemRcvClic
                 Picasso.get().load("https://warehouse.sinhvien.io.vn/public/" +ava).into(addBinding.imgProduct);
             }
 
-
-
-
             addBinding.imgProduct.setOnClickListener(view -> onRequestPermission());
 
             addBinding.btnAdd.setOnClickListener(v -> {

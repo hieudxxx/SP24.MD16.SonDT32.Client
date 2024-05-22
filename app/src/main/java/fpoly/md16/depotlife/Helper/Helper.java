@@ -127,7 +127,7 @@ public class Helper {
             tv.setVisibility(View.VISIBLE);
             tv.setText("Không được chứa khoảng trắng");
             return false;
-        } else if (value.matches(".*[!@#$%^*_+\\-=\\[\\]{};':\"\\\\|,.<>/?~-].*")) {
+        } else if (value.matches(".*[&!@#$%^*_+\\-=\\[\\]{};':\"\\\\|,.<>/?~-].*")) {
             tv.setVisibility(View.VISIBLE);
             tv.setText("Không được chứa ký tự đặc biệt");
             return false;
@@ -206,7 +206,7 @@ public class Helper {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String currentDate = simpleDateFormat.format(calendar.getTime());
-        tv.setText("Hôm nay, " + currentDate);
+        tv.setText(currentDate);
 
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
@@ -222,7 +222,7 @@ public class Helper {
                         selectedCalendar.get(Calendar.MONTH) == calendar.get(Calendar.MONTH) &&
                         selectedCalendar.get(Calendar.DAY_OF_MONTH) == calendar.get(Calendar.DAY_OF_MONTH)) {
                     // Nếu ngày được chọn là ngày hiện tại, hiển thị "Hôm nay" cùng với ngày
-                    tv.setText("Hôm nay, " + currentDate);
+                    tv.setText(currentDate);
                 } else {
                     // Nếu không, chỉ hiển thị ngày được chọn
                     String selectedDate = simpleDateFormat.format(selectedCalendar.getTime());

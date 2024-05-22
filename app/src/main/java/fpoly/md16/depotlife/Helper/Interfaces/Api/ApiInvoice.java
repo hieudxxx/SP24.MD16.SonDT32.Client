@@ -4,7 +4,6 @@ import static fpoly.md16.depotlife.Helper.Interfaces.Api.RetrofitRequest.getRetr
 
 import fpoly.md16.depotlife.Invoice.Model.Invoice;
 import fpoly.md16.depotlife.Invoice.Model.InvoiceResponse;
-import fpoly.md16.depotlife.Product.Model.ProductResponse;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -13,7 +12,6 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiInvoice {
-
     ApiInvoice apiInvoice = getRetrofit().create(ApiInvoice.class);
 
     @GET("invoice")
