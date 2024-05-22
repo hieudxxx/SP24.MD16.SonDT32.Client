@@ -16,7 +16,6 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -84,7 +83,6 @@ public class Helper {
             Object value = entry.getValue();
 
             if (value == null) {
-                Log.d("Warning", "Giá trị " + key + " null");
                 value = "";
             }
 
@@ -201,10 +199,10 @@ public class Helper {
             edt.setTransformationMethod(PasswordTransformationMethod.getInstance());
             img.setImageResource(R.drawable.hidden);
         }
-
     }
 
-    public static void onShowCaledar(TextView tv, Context context) {
+
+    public static void onShowCaledar(TextView tv, Context context, String format) {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String currentDate = simpleDateFormat.format(calendar.getTime());
@@ -258,7 +256,6 @@ public class Helper {
 
         dialogBinding.btnCancel.setOnClickListener(view -> {
             dialog.dismiss();
-
         });
 
         dialogBinding.btnOk.setOnClickListener(view -> {
@@ -405,6 +402,14 @@ public class Helper {
                 }
             }
 
+        }
+    }
+
+    public static void setImgCustomer(String url, ShapeableImageView img) {
+        if (url == null){
+            img.setImageResource(R.drawable.img_add);
+        } else {
+            Picasso.get().load(API.URL_IMG + url.replaceFirst("public", "")).into(img);
         }
     }
 

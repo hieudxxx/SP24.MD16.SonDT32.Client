@@ -43,7 +43,7 @@
                     android:layout_weight="1"
                     android:orientation="vertical">
 
-                    <TextView
+                    <LinearLayout
                         style="@style/custom_tv_product_name"
                         android:text="Ngày tạo" />
 
@@ -51,7 +51,6 @@
                         android:id="@+id/tv_date_time"
                         style="@style/custom_tv_invoice_add"
                         android:text="20/12/2024" />
-
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -69,7 +68,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/idSupplier"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
@@ -77,11 +76,17 @@
 
                         <com.google.android.material.textfield.MaterialAutoCompleteTextView
                             android:id="@+id/spnSupName"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="none" />
 
                     </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:visibility="visible"
+                        android:id="@+id/tv_war_sup"
+                        style="@style/custom_tv_warning" />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/idCustomer"
@@ -130,7 +135,6 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
-
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                         android:layout_width="match_parent"
@@ -146,7 +150,13 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <TextView
+                        android:visibility="visible"
+                        android:id="@+id/tv_war_payment"
+                        style="@style/custom_tv_warning" />
+
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/borderDueDate"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -163,6 +173,10 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <TextView
+                        android:visibility="visible"
+                        android:id="@+id/tv_war_date"
+                        style="@style/custom_tv_warning" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -175,8 +189,7 @@
                 android:background="@color/bgr_btn"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="5dp"
-                android:visibility="gone">
+                android:padding="5dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -193,13 +206,18 @@
 
             </LinearLayout>
 
+            <TextView
+                android:visibility="visible"
+                android:id="@+id/tv_war_product"
+                style="@style/custom_tv_warning" />
+
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcvListChooseProduct"
+                android:id="@+id/rcvListProduct"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/gray"
                 android:padding="10dp"
-                android:visibility="gone" />
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -456,7 +474,6 @@
                         android:textColor="@color/bgr_btn"
                         android:textSize="22sp"
                         android:textStyle="bold" />
-
                 </LinearLayout>
 
                 <TextView
@@ -478,4 +495,6 @@
 
 
 </androidx.core.widget.NestedScrollView>
+
+
 

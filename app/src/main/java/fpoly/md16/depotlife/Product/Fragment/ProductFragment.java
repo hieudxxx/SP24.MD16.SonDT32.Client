@@ -1,6 +1,5 @@
 package fpoly.md16.depotlife.Product.Fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -38,7 +37,6 @@ import retrofit2.Response;
 public class ProductFragment extends Fragment {
     private FragmentProductBinding binding;
     private ProductAdapter adapter;
-    private Context context;
     private ArrayList<Product> list;
     private List<Product> listSearch = new ArrayList<>();
     private ProductResponse productResponse;
@@ -71,6 +69,7 @@ public class ProductFragment extends Fragment {
         token = "Bearer " + Helper.getSharedPre(getContext(), "token", String.class);
         list = new ArrayList<>();
         adapter = new ProductAdapter(getContext(), token);
+        binding.rcvProduct.setAdapter(adapter);
 
         callApi();
         binding.rcvProduct.addOnScrollListener(new Pagination((LinearLayoutManager) binding.rcvProduct.getLayoutManager()) {
@@ -105,8 +104,6 @@ public class ProductFragment extends Fragment {
                 isLastPage = true;
             }
         }, 500);
-
-
     }
 
     private void callApi() {
@@ -129,14 +126,6 @@ public class ProductFragment extends Fragment {
                 Toast.makeText(getActivity(), "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
             }
         });
-
-//        isLastPage = false;
-//        if (pageIndex < perPage) {
-//            adapter.addFooterLoading();
-//        } else {
-//            isLastPage = true;
-//        }
-//        return productList;
     }
     private void onCheckList(ProductResponse productResponse) {
         if (productResponse.getData() != null) {
@@ -145,7 +134,6 @@ public class ProductFragment extends Fragment {
                 binding.layoutTotal.setVisibility(View.VISIBLE);
                 binding.tvEmpty.setVisibility(View.GONE);
                 binding.pbLoading.setVisibility(View.GONE);
-                binding.rcvProduct.setAdapter(adapter);
                 adapter.setData(list);
             } else {
                 binding.layoutTotal.setVisibility(View.GONE);
