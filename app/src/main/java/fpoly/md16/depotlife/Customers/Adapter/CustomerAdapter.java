@@ -2,7 +2,7 @@ package fpoly.md16.depotlife.Customers.Adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,14 +25,12 @@ import fpoly.md16.depotlife.Customers.CustomerActivity;
 import fpoly.md16.depotlife.Customers.Model.Customer;
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.API;
-import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiCategory;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiCustomers;
+import fpoly.md16.depotlife.Helper.Interfaces.onClickListener.onItemRcvClick;
 import fpoly.md16.depotlife.R;
 import fpoly.md16.depotlife.databinding.BottomsheetcustomerBinding;
-import fpoly.md16.depotlife.databinding.BottomsheetstatisticBinding;
-import fpoly.md16.depotlife.databinding.DialogUpdateCategoryBinding;
-import fpoly.md16.depotlife.databinding.ItemCategoryBinding;
 import fpoly.md16.depotlife.databinding.ItemCustomerBinding;
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,16 +40,18 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
     List<Customer> customerList;
     List<Customer> oldcustomerList;
 
-//    DialogUpdateCategoryBinding binding_up;
 
     private String token;
+    private onItemRcvClick onItemRcvClick;
 
-    public CustomerAdapter(Context context, List<Customer> customerList, String token) {
+    public CustomerAdapter(Context context, List<Customer> customerList, String token, onItemRcvClick onItemRcvClick) {
         this.context = context;
         this.customerList = customerList;
         this.oldcustomerList = customerList;
         this.token = token;
+        this.onItemRcvClick = onItemRcvClick;
     }
+
 
 
     @NonNull
@@ -67,17 +67,10 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
 
 
         if (customer.getAvatar() == null) {
-            holder.customerBinding.imgAvt.setImageResource(R.drawable.avatar);
+            holder.customerBinding.imgAvt.setImageResource(R.drawable.images_default);
         } else {
             Picasso.get().load(API.URL_IMG + customer.getAvatar().replaceFirst("public", "")).into(holder.customerBinding.imgAvt);
-
-//            String ava = customer.getAvatar().replace("public", "storage");
-//            Helper.setImgProduct(, holder.customerBinding.imgAvt);
-//            Picasso.get().load("https://warehouse.sinhvien.io.vn/public/" + ava).into(holder.customerBinding.imgAvt);
         }
-
-//        Helper.setImgProduct(customer.getAvatar(), holder.customerBinding.imgAvt);
-
 
         holder.customerBinding.tvName.setText(customer.getCustomerName());
         holder.customerBinding.tvPhone.setText(customer.getCustomerPhone());
@@ -89,43 +82,6 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
                 showBottomSheet(customer);
             }
         });
-
-
-//        holder.customerBinding.tvStatus.setText(customer.getStatus() == 1 ? "Đang sử dụng" : "Ngưng sử dụng");
-
-//        holder.categoryBinding.icDelete.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Helper.onCheckdeleteDialog(context, () -> {
-//                    ApiCategory.apiCategory.delete(token, category.getId()).enqueue(new Callback<Customer>() {
-//                        @Override
-//                        public void onResponse(Call<Customer> call, Response<Customer> response) {
-//                            if (response.isSuccessful() || response.code() == 200) {
-//                                Toast.makeText(context, "Xóa thể loại thành công!", Toast.LENGTH_SHORT).show();
-//                                categoryList.remove(category);
-//                                CustomerActivity.isLoadData = true;
-//                                notifyDataSetChanged();
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onFailure(Call<Customer> call, Throwable throwable) {
-//                            Log.d("onFailure", "onFailure: " + throwable.getMessage());
-//                            Toast.makeText(context, "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-//
-//                });
-//            }
-//        });
-
-
-//        holder.customerBinding.icEdit.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
 
     }
 
@@ -141,7 +97,6 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
         binding.tvPhone.setText(customer.getCustomerPhone());
         binding.tvEmail.setText(customer.getCustomerEmail());
         binding.tvQtyInvoice.setText(customer.getInvoiceQuantity() + "");
-//        binding.tvDebt.setText(customer.getTotalInvoices());
         binding.tvDebt.setText("12222");
         binding.tvPayment.setText(customer.getTotalInvoices() + "");
 
@@ -151,8 +106,11 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
         binding.btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (onItemRcvClick != null){
+                    onItemRcvClick.onClick(customer);
+                }
             }
+
         });
 
         binding.btnDelete.setOnClickListener(new View.OnClickListener() {
@@ -181,68 +139,6 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
             }
         });
     }
-
-
-//    private void showDialog(Customer category) {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(context); // view.getRootView().getContext()
-//        builder.setCancelable(false);
-//        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-//        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.dialog_update_category, null);
-//
-//        binding_up = DialogUpdateCategoryBinding.inflate(inflater, view, false);
-//        builder.setView(binding_up.getRoot());
-//        AlertDialog alertDialog = builder.create();
-//        alertDialog.show();
-//
-//        binding_up.edtAddCategory.setText(category.getName());
-//
-//        binding_up.btnAddCateogry.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View view) {
-//
-//                String name = binding_up.edtAddCategory.getText().toString();
-//                if (name.isEmpty() ) {
-//                    Toast.makeText(context, "Hãy nhập đủ dữ liệu", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    Helper.isContainSpace(name, binding_up.tvWarName);
-//
-//                    if (binding_up.tvWarName.getText().toString().isEmpty()){
-//                        Customer cate = new Customer();
-//                        cate.setName(name);
-//                        ApiCategory.apiCategory.update(token, category.getId(), cate).enqueue(new Callback<Customer>() {
-//                            @Override
-//                            public void onResponse(Call<Customer> call, Response<Customer> response) {
-//                                if (response.isSuccessful()) {
-//                                    Toast.makeText(context, "Sửa thể loại thành công!", Toast.LENGTH_SHORT).show();
-//                                    alertDialog.dismiss();
-//                                    notifyDataSetChanged();
-//                                    CustomerActivity.isLoadData = true;
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void onFailure(Call<Customer> call, Throwable throwable) {
-//                                Log.d("onFailure", "onFailure: " + throwable.getMessage());
-//                                Toast.makeText(context, "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
-//                    }else {
-//                        Toast.makeText(context, "Sửa thất bại", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//
-//
-//            }
-//        });
-//
-//        binding_up.imgClose.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                alertDialog.cancel();
-//            }
-//        });
-//    }
 
     @Override
     public int getItemCount() {

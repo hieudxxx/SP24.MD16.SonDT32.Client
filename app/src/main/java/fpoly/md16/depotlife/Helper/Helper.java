@@ -408,6 +408,14 @@ public class Helper {
         }
     }
 
+    public static void setImgCustomer(String url, ShapeableImageView img) {
+        if (url == null){
+            img.setImageResource(R.drawable.img_add);
+        } else {
+            Picasso.get().load(API.URL_IMG + url.replaceFirst("public", "")).into(img);
+        }
+    }
+
     private Uri saveImageToStorage(Bitmap bitmap, Context context) {
         String fileName = "camera_image_" + System.currentTimeMillis() + ".jpg";
         File storageDir = new File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "YourFolderName");
