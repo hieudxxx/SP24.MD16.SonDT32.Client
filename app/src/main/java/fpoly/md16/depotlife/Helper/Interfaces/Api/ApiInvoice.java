@@ -18,7 +18,6 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiInvoice {
-
     ApiInvoice apiInvoice = getRetrofit().create(ApiInvoice.class);
 
     @GET("invoice")

@@ -32,6 +32,7 @@ import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -62,6 +63,11 @@ public class InvoiceAddFragment extends Fragment {
     private FragmentInvoiceAddBinding binding;
     public String token;
     private String expiryDate;
+    private String discount;
+    private String note;
+    private String term;
+    private String sigMame;
+    private String currentDate;
     private static final String ARG_PRODUCT_INVOICES = "product_invoices";
     private int invoiceType;
     private int invoiceCreatorId;
@@ -133,29 +139,70 @@ public class InvoiceAddFragment extends Fragment {
 
         binding.btnAddInvoice.setOnClickListener(view12 -> {
             expiryDate = binding.edDueDate.getText().toString().trim();
+            note = binding.edNotes.getText().toString().trim();
+            term = binding.edTerms.getText().toString().trim();
+            sigMame = binding.edSigName.getText().toString().trim();
+
             if (supplierId < 1) binding.tvWarSup.setText(R.string.not_empty);
             else binding.tvWarSup.setText("");
 
             if (paymentStatus < 0) binding.tvWarPayment.setText(R.string.not_empty);
             else binding.tvWarPayment.setText("");
 
-            if (expiryDate.isEmpty()) binding.tvWarDate.setText(R.string.not_empty);
-            else binding.tvWarDate.setText("");
+            if (!binding.edDueDate.getText().toString().isEmpty()) {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
 
-            if (listSelectedProduct.isEmpty()) {
-//                binding.tvWarProduct.setVisibility(View.VISIBLE);
-                binding.tvWarProduct.setText(R.string.not_empty);
-            } else {
-                binding.tvWarProduct.setText("");
+                try {
+                    Date selectedDate = dateFormat.parse(binding.edDueDate.getText().toString());
+                    Date today = dateFormat.parse(currentDate);
+
+                    if (selectedDate != null && selectedDate.compareTo(today) < 0)
+                        binding.tvWarDate.setText("Không thể chọn ngày quá khứ");
+                    else binding.tvWarDate.setText("");
+
+                } catch (ParseException e) {
+                    Toast.makeText(getContext(), "Định dạng ngày không hợp lệ", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            if (listSelectedProduct.isEmpty()) binding.tvWarProduct.setText(R.string.not_empty);
+            else binding.tvWarProduct.setText("");
+
+            if (!binding.edtDiscount.getText().toString().isEmpty()) {
+                discount = binding.edtDiscount.getText().toString().trim();
+                Helper.isNumberValid(discount, binding.tvWarDiscount);
+            } else binding.tvWarDiscount.setText("");
+
+            if (!note.isEmpty()) Helper.isContainSpace(note, binding.tvWarNote);
+            else binding.tvWarNote.setText("");
+
+            if (!term.isEmpty()) Helper.isContainSpace(term, binding.tvWarTerm);
+            else binding.tvWarTerm.setText("");
+
+            if (sigMame.isEmpty()) binding.tvWarSigName.setText(R.string.not_empty);
+            else {
+                Helper.isContainSpace(sigMame, binding.tvWarSigName);
+            }
+
+            if (uri == null) binding.tvWarSigImg.setText(R.string.not_empty);
+            else {
+                multipartBody = Helper.getRealPathFile(getActivity(), uri, "signature");
+                binding.tvWarSigImg.setText("");
+            }
+
+            if (binding.tvWarSup.getText().toString().isEmpty() &&
+                    binding.tvWarDiscount.getText().toString().isEmpty() &&
+                    binding.tvWarPayment.getText().toString().isEmpty() &&
+                    binding.tvWarDate.getText().toString().isEmpty() &&
+                    binding.tvWarProduct.getText().toString().isEmpty() &&
+                    binding.tvWarNote.getText().toString().isEmpty() &&
+                    binding.tvWarTerm.getText().toString().isEmpty() &&
+                    binding.tvWarSigName.getText().toString().isEmpty() &&
+                    binding.tvWarSigImg.getText().toString().isEmpty()
+            ) {
 
             }
 
-
-//            if (supplierId < 1 || invoiceCreatorId < 1 || paymentStatus < 1 || currentDate.isEmpty() || listSelectedProduct.isEmpty() || uri.toString().isEmpty()) {
-//                Toast.makeText(getContext(), "Hãy nhập đủ dữ liệu", Toast.LENGTH_SHORT).show();
-//            } else {
-//
-//            }
         });
     }
 
@@ -169,7 +216,7 @@ public class InvoiceAddFragment extends Fragment {
         binding.tvInvoiceCreator.setText((String) Helper.getSharedPre(getContext(), "name", String.class));
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        String currentDate = dateFormat.format(new Date());
+        currentDate = dateFormat.format(new Date());
         binding.tvDateTime.setText(currentDate);
 
         Intent intent = getActivity().getIntent();
@@ -268,7 +315,18 @@ public class InvoiceAddFragment extends Fragment {
 
             }
         }
+
+        discount = binding.edtDiscount.getText().toString().trim();
+        int dis = 0;
+        Helper.isNumberValid(discount, binding.tvWarDiscount);
+        if (binding.tvWarDiscount.getText().toString().isEmpty()) {
+            dis = Integer.parseInt(discount);
+        }
+
+        double totalPayment = total * (1 - ((double) dis / 100)) * (1 + 0.1);
         binding.tvTotalTaxable.setText(Helper.formatVND(total));
+        binding.tvTotalAmount02.setText(Helper.formatVND((int) totalPayment));
+        binding.tvTotalAmount01.setText(Helper.formatVND((int) totalPayment));
     }
 
     private void showDialogSelectSup(Context context) {
@@ -480,10 +538,10 @@ public class InvoiceAddFragment extends Fragment {
             }
         });
         dialog.show();
-        dialog.setOnDismissListener(dialogInterface -> getListProduct(binding, context, listSelectedProduct));
+        dialog.setOnDismissListener(dialogInterface -> getListProduct(binding, listSelectedProduct));
     }
 
-    public void getListProduct(FragmentInvoiceAddBinding binding, Context context, List<Product> list) {
+    public void getListProduct(FragmentInvoiceAddBinding binding, List<Product> list) {
         binding.rcvListProduct.setVisibility(View.VISIBLE);
         chooseProductAdapter.setData(list);
     }

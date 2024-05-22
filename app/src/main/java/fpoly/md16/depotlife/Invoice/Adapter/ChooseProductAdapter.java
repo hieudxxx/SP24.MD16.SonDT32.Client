@@ -86,10 +86,12 @@ public class ChooseProductAdapter extends RecyclerView.Adapter<ChooseProductAdap
 
         holder.binding.btnPlus.setOnClickListener(view -> {
             int quantity = Integer.parseInt(holder.binding.edQuantity.getText().toString());
-            quantity++;
-            holder.binding.edQuantity.setText(String.valueOf(quantity));
-            updateTotalAmount(holder, quantity, product);
-            notifyProductInvoiceUpdated();
+            if (quantity < product.getInventory()){
+                quantity++;
+                holder.binding.edQuantity.setText(String.valueOf(quantity));
+                updateTotalAmount(holder, quantity, product);
+                notifyProductInvoiceUpdated();
+            }
         });
 
         holder.binding.edExpiryDate.setOnClickListener(view -> Helper.onShowCaledar(holder.binding.edExpiryDate, view.getContext(), "%d-%02d-%02d"));
