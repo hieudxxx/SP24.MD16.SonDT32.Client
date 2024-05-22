@@ -2,7 +2,9 @@ package fpoly.md16.depotlife.Product.Model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Expiry {
+import java.io.Serializable;
+
+public class Expiry implements Serializable {
     @SerializedName("id")
     private int id;
 

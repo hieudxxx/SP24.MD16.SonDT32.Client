@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -24,7 +23,6 @@ import fpoly.md16.depotlife.Invoice.Activity.InvoiceActivity;
 import fpoly.md16.depotlife.Invoice.Adapter.InvoiceAdapter;
 import fpoly.md16.depotlife.Invoice.Model.Invoice;
 import fpoly.md16.depotlife.Invoice.Model.InvoiceResponse;
-import fpoly.md16.depotlife.Product.Model.ProductResponse;
 import fpoly.md16.depotlife.R;
 import fpoly.md16.depotlife.databinding.FragmentInvoiceBinding;
 import retrofit2.Call;
@@ -60,14 +58,11 @@ public class InvoiceFragment extends Fragment {
         binding.fab.setOnClickListener(this::showPopupMenu);
 
         binding.layoutCalendar.setOnClickListener(view12 -> {
-            Helper.onShowCaledar(binding.tvDate, getContext());
+            Helper.onShowCaledar(binding.tvDate, getContext(), "%d-%02d-%02d");
         });
 
-        adapter = new InvoiceAdapter(new InvoiceAdapter.InterClickItemData() {
-            @Override
-            public void clickItem(Invoice invoice) {
+        adapter = new InvoiceAdapter(invoice -> {
 
-            }
         });
 
         list = new ArrayList<>();
@@ -77,16 +72,13 @@ public class InvoiceFragment extends Fragment {
     private void showPopupMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
         popupMenu.getMenuInflater().inflate(R.menu.popup_invoice, popupMenu.getMenu());
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.invoice_import){
-                    getContext().startActivity(new Intent(getContext(), InvoiceActivity.class).putExtra("type_invoice",0));
-                }else if (item.getItemId() == R.id.invoice_export) {
-                    getContext().startActivity(new Intent(getContext(), InvoiceActivity.class).putExtra("type_invoice",1));
-                }
-                return false;
+        popupMenu.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.invoice_import){
+                getContext().startActivity(new Intent(getContext(), InvoiceActivity.class).putExtra("type_invoice",0));
+            }else if (item.getItemId() == R.id.invoice_export) {
+                getContext().startActivity(new Intent(getContext(), InvoiceActivity.class).putExtra("type_invoice",1));
             }
+            return false;
         });
 
         popupMenu.show();

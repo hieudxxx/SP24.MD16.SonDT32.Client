@@ -1,40 +1,50 @@
 package fpoly.md16.depotlife.Invoice.Adapter;
 
+import android.app.DatePickerDialog;
+import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.textfield.TextInputEditText;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Invoice.Model.Invoice;
-import fpoly.md16.depotlife.Product.Model.Expiry;
 import fpoly.md16.depotlife.Product.Model.Product;
 import fpoly.md16.depotlife.databinding.ItemChooseProductBinding;
-import fpoly.md16.depotlife.databinding.ItemProductDialogBinding;
 
 public class ChooseProductAdapter extends RecyclerView.Adapter<ChooseProductAdapter.ViewHolder> {
     private ArrayList<Product> list;
     private final InterClickItemData interClickItemData;
-
-    private int Quantity = 1;
-
+    private List<Invoice.ProductInvoice> productInvoices;
     private int valInvoiceType = 0;
 
     public interface InterClickItemData {
-        void Expiry(Expiry expiry);
-    }
-    public void setData(List<Product> list) {
-        this.list = (ArrayList<Product>) list;
-        notifyDataSetChanged();
+        void onProductInvoiceUpdated(List<Invoice.ProductInvoice> productInvoices);
+        void removeItem(Product product);
+
     }
 
+    public void setData(List<Product> list) {
+        this.list = (ArrayList<Product>) list;
+        productInvoices = new ArrayList<>(list.size());
+        for (Product product : list) {
+            productInvoices.add(new Invoice.ProductInvoice());
+        }
+        notifyDataSetChanged();
+    }
 
     public ChooseProductAdapter(InterClickItemData interClickItemData, int valInvoiceType) {
         this.interClickItemData = interClickItemData;
@@ -48,16 +58,12 @@ public class ChooseProductAdapter extends RecyclerView.Adapter<ChooseProductAdap
         return new ViewHolder(binding);
     }
 
-
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Product product = list.get(position);
         if (product == null) return;
 
-        Quantity = Integer.parseInt(holder.binding.edQuantity.getText().toString());
-
-        Expiry expiry = new Expiry(); // Khởi tạo mới cho mỗi sản phẩm
-        expiry.setProduct_id(product.getId());
+        if (position != RecyclerView.NO_POSITION) productInvoices.get(position).setProduct_id(product.getId());
 
         holder.binding.tvName.setText(product.getProduct_name());
         holder.binding.tvInventory.setText(String.valueOf(product.getInventory()));
@@ -65,42 +71,79 @@ public class ChooseProductAdapter extends RecyclerView.Adapter<ChooseProductAdap
         holder.binding.tvImportPrice.setText(Helper.formatVND(product.getImport_price()));
         Helper.setImgProduct(product.getImg(), holder.binding.img);
 
+        if (valInvoiceType == 0) holder.binding.tvTotalAmount.setText(String.valueOf(product.getImport_price()));
+        else holder.binding.tvTotalAmount.setText(String.valueOf(product.getExport_price()));
+
         holder.binding.btnMinus.setOnClickListener(view -> {
-            if (Quantity > 1){
-                Quantity--;
-                holder.binding.edQuantity.setText(String.valueOf(Quantity));
-                expiry.setQuantity_exp(Quantity);
-                interClickItemData.Expiry(expiry); // Gửi dữ liệu khi có thay đổi
+            int quantity = Integer.parseInt(holder.binding.edQuantity.getText().toString());
+            if (quantity > 1) {
+                quantity--;
+                holder.binding.edQuantity.setText(String.valueOf(quantity));
+                updateTotalAmount(holder, quantity, product);
+                notifyProductInvoiceUpdated();
             }
         });
 
         holder.binding.btnPlus.setOnClickListener(view -> {
-            Quantity++;
-            holder.binding.edQuantity.setText(String.valueOf(Quantity));
-            expiry.setQuantity_exp(Quantity);
-            interClickItemData.Expiry(expiry); // Gửi dữ liệu khi có thay đổi
+            int quantity = Integer.parseInt(holder.binding.edQuantity.getText().toString());
+            quantity++;
+            holder.binding.edQuantity.setText(String.valueOf(quantity));
+            updateTotalAmount(holder, quantity, product);
+            notifyProductInvoiceUpdated();
         });
+
+        holder.binding.edExpiryDate.setOnClickListener(view -> Helper.onShowCaledar(holder.binding.edExpiryDate, view.getContext(), "%d-%02d-%02d"));
 
         holder.binding.edExpiryDate.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                expiry.setExpiry_date(s.toString());
-                interClickItemData.Expiry(expiry); // Gửi dữ liệu khi có thay đổi
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-
+                if (position != RecyclerView.NO_POSITION) {
+                    productInvoices.get(position).setExpiry(editable.toString());
+                    notifyProductInvoiceUpdated();
+                }
             }
         });
 
-        if (valInvoiceType == 0){
-            holder.binding.tvTotalAmount.setText(String.valueOf(Quantity * product.getImport_price()));
-        }else{
-            holder.binding.tvTotalAmount.setText(String.valueOf(Quantity * product.getExport_price()));
-        }
+        holder.binding.edQuantity.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (position != RecyclerView.NO_POSITION) {
+                    try {
+                        int quantity = Integer.parseInt(editable.toString());
+                        productInvoices.get(position).setQuantity(quantity);
+                        updateTotalAmount(holder, quantity, product);
+                        notifyProductInvoiceUpdated();
+                    } catch (NumberFormatException e) {
+                        // Handle case where editable is not a valid number
+                    }
+                }
+            }
+        });
+
+        holder.binding.btnClose.setOnClickListener(view -> {
+            interClickItemData.removeItem(list.get(position));
+            notifyProductInvoiceUpdated();
+        });
+    }
+
+    private void notifyProductInvoiceUpdated() {
+        interClickItemData.onProductInvoiceUpdated(productInvoices);
     }
 
     @Override
@@ -117,6 +160,14 @@ public class ChooseProductAdapter extends RecyclerView.Adapter<ChooseProductAdap
         public ViewHolder(@NonNull ItemChooseProductBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
+        }
+    }
+
+    private void updateTotalAmount(ViewHolder holder, int quantity, Product product) {
+        if (valInvoiceType == 0) {
+            holder.binding.tvTotalAmount.setText(String.valueOf(quantity * product.getImport_price()));
+        } else {
+            holder.binding.tvTotalAmount.setText(String.valueOf(quantity * product.getExport_price()));
         }
     }
 }
