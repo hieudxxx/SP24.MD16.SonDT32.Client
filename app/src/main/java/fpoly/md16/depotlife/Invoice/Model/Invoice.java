@@ -3,7 +3,6 @@ package fpoly.md16.depotlife.Invoice.Model;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 
 import fpoly.md16.depotlife.Customers.Model.Customer;
@@ -229,10 +228,9 @@ public class Invoice implements Serializable {
         private int quantity;
         @SerializedName("invoice_id")
         private int invoice_id;;
-
         @SerializedName("product_id")
         private int product_id;
-
+        @SerializedName("expiry")
         private String expiry;
 
         @SerializedName("product")

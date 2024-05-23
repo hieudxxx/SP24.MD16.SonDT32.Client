@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -68,9 +69,9 @@ public class LoginActivity extends AppCompatActivity {
                         if (response.isSuccessful()) {
                             UserResponse userResponse = response.body();
                             Log.d("onResponse_login", "userResponse: " + userResponse.toString());
-                            Log.d("token", "token: "+userResponse.getToken());
+                            Log.d("token", "token: " + userResponse.getToken());
 
-                            data.put("token",userResponse.getToken());
+                            data.put("token", userResponse.getToken());
                             data.put("id", userResponse.getUser().getId());
                             data.put("name", userResponse.getUser().getName());
                             data.put("phone_number", userResponse.getUser().getPhoneNumber());
@@ -87,14 +88,16 @@ public class LoginActivity extends AppCompatActivity {
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
 
                         } else {
-                            Log.d("onResponse", "connect_failed: " + response.code());
+                            Log.d("tag_kiemTra", "onResponse: " + response.code());
+                            Log.d("tag_kiemTra", "onResponse: " + response.body());
+
                         }
                     }
 
                     @Override
                     public void onFailure(Call<UserResponse> call, Throwable throwable) {
                         Log.d("onFailure_login", "connect_failed: " + throwable.getMessage());
-                        Toast.makeText(LoginActivity.this, "Không thể kết nối", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Tài khoản hoặc mật khẩu không đúng!", Toast.LENGTH_SHORT).show();
                     }
                 });
 

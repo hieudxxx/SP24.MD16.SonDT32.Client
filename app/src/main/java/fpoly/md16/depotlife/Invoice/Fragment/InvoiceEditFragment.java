@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -14,7 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.Toast;
@@ -33,15 +31,9 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Locale;
 
-import fpoly.md16.depotlife.Category.Fragment.CategoryListFragment;
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiInvoice;
-import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiSupplier;
 import fpoly.md16.depotlife.Invoice.Model.Invoice;
-import fpoly.md16.depotlife.Product.Fragment.ProductAddFragment;
-import fpoly.md16.depotlife.R;
-import fpoly.md16.depotlife.Supplier.Fragment.SupplierFragment;
-import fpoly.md16.depotlife.Supplier.Model.Supplier;
 import fpoly.md16.depotlife.databinding.FragmentInvoiceEditBinding;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -192,7 +184,18 @@ public class InvoiceEditFragment extends Fragment {
             onRequestPermission();
         });
 
-        Picasso.get().load("https://warehouse.sinhvien.io.vn/public/" + invoice.getSignature_img().replaceFirst("public", "storage")).into(binding.imgSignature);
+        if (invoice.getSignature_img() == null) {
+            binding.imgSignature.setVisibility(View.GONE);
+            binding.imgSigEmpty.setVisibility(View.VISIBLE);
+            binding.tvSigImgEmpty.setVisibility(View.VISIBLE);
+        } else {
+            binding.imgSignature.setVisibility(View.VISIBLE);
+            binding.imgSigEmpty.setVisibility(View.GONE);
+            binding.tvSigImgEmpty.setVisibility(View.GONE);
+            Picasso.get().load("https://warehouse.sinhvien.io.vn/public/" + invoice.getSignature_img().replaceFirst("public", "storage")).into(binding.imgSignature);
+        }
+
+
     }
 
     public void showDatePickerDialog(Context context, final TextInputEditText editText) {

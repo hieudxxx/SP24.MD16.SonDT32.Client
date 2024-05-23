@@ -21,6 +21,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import fpoly.md16.depotlife.Helper.Helper;
+import fpoly.md16.depotlife.Helper.Interfaces.Api.API;
 import fpoly.md16.depotlife.Helper.Interfaces.onClickListener.onMenuClick;
 import fpoly.md16.depotlife.Login.Model.UserResponse;
 import fpoly.md16.depotlife.Product.Activity.ProductActivity;
@@ -55,8 +56,11 @@ public class StaffAdapter extends RecyclerView.Adapter<StaffAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         StaffResponse.User user = list.get(position);
-        String ava = user.getAvatar().replace("public","storage");
-        Picasso.get().load("https://warehouse.sinhvien.io.vn/public/" +ava).into(holder.binding.imgAvt);
+        if (user.getAvatar() == null) {
+            holder.binding.imgAvt.setImageResource(R.drawable.images_default);
+        } else {
+            Picasso.get().load(API.URL_IMG + user.getAvatar().replaceFirst("public", "")).into(holder.binding.imgAvt);
+        }
         holder.binding.tvName.setText(user.getName());
         holder.binding.tvEmail.setText(user.getEmail());
         holder.binding.tvPhone.setText(user.getPhoneNumber());

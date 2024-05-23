@@ -18,8 +18,8 @@
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/tb_invoice"
                 style="@style/custom_toolbar"
-                android:gravity="center_vertical"
-                android:background="@color/white">
+                android:background="@color/white"
+                android:gravity="center_vertical">
 
                 <TextView
                     android:id="@+id/tvTitle"
@@ -31,49 +31,49 @@
                     style="@style/custom_tv_date_time"
                     android:fontFamily="@font/nunito_extrabold"
                     android:text="(0)"
-                    android:textColor="@color/gray" />
+                    android:textColor="@color/gray60" />
 
                 <ImageButton
-                    android:layout_marginRight="10dp"
-                    android:layout_gravity="end"
                     android:id="@+id/filter"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:backgroundTint="@color/white"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/filter"
-                    android:padding="20dp"/>
+                    android:layout_gravity="end"
+                    android:layout_marginRight="10dp"
+                    android:backgroundTint="@color/white"
+                    android:padding="20dp"
+                    android:src="@drawable/filter" />
 
                 <ImageButton
-                    android:layout_marginRight="10dp"
-                    android:layout_gravity="end"
                     android:id="@+id/fab"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:backgroundTint="@color/black"
-                    android:background="@drawable/rouder_btn"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/baseline_add_24"
-                    android:padding="20dp"/>
+                    android:layout_gravity="end"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/rouder_btn"
+                    android:backgroundTint="@color/black"
+                    android:padding="20dp"
+                    android:src="@drawable/baseline_add_24" />
 
             </androidx.appcompat.widget.Toolbar>
 
             <LinearLayout
-                android:visibility="gone"
                 android:id="@+id/layoutSpn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="10"
-                android:padding="5dp"
                 android:layout_marginTop="5dp"
                 android:background="@color/white"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="5dp"
+                android:visibility="gone"
+                android:weightSum="10">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:layout_weight="5"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="5"
                     android:hint="Loại hóa đơn">
 
                     <com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -85,11 +85,11 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="5"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="5"
                     android:hint="Trạng thái">
 
                     <com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -137,10 +137,10 @@
                 android:orientation="vertical">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:paddingHorizontal="10dp"
                     android:id="@+id/rcv_invoice"
                     style="@style/custom_rcv"
-                    android:visibility="gone"
+                    android:paddingHorizontal="10dp"
+                    android:visibility="visible"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/item_invoice" />
 

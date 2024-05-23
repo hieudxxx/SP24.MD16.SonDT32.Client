@@ -2,12 +2,13 @@ package fpoly.md16.depotlife.Helper.Interfaces.Api;
 
 import static fpoly.md16.depotlife.Helper.Interfaces.Api.RetrofitRequest.getRetrofit;
 
+import java.util.List;
+
 import fpoly.md16.depotlife.Customers.Model.Customer;
 import fpoly.md16.depotlife.Customers.Model.CustomerResponse;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
-import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
@@ -21,6 +22,7 @@ public interface ApiCustomers {
 
     @GET("customers")
     Call<CustomerResponse> getData(@Header("Authorization") String authToken, @Query("page") int page_index);
+
     @Multipart
     @POST("customers/create")
     Call<Customer> create(@Header("Authorization") String authToken,
@@ -30,6 +32,7 @@ public interface ApiCustomers {
                           @Part("address") RequestBody address,
                           @Part MultipartBody.Part images
     );
+
     @Multipart
     @POST("customers/update/{id}")
     Call<Customer> update(@Header("Authorization") String authToken,
@@ -46,5 +49,8 @@ public interface ApiCustomers {
 
     @GET("customers/delete/{id}")
     Call<Customer> delete(@Header("Authorization") String authToken, @Path("id") int id);
+
+    @GET("customers/search")
+    Call<List<Customer>> getDataSearch(@Header("Authorization") String authToken, @Query("keyword") String keyword);
 
 }

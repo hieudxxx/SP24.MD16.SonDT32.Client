@@ -66,9 +66,9 @@ public class SupplierEditFragment extends Fragment {
                     if (name.isEmpty() || phone.isEmpty() ||  address.isEmpty() || taxCode.isEmpty()) {
                         Toast.makeText(getContext(), "Hãy nhập đủ dữ liệu", Toast.LENGTH_SHORT).show();
                     } else {
-                        Helper.isContainSpace(name, binding.tvWarName);
+//                        Helper.isContainSpace(name, binding.tvWarName);
                         Helper.isPhoneValid(phone, binding.tvWarPhone);
-                        Helper.isContainSpace(address, binding.tvWarAddress);
+//                        Helper.isContainSpace(address, binding.tvWarAddress);
                         Helper.isContainSpace(taxCode, binding.tvWarTaxCode);
 
                         if (binding.tvWarName.getText().toString().isEmpty() &&

@@ -33,5 +33,17 @@ public class EditPassFragment extends Fragment {
         binding.imgBack.setOnClickListener(view1 -> {
             requireActivity().getSupportFragmentManager().popBackStack();
         });
+
+        binding.btnChangePass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
+
+
+
+
+
 }

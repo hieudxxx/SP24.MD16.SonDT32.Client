@@ -6,21 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,21 +21,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiInvoice;
+import fpoly.md16.depotlife.Helper.Pagination;
 import fpoly.md16.depotlife.Invoice.Activity.InvoiceActivity;
 import fpoly.md16.depotlife.Invoice.Adapter.InvoiceAdapter;
 import fpoly.md16.depotlife.Invoice.Model.Invoice;
 import fpoly.md16.depotlife.Invoice.Model.InvoiceResponse;
 import fpoly.md16.depotlife.R;
 import fpoly.md16.depotlife.databinding.FragmentInvoiceBinding;
-import fpoly.md16.depotlife.databinding.LayoutMenuBinding;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -52,22 +44,19 @@ public class InvoiceFragment extends Fragment {
     private FragmentInvoiceBinding binding;
     private InvoiceAdapter adapter;
     private Runnable runnable;
-
     private final Handler handler = new Handler();
-    private ArrayList<Invoice> list;
-
-    public String token;
-
     private InvoiceResponse invoiceResponse;
-
-    private int pageIndex = 1;
-
+    private ArrayList<Invoice> list;
+    public String token;
     private String invoiceType = null;
-
     private String payMentStatus = null;
-
+    private int pageIndex = 1;
     private int perPage = 0;
     private final Boolean isExpanded = false;
+    public static boolean isLoadData = false;
+    private boolean isLoading;
+    private boolean isLastPage;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -91,14 +80,29 @@ public class InvoiceFragment extends Fragment {
             Helper.onShowCaledar(binding.tvDate, getContext(), "%d-%02d-%02d");
         });
 
-        adapter = new InvoiceAdapter(new InvoiceAdapter.InterClickItemData() {
+        list = new ArrayList<>();
+        adapter = new InvoiceAdapter(getContext(), list);
+        binding.rcvInvoice.setAdapter(adapter);
+        getData();
+        binding.rcvInvoice.addOnScrollListener(new Pagination((LinearLayoutManager) binding.rcvInvoice.getLayoutManager()) {
             @Override
-            public void clickItem(Invoice invoice) {
-                getContext().startActivity(new Intent(getContext(), InvoiceActivity.class).putExtra("invoiceId", invoice.getId()));
+            public void loadMore() {
+                isLoading = true;
+                pageIndex += 1;
+//                Log.d("tag_kiemTra", "loadMore: "+pageIndex);
+                loadNextPage();
+            }
+
+            @Override
+            public boolean isLoading() {
+                return isLoading;
+            }
+
+            @Override
+            public boolean isLaspage() {
+                return isLastPage;
             }
         });
-
-        list = new ArrayList<>();
 
         binding.filter.setOnClickListener(view1 -> {
             if (binding.layoutSpn.getVisibility() == View.GONE) {
@@ -117,32 +121,48 @@ public class InvoiceFragment extends Fragment {
         binding.spnInvoiceType.setAdapter(adapter_type);
 
         binding.spnInvoiceType.setOnItemClickListener((adapterView, view13, i, l) -> {
-            if (i != 0){
+            if (i != 0) {
                 invoiceType = String.valueOf(i - 1);
-            }else {
+            } else {
                 invoiceType = null;
             }
             filterData();
         });
 
         binding.spnPaymentStatus.setOnItemClickListener((adapterView, view14, i, l) -> {
-            if (i != 0){
+            if (i != 0) {
                 payMentStatus = String.valueOf(i - 1);
-            }else {
+            } else {
                 payMentStatus = null;
             }
             filterData();
         });
     }
 
+    private void loadNextPage() {
+        handler.postDelayed(() -> {
+            adapter.removeFooterLoading();
+
+            isLoading = false;
+            if (pageIndex < perPage) {
+                adapter.addFooterLoading();
+                getData();
+
+            } else {
+                isLastPage = true;
+            }
+        }, 500);
+    }
+
+
     private void showPopupMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
         popupMenu.getMenuInflater().inflate(R.menu.popup_invoice, popupMenu.getMenu());
         popupMenu.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.invoice_import){
-                getContext().startActivity(new Intent(getContext(), InvoiceActivity.class).putExtra("type_invoice",0));
-            }else if (item.getItemId() == R.id.invoice_export) {
-                getContext().startActivity(new Intent(getContext(), InvoiceActivity.class).putExtra("type_invoice",1));
+            if (item.getItemId() == R.id.invoice_import) {
+                getContext().startActivity(new Intent(getContext(), InvoiceActivity.class).putExtra("type_invoice", 0));
+            } else if (item.getItemId() == R.id.invoice_export) {
+                getContext().startActivity(new Intent(getContext(), InvoiceActivity.class).putExtra("type_invoice", 1));
             }
             return false;
         });
@@ -154,6 +174,7 @@ public class InvoiceFragment extends Fragment {
         if (invoiceResponse.getData() != null) {
             list.addAll(Arrays.asList(invoiceResponse.getData()));
             if (!list.isEmpty()) {
+//                Log.d("tag_kiemTra", "onCheckList: " + list.size());
                 binding.rcvInvoice.setVisibility(View.VISIBLE);
                 binding.tvTotalInvoice.setVisibility(View.VISIBLE);
                 binding.tvEmpty.setVisibility(View.GONE);
@@ -214,7 +235,9 @@ public class InvoiceFragment extends Fragment {
                 public boolean onQueryTextChange(String newText) {
                     if (newText.isEmpty()) {
                         list.clear();
+                        pageIndex = 1;
                         getData();
+                        adapter.notifyDataSetChanged();
                     } else {
                         debounceSearch(newText, 300);
                         return true;
@@ -227,12 +250,10 @@ public class InvoiceFragment extends Fragment {
 
     private void filterData() {
         list.clear();
-        Log.d("tag_kiemTra", "invoiceType: " + invoiceType);
-        Log.d("tag_kiemTra", "payMentStatus: " + payMentStatus);
-        ApiInvoice.apiInvoice.filter(token,invoiceType,payMentStatus).enqueue(new Callback<InvoiceResponse>() {
+        ApiInvoice.apiInvoice.filter(token, invoiceType, payMentStatus).enqueue(new Callback<InvoiceResponse>() {
             @Override
             public void onResponse(Call<InvoiceResponse> call, Response<InvoiceResponse> response) {
-                Log.d("tag_kiemTra", "onFailure: " + response.code());
+//                Log.d("tag_kiemTra", "onFailure: " + response.code());
                 if (response.isSuccessful()) {
                     invoiceResponse = response.body();
                     if (invoiceResponse != null) {
@@ -243,7 +264,7 @@ public class InvoiceFragment extends Fragment {
                 } else {
                     try {
                         String errorBody = response.errorBody().string();
-                        Log.e("onResponse", "errorBodyData: " + errorBody);
+//                        Log.e("onResponse", "errorBodyData: " + errorBody);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -260,10 +281,10 @@ public class InvoiceFragment extends Fragment {
     }
 
     private void getData() {
+//        Log.d("tag_kiemTra", "getData: " + pageIndex);
         ApiInvoice.apiInvoice.getData(token, pageIndex).enqueue(new Callback<InvoiceResponse>() {
             @Override
             public void onResponse(Call<InvoiceResponse> call, Response<InvoiceResponse> response) {
-                Log.d("tag_kiemTra", "onFailure: " + response.code());
                 if (response.isSuccessful()) {
                     invoiceResponse = response.body();
                     if (invoiceResponse != null) {
@@ -296,10 +317,11 @@ public class InvoiceFragment extends Fragment {
             handler.removeCallbacks(runnable);
         }
 
-        // Tạo Runnable mới để thực hiện tìm kiếm
         runnable = new Runnable() {
             @Override
             public void run() {
+                pageIndex = 1;
+                list.clear();
                 searchData(Integer.parseInt(newText));
             }
         };
@@ -325,7 +347,6 @@ public class InvoiceFragment extends Fragment {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    //Toast.makeText(getActivity(), "Không thể lấy dữ liệu danh mục", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -340,7 +361,14 @@ public class InvoiceFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        list.clear();
-        getData();
+//        Log.d("tag_kiemTra", "onResume: ");
+
+//        if (isLoadData) {
+            pageIndex = 1;
+            list.clear();
+            adapter.notifyDataSetChanged();
+            getData();
+            isLoadData = false;
+//        }
     }
 }

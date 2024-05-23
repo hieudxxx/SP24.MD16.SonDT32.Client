@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.squareup.picasso.Picasso;
 
 import fpoly.md16.depotlife.Helper.Helper;
+import fpoly.md16.depotlife.Helper.Interfaces.Api.API;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiProduct;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiUser;
 import fpoly.md16.depotlife.Product.Fragment.ProductEditFragment;
@@ -79,11 +80,10 @@ public class StaffDetailActivity extends AppCompatActivity {
                         binding.tvRole.setText(roleText);
                         binding.tvPhone.setText(String.valueOf(staff.getPhoneNumber()));
 
-                        String ava = staff.getAvatar().replace("public","storage");
-                        if (ava.isEmpty()) {
-                            binding.imgAvt.setImageResource(R.drawable.unknow_avt);
+                        if (staff.getAvatar() == null) {
+                            binding.imgAvt.setImageResource(R.drawable.images_default);
                         } else {
-                            Picasso.get().load("https://warehouse.sinhvien.io.vn/public/" +ava).into(binding.imgAvt);
+                            Picasso.get().load(API.URL_IMG + staff.getAvatar().replaceFirst("public", "")).into(binding.imgAvt);
                         }
                     }
                 }

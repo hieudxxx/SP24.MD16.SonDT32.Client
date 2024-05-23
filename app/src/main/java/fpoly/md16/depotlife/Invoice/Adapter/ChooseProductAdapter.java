@@ -33,6 +33,7 @@ public class ChooseProductAdapter extends RecyclerView.Adapter<ChooseProductAdap
 
     public interface InterClickItemData {
         void onProductInvoiceUpdated(List<Invoice.ProductInvoice> productInvoices);
+
         void removeItem(Product product);
 
     }
@@ -63,15 +64,24 @@ public class ChooseProductAdapter extends RecyclerView.Adapter<ChooseProductAdap
         Product product = list.get(position);
         if (product == null) return;
 
-        if (position != RecyclerView.NO_POSITION) productInvoices.get(position).setProduct_id(product.getId());
+        if (position != RecyclerView.NO_POSITION)
+            productInvoices.get(position).setProduct_id(product.getId());
 
         holder.binding.tvName.setText(product.getProduct_name());
         holder.binding.tvInventory.setText(String.valueOf(product.getInventory()));
-        holder.binding.tvExportPrice.setText(Helper.formatVND(product.getExport_price()));
-        holder.binding.tvImportPrice.setText(Helper.formatVND(product.getImport_price()));
+        if (valInvoiceType == 0){
+            holder.binding.layoutExportPrice.setVisibility(View.GONE);
+            holder.binding.layoutImportPrice.setVisibility(View.VISIBLE);
+            holder.binding.tvImportPrice.setText(Helper.formatVND(product.getImport_price()));
+        } else if (valInvoiceType == 1){
+            holder.binding.layoutExportPrice.setVisibility(View.VISIBLE);
+            holder.binding.layoutImportPrice.setVisibility(View.GONE);
+            holder.binding.tvExportPrice.setText(Helper.formatVND(product.getExport_price()));
+        }
         Helper.setImgProduct(product.getImg(), holder.binding.img);
 
-        if (valInvoiceType == 0) holder.binding.tvTotalAmount.setText(String.valueOf(product.getImport_price()));
+        if (valInvoiceType == 0)
+            holder.binding.tvTotalAmount.setText(String.valueOf(product.getImport_price()));
         else holder.binding.tvTotalAmount.setText(String.valueOf(product.getExport_price()));
 
         holder.binding.btnMinus.setOnClickListener(view -> {
@@ -86,10 +96,20 @@ public class ChooseProductAdapter extends RecyclerView.Adapter<ChooseProductAdap
 
         holder.binding.btnPlus.setOnClickListener(view -> {
             int quantity = Integer.parseInt(holder.binding.edQuantity.getText().toString());
-            quantity++;
-            holder.binding.edQuantity.setText(String.valueOf(quantity));
-            updateTotalAmount(holder, quantity, product);
-            notifyProductInvoiceUpdated();
+            if (valInvoiceType == 1) {
+                if (quantity < product.getInventory()) {
+                    quantity++;
+                    holder.binding.edQuantity.setText(String.valueOf(quantity));
+                    updateTotalAmount(holder, quantity, product);
+                    notifyProductInvoiceUpdated();
+                }
+            } else {
+                quantity++;
+                holder.binding.edQuantity.setText(String.valueOf(quantity));
+                updateTotalAmount(holder, quantity, product);
+                notifyProductInvoiceUpdated();
+            }
+
         });
 
         holder.binding.edExpiryDate.setOnClickListener(view -> Helper.onShowCaledar(holder.binding.edExpiryDate, view.getContext(), "%d-%02d-%02d"));

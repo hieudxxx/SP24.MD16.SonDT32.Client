@@ -49,6 +49,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         this.token = token;
     }
 
+    public void setData(List<Category> list) {
+        this.categoryList = (ArrayList<Category>) list;
+        notifyDataSetChanged();
+    }
+
 
     @NonNull
     @Override
@@ -66,26 +71,31 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         holder.categoryBinding.icDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Helper.onCheckdeleteDialog(context, () -> {
-                    ApiCategory.apiCategory.delete(token, category.getId()).enqueue(new Callback<Category>() {
-                        @Override
-                        public void onResponse(Call<Category> call, Response<Category> response) {
-                            if (response.isSuccessful() || response.code() == 200) {
-                                Toast.makeText(context, "Xóa thể loại thành công!", Toast.LENGTH_SHORT).show();
-                                categoryList.remove(category);
-                                CategoryActivity.isLoadData = true;
-                                notifyDataSetChanged();
+                Integer role = (Integer) Helper.getSharedPre(context, "role", Integer.class);
+                if (role == 1){
+                    Helper.onCheckdeleteDialog(context, () -> {
+                        ApiCategory.apiCategory.delete(token, category.getId()).enqueue(new Callback<Category>() {
+                            @Override
+                            public void onResponse(Call<Category> call, Response<Category> response) {
+                                if (response.isSuccessful() || response.code() == 200) {
+                                    Toast.makeText(context, "Xóa thể loại thành công!", Toast.LENGTH_SHORT).show();
+                                    categoryList.remove(category);
+
+                                }
                             }
-                        }
 
-                        @Override
-                        public void onFailure(Call<Category> call, Throwable throwable) {
-                            Log.d("onFailure", "onFailure: " + throwable.getMessage());
-                            Toast.makeText(context, "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
-                        }
+                            @Override
+                            public void onFailure(Call<Category> call, Throwable throwable) {
+                                Log.d("onFailure", "onFailure: " + throwable.getMessage());
+                                Toast.makeText(context, "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
                     });
+                }else {
+                    Toast.makeText(context, "Bạn không có quyền truy cập chức năng này", Toast.LENGTH_SHORT).show();
+                }
 
-                });
             }
         });
 
@@ -93,7 +103,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         holder.categoryBinding.icEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDialog(category);
+                Integer role = (Integer) Helper.getSharedPre(context, "role", Integer.class);
+                if (role == 1){
+                    showDialog(category);
+                }else {
+                    Toast.makeText(context, "Bạn không có quyền truy cập chức năng này", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -133,8 +149,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
                                 if (response.isSuccessful()) {
                                     Toast.makeText(context, "Sửa thể loại thành công!", Toast.LENGTH_SHORT).show();
                                     alertDialog.dismiss();
-                                    notifyDataSetChanged();
-                                    CategoryActivity.isLoadData = true;
+
                                 }
                             }
 

@@ -32,16 +32,27 @@ import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
+import fpoly.md16.depotlife.Customers.Model.Customer;
+import fpoly.md16.depotlife.Customers.Model.CustomerResponse;
 import fpoly.md16.depotlife.Helper.Helper;
+import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiCustomers;
+import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiInvoice;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiProduct;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiSupplier;
+import fpoly.md16.depotlife.Invoice.Adapter.AdapterCusSelect;
 import fpoly.md16.depotlife.Invoice.Adapter.ChooseProductAdapter;
 import fpoly.md16.depotlife.Invoice.Adapter.DialogProductAdapter;
 import fpoly.md16.depotlife.Invoice.Adapter.DialogSupplierAdapter;
@@ -53,7 +64,9 @@ import fpoly.md16.depotlife.Supplier.Model.Supplier;
 import fpoly.md16.depotlife.Supplier.Model.SupplierResponse;
 import fpoly.md16.depotlife.databinding.DialogSelectBinding;
 import fpoly.md16.depotlife.databinding.FragmentInvoiceAddBinding;
+import okhttp3.MediaType;
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -62,23 +75,31 @@ public class InvoiceAddFragment extends Fragment {
     private FragmentInvoiceAddBinding binding;
     public String token;
     private String expiryDate;
-    private static final String ARG_PRODUCT_INVOICES = "product_invoices";
+    private String discount;
+    private String note;
+    private String term;
+    private String sigMame;
+    private String currentDate;
     private int invoiceType;
     private int invoiceCreatorId;
     private int paymentStatus = -1;
     private int supplierId = -1;
+    private int customerId = -1;
     private int pageIndexSupplier = 1;
     private int pageIndexProduct = 1;
     private int perPage = 0;
     final int SEARCH_ID = R.id.action_search;
+    private double totalPayment;
 
     public static boolean isLoadData = false;
-
     private List<Supplier> listSupplier;
+    private List<Customer> listCustomer;
     private List<Product> listProduct;
     private List<Product> listSelectedProduct;
+    private List<Invoice.ProductInvoice> productInvoiceList = new ArrayList<>();
 
     private DialogSupplierAdapter dialogSupplierAdapter;
+    private AdapterCusSelect adapterCusSelect;
     private DialogProductAdapter dialogProductAdapter;
     private ChooseProductAdapter chooseProductAdapter;
 
@@ -88,6 +109,8 @@ public class InvoiceAddFragment extends Fragment {
 
     private Uri uri;
     private MultipartBody.Part multipartBody;
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+
 
     private ActivityResultLauncher<Intent> launcher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -101,14 +124,6 @@ public class InvoiceAddFragment extends Fragment {
                 }
             }
     );
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            productInvoices = (List<Invoice.ProductInvoice>) getArguments().getSerializable(ARG_PRODUCT_INVOICES);
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -133,34 +148,160 @@ public class InvoiceAddFragment extends Fragment {
 
         binding.btnAddInvoice.setOnClickListener(view12 -> {
             expiryDate = binding.edDueDate.getText().toString().trim();
-            if (supplierId < 1) binding.tvWarSup.setText(R.string.not_empty);
-            else binding.tvWarSup.setText("");
+            note = binding.edNotes.getText().toString().trim();
+            term = binding.edTerms.getText().toString().trim();
+            sigMame = binding.edSigName.getText().toString().trim();
+
+            if (invoiceType == 0) {
+                if (supplierId < 1) binding.tvWarSup.setText(R.string.not_empty);
+                else binding.tvWarSup.setText("");
+            } else {
+                if (customerId < 1) binding.tvWarSup.setText(R.string.not_empty);
+                else binding.tvWarSup.setText("");
+            }
+
 
             if (paymentStatus < 0) binding.tvWarPayment.setText(R.string.not_empty);
             else binding.tvWarPayment.setText("");
 
-            if (expiryDate.isEmpty()) binding.tvWarDate.setText(R.string.not_empty);
-            else binding.tvWarDate.setText("");
+            if (!binding.edDueDate.getText().toString().isEmpty()) {
+                try {
+                    Date selectedDate = dateFormat.parse(binding.edDueDate.getText().toString());
+                    Date today = dateFormat.parse(currentDate);
 
-            if (listSelectedProduct.isEmpty()) {
-//                binding.tvWarProduct.setVisibility(View.VISIBLE);
-                binding.tvWarProduct.setText(R.string.not_empty);
-            } else {
-                binding.tvWarProduct.setText("");
+                    if (selectedDate != null && selectedDate.compareTo(today) < 0)
+                        binding.tvWarDate.setText("Không thể chọn ngày quá khứ");
+                    else {
+                        expiryDate = String.valueOf(selectedDate);
+                        binding.tvWarDate.setText("");
+                    }
 
+                } catch (ParseException e) {
+                    Toast.makeText(getContext(), "Định dạng ngày không hợp lệ", Toast.LENGTH_SHORT).show();
+                }
             }
 
+            if (listSelectedProduct.isEmpty()) binding.tvWarProduct.setText(R.string.not_empty);
+            else binding.tvWarProduct.setText("");
 
-//            if (supplierId < 1 || invoiceCreatorId < 1 || paymentStatus < 1 || currentDate.isEmpty() || listSelectedProduct.isEmpty() || uri.toString().isEmpty()) {
-//                Toast.makeText(getContext(), "Hãy nhập đủ dữ liệu", Toast.LENGTH_SHORT).show();
-//            } else {
-//
-//            }
+            if (!binding.edtDiscount.getText().toString().isEmpty()) {
+                discount = binding.edtDiscount.getText().toString().trim();
+                Helper.isNumberValid(discount, binding.tvWarDiscount);
+            } else binding.tvWarDiscount.setText("");
+
+            if (!note.isEmpty()) Helper.isContainSpace(note, binding.tvWarNote);
+            else binding.tvWarNote.setText("");
+
+            if (!term.isEmpty()) Helper.isContainSpace(term, binding.tvWarTerm);
+            else binding.tvWarTerm.setText("");
+
+            if (sigMame.isEmpty()) binding.tvWarSigName.setText(R.string.not_empty);
+            else {
+                Helper.isContainSpace(sigMame, binding.tvWarSigName);
+            }
+
+            if (uri == null) binding.tvWarSigImg.setText(R.string.not_empty);
+            else {
+                multipartBody = Helper.getRealPathFile(getActivity(), uri, "signature");
+                binding.tvWarSigImg.setText("");
+            }
+
+            if (binding.tvWarSup.getText().toString().isEmpty() &&
+                    binding.tvWarDiscount.getText().toString().isEmpty() &&
+                    binding.tvWarPayment.getText().toString().isEmpty() &&
+                    binding.tvWarDate.getText().toString().isEmpty() &&
+                    binding.tvWarProduct.getText().toString().isEmpty() &&
+                    binding.tvWarNote.getText().toString().isEmpty() &&
+                    binding.tvWarTerm.getText().toString().isEmpty() &&
+                    binding.tvWarSigName.getText().toString().isEmpty() &&
+                    binding.tvWarSigImg.getText().toString().isEmpty()
+            ) {
+
+                if (uri == null) multipartBody = null;
+
+                productInvoiceList = removeDuplicateProducts(productInvoiceList);
+
+                ApiInvoice.InvoiceRequest invoiceRequest = new ApiInvoice.InvoiceRequest();
+                invoiceRequest.setProducts(productInvoiceList);
+
+                if (invoiceType == 0){
+                    if (supplierId > 0) invoiceRequest.setSupplier_id(supplierId);
+                } else {
+                    if (customerId > 0) invoiceRequest.setCustomer_id(customerId);
+                }
+
+                if (!binding.edtDiscount.getText().toString().isEmpty())
+                    invoiceRequest.setDiscount(Integer.parseInt(discount));
+//                    requestDisc = Helper.createIntPart(Integer.parseInt(discount));
+                if (!binding.edNotes.getText().toString().isEmpty())
+                    invoiceRequest.setNote(note);
+//                    requestNote = Helper.createStringPart(note);
+                if (!binding.edTerms.getText().toString().isEmpty())
+                    invoiceRequest.setTerm(term);
+//                    requestTerm = Helper.createStringPart(term);
+                if (!binding.edSigName.getText().toString().isEmpty())
+                    invoiceRequest.setSignature_name(sigMame);
+//                    requestSigName = Helper.createStringPart(sigMame);
+                if (!binding.edDueDate.getText().toString().isEmpty()) {
+                    SimpleDateFormat newFormat = new SimpleDateFormat("%d-%02d-%02d", Locale.getDefault());
+                    try {
+                        Date date = dateFormat.parse(expiryDate);
+                        String formattedDate = newFormat.format(date);
+                        invoiceRequest.setDue_date(formattedDate);
+//                        requestDate = Helper.createStringPart(formattedDate);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                invoiceRequest.setInvoice_type(invoiceType);
+                invoiceRequest.setPay_status(paymentStatus);
+                invoiceRequest.setUser_id(invoiceCreatorId);
+                invoiceRequest.setTotal_amount((int) totalPayment);
+                invoiceRequest.setMultipartBody(multipartBody);
+
+                Gson gson = new Gson();
+                String jsonInvoice = gson.toJson(invoiceRequest);
+                RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonInvoice);
+                ApiInvoice.apiInvoice.add(token, requestBody).enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+//                        Log.d("tag_kiemTra", "onResponse: " + response);
+//                        Log.d("tag_kiemTra", "onResponse: " + response.code());
+//                        Log.d("tag_kiemTra", "onResponse: " + response.body());
+//                        try {
+//                            Log.d("tag_kiemTra", "onResponse: " + response.errorBody().string());
+//                        } catch (IOException e) {
+//                            throw new RuntimeException(e);
+//                        }
+
+                        if (response.isSuccessful()) {
+                            JsonObject jsonResponse = response.body();
+                            if (jsonResponse != null && jsonResponse.has("success") && jsonResponse.has("invoice_id")) {
+                                String successMessage = jsonResponse.get("success").getAsString();
+                                int invoice_id = jsonResponse.get("invoice_id").getAsInt();
+                                Toast.makeText(getContext(), "" + successMessage, Toast.LENGTH_SHORT).show();
+                                InvoiceFragment.isLoadData = true;
+                                requireActivity().finish();
+
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable throwable) {
+                        Log.d("onFailure", "onFailure: " + throwable.getMessage());
+                        Toast.makeText(getActivity(), "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
         });
     }
 
 
     private void init() {
+        listCustomer = new ArrayList<>();
         listSupplier = new ArrayList<>();
         listProduct = new ArrayList<>();
         listSelectedProduct = new ArrayList<>();
@@ -168,21 +309,24 @@ public class InvoiceAddFragment extends Fragment {
         invoiceCreatorId = (Integer) Helper.getSharedPre(getContext(), "id", Integer.class);
         binding.tvInvoiceCreator.setText((String) Helper.getSharedPre(getContext(), "name", String.class));
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        String currentDate = dateFormat.format(new Date());
+        currentDate = dateFormat.format(new Date());
         binding.tvDateTime.setText(currentDate);
 
         Intent intent = getActivity().getIntent();
         if (intent != null) invoiceType = intent.getIntExtra("type_invoice", -1);
         if (invoiceType == 0) {
+            binding.btnAddInvoice.setText("Nhập hàng");
             binding.spnInvoiceType.setText("Hóa đơn nhập");
-            binding.idCustomer.setVisibility(View.GONE);
+//            binding.idCustomer.setVisibility(View.GONE);
+            binding.idSupplier.setHint("Nhà cung cấp");
             binding.idSupplier.setVisibility(View.VISIBLE);
         } else {
+            binding.btnAddInvoice.setText("Xuất hàng");
             binding.btnAddProduct.setVisibility(View.VISIBLE);
             binding.spnInvoiceType.setText("Hóa đơn xuất");
-            binding.idCustomer.setVisibility(View.VISIBLE);
-            binding.idSupplier.setVisibility(View.GONE);
+            binding.idSupplier.setHint("Khách hàng");
+//            binding.idCustomer.setVisibility(View.VISIBLE);
+            binding.idSupplier.setVisibility(View.VISIBLE);
         }
 
         String[] items_status_payment = new String[]{"Chưa thanh toán", "Đã thanh toán"};
@@ -201,19 +345,40 @@ public class InvoiceAddFragment extends Fragment {
             onRequestPermission();
         });
 
+        binding.edtDiscount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                updateTotalTal(productInvoiceList);
+            }
+        });
+
     }
 
     private void initSupplier() {
         binding.spnSupName.setOnClickListener(view12 -> {
+            listCustomer.clear();
             listSupplier.clear();
             pageIndexSupplier = 1;
-            showDialogSelectSup(getContext());
+            if (invoiceType == 0) {
+                showDialogSelectSup(getContext());
+            } else {
+                showDialogSelectCus(getContext());
+            }
         });
 
         binding.spnSupName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
@@ -228,6 +393,70 @@ public class InvoiceAddFragment extends Fragment {
         });
     }
 
+    private void showDialogSelectCus(Context context) {
+        Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.dialog_select);
+        DialogSelectBinding dialogSelectBinding = DialogSelectBinding.bind(dialog.findViewById(R.id.dialog_select));
+
+        Toolbar toolbar = dialogSelectBinding.toolbar;
+        toolbar.setTitle("Khách hàng");
+        toolbar.inflateMenu(R.menu.search_bar);
+        toolbar.setOnMenuItemClickListener(item -> item.getItemId() == SEARCH_ID);
+        SearchManager searchManager = (SearchManager) dialog.getContext().getSystemService(Context.SEARCH_SERVICE);
+        MenuItem searchItem = toolbar.getMenu().findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        if (searchView != null) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(((Activity) context).getComponentName()));
+            searchView.setMaxWidth(Integer.MAX_VALUE);
+        }
+
+        adapterCusSelect = new AdapterCusSelect(customer -> {
+            binding.spnSupName.setText(customer.getCustomerName());
+            customerId = customer.getId();
+            dialog.dismiss();
+        });
+
+        dialogSelectBinding.rcv.setAdapter(adapterCusSelect);
+        getDataCus(dialogSelectBinding);
+
+        if (searchView != null) {
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    if (!newText.isEmpty()) {
+                        if (runnable != null) handler.removeCallbacks(runnable);
+                        runnable = () -> getDataSearchCus(dialogSelectBinding, newText);
+                        handler.postDelayed(runnable, 500);
+                        return true;
+                    } else {
+                        listCustomer.clear();
+                        getDataCus(dialogSelectBinding);
+                    }
+                    return false;
+                }
+            });
+        }
+
+        dialogSelectBinding.nestScroll.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
+                dialogSelectBinding.pbLoadMore.setVisibility(View.VISIBLE);
+                if (pageIndexSupplier < perPage) {
+                    pageIndexSupplier++;
+                    getDataCus(dialogSelectBinding);
+                    dialogSelectBinding.pbLoadMore.setVisibility(View.GONE);
+                } else {
+                    dialogSelectBinding.pbLoadMore.setVisibility(View.GONE);
+                }
+            }
+        });
+        dialog.show();
+    }
+
     private void initProduct() {
         binding.btnAddProduct.setOnClickListener(view13 -> {
             listProduct.clear();
@@ -240,15 +469,11 @@ public class InvoiceAddFragment extends Fragment {
         chooseProductAdapter = new ChooseProductAdapter(new ChooseProductAdapter.InterClickItemData() {
             @Override
             public void onProductInvoiceUpdated(List<Invoice.ProductInvoice> productInvoices) {
+                productInvoiceList.addAll(productInvoices);
                 updateTotalTal(productInvoices);
-                for (Invoice.ProductInvoice val : productInvoices) {
-                    Log.d("zzzzzzzzzzzzzzzz", "onID: " + val.getProduct_id());
-                    Log.d("zzzzzzzzzzzzzzzz", "onExpiry: " + val.getExpiry());
-                    Log.d("zzzzzzzzzzzzzzzz", "onQuantity: " + val.getQuantity());
-                    Log.d("zzzzzzzzzzzzzzzz", "onQuantity: " + listSelectedProduct);
-                    Log.d("zzzzzzzzzzzzzzzz", "------------------------: ");
-
-                }
+//                for (Invoice.ProductInvoice val : productInvoices) {
+//
+//                }
             }
 
             @Override
@@ -262,13 +487,29 @@ public class InvoiceAddFragment extends Fragment {
 
     private void updateTotalTal(List<Invoice.ProductInvoice> product_invoice_list) {
         int total = 0;
+        int dis = 0;
         for (int i = 0; i < listSelectedProduct.size(); i++) {
             if (invoiceType == 0) {
                 total += listSelectedProduct.get(i).getImport_price() * product_invoice_list.get(i).getQuantity();
-
+            } else if (invoiceType == 1) {
+                total += listSelectedProduct.get(i).getExport_price() * product_invoice_list.get(i).getQuantity();
             }
         }
+
+        if (!binding.edtDiscount.getText().toString().isEmpty()) {
+            discount = binding.edtDiscount.getText().toString().trim();
+            Helper.isNumberValid(discount, binding.tvWarDiscount);
+            if (binding.tvWarDiscount.getText().toString().isEmpty()) {
+                dis = Integer.parseInt(discount);
+                binding.tvDiscount.setText(dis+"%");
+            }
+        }
+
+
+        totalPayment = total * (1 - ((double) dis / 100)) * (1 + 0.1);
         binding.tvTotalTaxable.setText(Helper.formatVND(total));
+        binding.tvTotalAmount02.setText(Helper.formatVND((int) totalPayment));
+        binding.tvTotalAmount01.setText(Helper.formatVND((int) totalPayment));
     }
 
     private void showDialogSelectSup(Context context) {
@@ -353,6 +594,24 @@ public class InvoiceAddFragment extends Fragment {
         });
     }
 
+    private void getDataSearchCus(DialogSelectBinding dialogLayoutBinding, String keyword) {
+        ApiCustomers.API_CUSTOMERS.getDataSearch(token, keyword).enqueue(new Callback<List<Customer>>() {
+            @Override
+            public void onResponse(Call<List<Customer>> call, Response<List<Customer>> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        onCheckListSearchCus(dialogLayoutBinding, response.body());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Customer>> call, Throwable throwable) {
+                Log.d("onFailure", "onFailure: " + throwable.getMessage());
+            }
+        });
+    }
+
     public void onCheckListSearchSup(DialogSelectBinding dialogLayoutBinding, List<Supplier> supplier) {
         if (supplier != null) {
             listSupplier.clear();
@@ -365,6 +624,22 @@ public class InvoiceAddFragment extends Fragment {
             dialogSupplierAdapter.setData(listSupplier);
         } else {
             listSupplier.clear();
+            getDataSup(dialogLayoutBinding);
+        }
+    }
+
+    public void onCheckListSearchCus(DialogSelectBinding dialogLayoutBinding, List<Customer> customers) {
+        if (customers != null) {
+            listCustomer.clear();
+            listCustomer.addAll(customers);
+            dialogLayoutBinding.rcv.setVisibility(View.VISIBLE);
+            dialogLayoutBinding.tvEmpty.setVisibility(View.GONE);
+            dialogLayoutBinding.pbLoading.setVisibility(View.GONE);
+            dialogLayoutBinding.pbLoadMore.setVisibility(View.GONE);
+            dialogLayoutBinding.rcv.setAdapter(adapterCusSelect);
+            adapterCusSelect.setData(listCustomer);
+        } else {
+            listCustomer.clear();
             getDataSup(dialogLayoutBinding);
         }
     }
@@ -394,6 +669,44 @@ public class InvoiceAddFragment extends Fragment {
         });
     }
 
+    private List<Invoice.ProductInvoice> removeDuplicateProducts(List<Invoice.ProductInvoice> productInvoices) {
+        Set<Integer> productIds = new HashSet<>();
+        List<Invoice.ProductInvoice> uniqueProducts = new ArrayList<>();
+
+        for (Invoice.ProductInvoice product : productInvoices) {
+            if (productIds.add(product.getProduct_id())) {
+                uniqueProducts.add(product);
+            }
+        }
+
+        return uniqueProducts;
+    }
+
+    private void getDataCus(DialogSelectBinding dialogSelectBinding) {
+        ApiCustomers.API_CUSTOMERS.getData(token, pageIndexSupplier).enqueue(new Callback<CustomerResponse>() {
+            @Override
+            public void onResponse(Call<CustomerResponse> call, Response<CustomerResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        perPage = response.body().getLast_page();
+                        CustomerResponse cuslierResponse = response.body();
+                        if (cuslierResponse.getData() != null) {
+                            List<Customer> tempList = Arrays.asList(cuslierResponse.getData());
+                            onCheckList1(dialogSelectBinding, tempList);
+                        }
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CustomerResponse> call, Throwable throwable) {
+                Log.d("onFailure", "onFailure: " + throwable.getMessage());
+                Toast.makeText(getActivity(), "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private <T> void onCheckList1(DialogSelectBinding dialogSelectBinding, List<T> list) {
         if (list != null && !list.isEmpty()) {
             if (list.get(0) instanceof Product) {
@@ -404,6 +717,10 @@ public class InvoiceAddFragment extends Fragment {
                 List<Supplier> supplierList = (List<Supplier>) list;
                 listSupplier.addAll(supplierList);
                 dialogSupplierAdapter.setData(listSupplier);
+            } else if (list.get(0) instanceof Customer && invoiceType == 1) {
+                List<Customer> customerList = (List<Customer>) list;
+                listCustomer.addAll(customerList);
+                adapterCusSelect.setData(listCustomer);
             }
             dialogSelectBinding.rcv.setVisibility(View.VISIBLE);
             dialogSelectBinding.tvEmpty.setVisibility(View.GONE);
@@ -439,7 +756,7 @@ public class InvoiceAddFragment extends Fragment {
             } else {
                 listSelectedProduct.remove(product);
             }
-        }, listSelectedProduct);
+        }, listSelectedProduct, invoiceType);
 
         dialogSelectBinding.rcv.setAdapter(dialogProductAdapter);
         getDataProduct(dialogSelectBinding);
@@ -480,36 +797,63 @@ public class InvoiceAddFragment extends Fragment {
             }
         });
         dialog.show();
-        dialog.setOnDismissListener(dialogInterface -> getListProduct(binding, context, listSelectedProduct));
+        dialog.setOnDismissListener(dialogInterface -> {
+            getListProduct(binding, listSelectedProduct);
+        });
+
     }
 
-    public void getListProduct(FragmentInvoiceAddBinding binding, Context context, List<Product> list) {
+    public void getListProduct(FragmentInvoiceAddBinding binding, List<Product> list) {
         binding.rcvListProduct.setVisibility(View.VISIBLE);
         chooseProductAdapter.setData(list);
     }
 
     private void getDataProduct(DialogSelectBinding dialogProductLayoutBinding) {
-        ApiProduct.apiProduct.getProductBySupplier(token, pageIndexProduct, supplierId).enqueue(new Callback<ProductResponse>() {
-            @Override
-            public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        perPage = response.body().getLast_page();
-                        ProductResponse productResponse = response.body();
-                        if (productResponse.getData() != null) {
-                            List<Product> tempList = Arrays.asList(productResponse.getData());
-                            onCheckList1(dialogProductLayoutBinding, tempList);
+        if (invoiceType == 0) {
+            ApiProduct.apiProduct.getProductBySupplier(token, pageIndexProduct, supplierId).enqueue(new Callback<ProductResponse>() {
+                @Override
+                public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
+                    if (response.isSuccessful()) {
+                        if (response.body() != null) {
+                            perPage = response.body().getLast_page();
+                            ProductResponse productResponse = response.body();
+                            if (productResponse.getData() != null) {
+                                List<Product> tempList = Arrays.asList(productResponse.getData());
+                                onCheckList1(dialogProductLayoutBinding, tempList);
+                            }
                         }
                     }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<ProductResponse> call, Throwable throwable) {
-                Log.d("zzzzzzzzzz", "onFailure: " + throwable.getMessage());
-                Toast.makeText(getActivity(), "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onFailure(Call<ProductResponse> call, Throwable throwable) {
+                    Log.d("zzzzzzzzzz", "onFailure: " + throwable.getMessage());
+                    Toast.makeText(getActivity(), "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        } else {
+            ApiProduct.apiProduct.getData(token, pageIndexProduct).enqueue(new Callback<ProductResponse>() {
+                @Override
+                public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
+                    if (response.isSuccessful()) {
+                        if (response.body() != null) {
+                            perPage = response.body().getLast_page();
+                            ProductResponse productResponse = response.body();
+                            if (productResponse.getData() != null) {
+                                List<Product> tempList = Arrays.asList(productResponse.getData());
+                                onCheckList1(dialogProductLayoutBinding, tempList);
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ProductResponse> call, Throwable throwable) {
+
+                }
+            });
+        }
     }
 
     private void getDataSearchProduct(DialogSelectBinding dialogProductLayoutBinding, String keyword) {
@@ -572,8 +916,5 @@ public class InvoiceAddFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
+
 }

@@ -18,7 +18,9 @@ import java.util.List;
 
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiProduct;
+import fpoly.md16.depotlife.Product.Adapter.ProductBatchAdapter;
 import fpoly.md16.depotlife.Product.Adapter.ProductImagesAdapter;
+import fpoly.md16.depotlife.Product.Model.BatchResponse;
 import fpoly.md16.depotlife.Product.Model.Product;
 import fpoly.md16.depotlife.R;
 import fpoly.md16.depotlife.Supplier.Fragment.SupplierDetailFragment;
@@ -31,6 +33,8 @@ public class ProductDetailFragment extends Fragment {
     private FragmentProductDetailBinding binding;
     private Product product;
     private List<Product> products;
+    private List<BatchResponse> list;
+    private ProductBatchAdapter adapter;
     private String token;
     private Bundle bundle;
 
@@ -79,6 +83,28 @@ public class ProductDetailFragment extends Fragment {
     }
 
     private void getData() {
+        ApiProduct.apiProduct.getBatch(token, product.getId()).enqueue(new Callback<List<BatchResponse>>() {
+            @Override
+            public void onResponse(Call<List<BatchResponse>> call, Response<List<BatchResponse>> response) {
+                if (response.isSuccessful()) {
+                    list = response.body();
+//                    assert list != null;
+                    if (list.size() > 0) {
+                        binding.rcvInventory.setVisibility(View.VISIBLE);
+                        adapter = new ProductBatchAdapter(getContext(), list, null);
+                        binding.rcvInventory.setAdapter(adapter);
+                    } else {
+                        binding.rcvInventory.setVisibility(View.GONE);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<BatchResponse>> call, Throwable throwable) {
+                Log.d("onFailure", "onFailure: " + throwable.getMessage());
+
+            }
+        });
         ApiProduct.apiProduct.getProductById(token, product.getId()).enqueue(new Callback<List<Product>>() {
             @Override
             public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {

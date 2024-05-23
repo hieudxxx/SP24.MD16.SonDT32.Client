@@ -66,9 +66,9 @@ public class AccountFragment extends Fragment {
             Helper.loadFragment(getActivity().getSupportFragmentManager(), new EditAccountFragment(), bundle, R.id.frag_container_account);
         });
 
-//        binding.layoutEditPass.setOnClickListener(view13 -> {
-//            Helper.loadFragment(getParentFragmentManager(), new EditPassFragment(), null, R.id.frag_container_account);
-//        });
+        binding.layoutEditPass.setOnClickListener(view13 -> {
+            Helper.loadFragment(getActivity().getSupportFragmentManager(), new EditPassFragment(), null, R.id.frag_container_account);
+        });
 
         if (getContext() != null) {
 
