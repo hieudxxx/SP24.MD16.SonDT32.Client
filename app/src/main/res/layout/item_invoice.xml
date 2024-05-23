@@ -34,7 +34,7 @@
             style="@style/custom_tv_date_time"
             android:fontFamily="@font/nunito_extrabold"
             android:text="01/01/2023"
-            android:textColor="@color/gray" />
+            android:textColor="@color/gray60" />
     </LinearLayout>
 
     <LinearLayout
@@ -51,7 +51,7 @@
             style="@style/custom_tv_date_time"
             android:fontFamily="@font/nunito_extrabold"
             android:text="Chưa thanh toán"
-            android:textColor="@color/gray" />
+            android:textColor="@color/gray60" />
 
 
         <TextView

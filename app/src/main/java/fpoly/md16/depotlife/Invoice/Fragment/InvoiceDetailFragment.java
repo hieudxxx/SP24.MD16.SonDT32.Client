@@ -72,7 +72,6 @@ public class InvoiceDetailFragment extends Fragment {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL);
         binding.rcvProductList.addItemDecoration(dividerItemDecoration);
 
-
         binding.rcvProductList.setAdapter(adapter);
         adapter.setData(list);
     }
@@ -82,19 +81,38 @@ public class InvoiceDetailFragment extends Fragment {
         binding.tvInvoiceDate.setText("Invoice Date: " + invoice.getDate_created().substring(0, 10));
         if (invoice.getInvoiceType() == 0) {
             binding.tvInvoiceType.setText("Invoice Import");
-            binding.tvSupplierName.setText(invoice.getSupplier().getName());
-            binding.tvSupplierPhone.setText(invoice.getSupplier().getPhone());
-            binding.tvAddress.setText(invoice.getSupplier().getAddress());
+            if (!(invoice.getSupplier() == null)){
+                if (invoice.getSupplier().getPhone() == null) binding.tvSupplierPhone.setText("");
+                else binding.tvSupplierPhone.setText(invoice.getSupplier().getPhone());
+
+                if (invoice.getSupplier().getName() == null) binding.tvSupplierName.setText("");
+                else binding.tvSupplierName.setText(invoice.getSupplier().getName());
+
+                if (invoice.getSupplier().getAddress() == null) binding.tvAddress.setText("");
+                else binding.tvAddress.setText(invoice.getSupplier().getAddress());
+            }
+
             binding.tvCustomerName.setText("Warehouse Bắc Từ Liêm");
             binding.tvCustomerPhone.setText("0862850761");
             binding.tvCustomerEmail.setText("warehousesuport@gmail.com");
             binding.tvCustomerAddress.setText("Xuân Phương, Bắc Từ Liêm, Hà Nội");
         } else {
             binding.tvInvoiceType.setText("Invoice Export");
+
+            binding.tvAddress.setText("Xuân Phương, Bắc Từ Liêm, Hà Nội");
+            binding.tvSupplierName.setText("Warehouse Bắc Từ Liêm");
+            binding.tvSupplierPhone.setText("0862850761");
+            binding.tvEmail.setText("warehousesuport@gmail.com");
+            binding.tvAddress.setText("Xuân Phương, Bắc Từ Liêm, Hà Nội");
+
             binding.tvCustomerName.setText(invoice.getCustomer().getCustomerName());
             binding.tvCustomerPhone.setText(invoice.getCustomer().getCustomerPhone());
             binding.tvCustomerEmail.setText(invoice.getCustomer().getCustomerEmail());
             binding.tvCustomerAddress.setText(invoice.getCustomer().getAddress());
+            Log.d("tag_kiemTra", "setInit: "+invoice.getCustomer().getCustomerName());
+            Log.d("tag_kiemTra", "setInit: "+invoice.getCustomer().getCustomerPhone());
+            Log.d("tag_kiemTra", "setInit: "+invoice.getCustomer().getCustomerEmail());
+            Log.d("tag_kiemTra", "setInit: "+invoice.getCustomer().getAddress());
         }
         if (invoice.getStatusPayment() == 0) {
             if (invoice.getDueDate() != null) {
@@ -113,8 +131,10 @@ public class InvoiceDetailFragment extends Fragment {
         binding.tvTerms.setText(invoice.getTerm());
         if (invoice.getSignature_img() == null)
             binding.imgSignature.setImageResource(R.drawable.add);
-        else
+        else {
             Picasso.get().load("https://warehouse.sinhvien.io.vn/public/" + invoice.getSignature_img().replaceFirst("public", "storage")).into(binding.imgSignature);
+        }
+
 
 
         binding.tvNameSignature.setText(invoice.getSignature_name());
@@ -142,7 +162,7 @@ public class InvoiceDetailFragment extends Fragment {
         ApiInvoice.apiInvoice.getDetail("Bearer " + token, ID).enqueue(new Callback<Invoice>() {
             @Override
             public void onResponse(Call<Invoice> call, Response<Invoice> response) {
-                Log.d("zzzzzzzzzzzzzzzz", "onResponse: " + response.code());
+//                Log.d("zzzzzzzzzzzzzzzz", "onResponse: " + response.code());
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
                         setupAdapter(response.body().getProductInvoice(), response.body());

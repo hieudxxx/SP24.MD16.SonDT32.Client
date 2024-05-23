@@ -27,10 +27,6 @@ public class InvoiceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private static final int TYPE_LOADING = 2;
     private boolean isLoading;
 
-    //    private final InterClickItemData interClickItemData;
-//    public interface InterClickItemData {
-//        void clickItem(Invoice invoice);
-//    }
     public InvoiceAdapter(Context context, ArrayList<Invoice> list) {
         this.context = context;
         this.list = list;
@@ -89,7 +85,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
             holder.itemView.setOnClickListener(view -> {
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("invoiceId", list.get(holder.getAdapterPosition()).getId());
+                bundle.putInt("invoiceId", list.get(holder.getAdapterPosition()).getId());
                 context.startActivity(new Intent(context, InvoiceActivity.class).putExtras(bundle));
 //            interClickItemData.clickItem(invoice);
             });

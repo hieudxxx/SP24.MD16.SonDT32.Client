@@ -127,9 +127,9 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void removeFooterLoading() {
         isLoading = false;
         int position = list.size() - 1;
-        if (list.get(position) != null) {
-            list.remove(position);
-            notifyItemRemoved(position);
-        }
+//        if (list.get(position) != null) {
+//            list.remove(position);
+//            notifyItemRemoved(position);
+//        }
     }
 }

@@ -1,5 +1,8 @@
 package fpoly.md16.depotlife.Product.Fragment;
 
+import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,9 +17,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -44,6 +49,7 @@ public class ProductFragment extends Fragment {
     private int perPage = 0;
     private String token;
     public static boolean isLoadData = false;
+    private boolean isLoadList = false;
     private boolean isLoading;
     private boolean isLastPage;
     private Runnable runnable;
@@ -62,6 +68,41 @@ public class ProductFragment extends Fragment {
         ((AppCompatActivity) getActivity()).setSupportActionBar(binding.tbProduct);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        binding.searchview.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText.isEmpty()) {
+                    isLoadList = true;
+                    list.clear();
+                    pageIndex = 1;
+                    Log.d("tag_kiemTra", "onQueryTextChange: ");
+                    callApi();
+                    adapter.notifyDataSetChanged();
+                } else {
+                    debounceSearch(newText, 300);
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        binding.searchview.setOnQueryTextFocusChangeListener((view1, b) -> {
+            if (b){
+                isLoadList = !b;
+//                Toast.makeText(getContext(), ""+b+"-----"+isLoadList, Toast.LENGTH_SHORT).show();
+            } else {
+                isLoadList = !b;
+//                Toast.makeText(getContext(), ""+b+"-----"+isLoadList, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
         binding.fab.setOnClickListener(v -> {
             startActivity(new Intent(getActivity(), ProductActivity.class));
         });
@@ -75,9 +116,13 @@ public class ProductFragment extends Fragment {
         binding.rcvProduct.addOnScrollListener(new Pagination((LinearLayoutManager) binding.rcvProduct.getLayoutManager()) {
             @Override
             public void loadMore() {
-                isLoading = true;
-                pageIndex += 1;
-                loadNextPage();
+                if (isLoadList){
+                    isLoading = true;
+                    pageIndex += 1;
+                    Log.d("tag_kiemTra", "loadMore: ");
+                    loadNextPage();
+                }
+
             }
 
             @Override
@@ -92,44 +137,53 @@ public class ProductFragment extends Fragment {
         });
     }
 
-    private void loadNextPage() {
-        handler.postDelayed(() -> {
-            adapter.removeFooterLoading();
-            callApi();
+    private void debounceSearch(final String newText, long delayMillis) {
+        Log.d("tag_kiemTra", "debounceSearch: "+newText);
+        if (runnable != null) handler.removeCallbacks(runnable);
+        runnable = () -> {
+//            pageIndex = 1;
+//            list.clear();
+            searchData(newText);
+        };
 
-            isLoading = false;
-            if (pageIndex < perPage) {
-                adapter.addFooterLoading();
-            } else {
-                isLastPage = true;
-            }
-        }, 500);
+        // Lên lịch thực hiện tìm kiếm sau một khoảng thời gian delay
+        handler.postDelayed(runnable, delayMillis);
     }
 
-    private void callApi() {
-        ApiProduct.apiProduct.getData(token, pageIndex).enqueue(new Callback<ProductResponse>() {
+    private void searchData(String keyword) {
+        ApiProduct.apiProduct.productSearch(token, keyword, null).enqueue(new Callback<List<Product>>() {
             @Override
-            public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
+            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
                 if (response.isSuccessful()) {
-                    productResponse = response.body();
-                    if (productResponse != null) {
-                        binding.tvTotalProduct.setText(productResponse.getTotal() + "");
-                        perPage = productResponse.getLast_page();
-                        onCheckList(productResponse);
+                    List<Product> tempList = response.body();
+                    if (tempList != null) {
+                        binding.tvTotalProduct.setText(tempList.size() + "");
+                        onCheckListSearch(tempList);
+                    }
+                } else {
+                    try {
+                        String errorBody = response.errorBody().string();
+                        Log.e("onResponse", "errorBody: " + errorBody);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<ProductResponse> call, Throwable throwable) {
-                Log.d("onFailure", "onFailure: " + throwable.getMessage());
-                Toast.makeText(getActivity(), "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<List<Product>> call, Throwable t) {
+                Log.d("tag_kiemTra", "onFailure: " + t.getMessage());
+                Toast.makeText(getContext(), "thất bại", Toast.LENGTH_SHORT).show();
             }
         });
     }
-    private void onCheckList(ProductResponse productResponse) {
-        if (productResponse.getData() != null) {
-            list.addAll(Arrays.asList(productResponse.getData()));
+
+    private void onCheckListSearch(List<Product> tempList) {
+        Log.d("tag_kiemTra", "onCheckListSearch: ");
+        if (list != null) {
+            list.clear();
+            adapter.setData(list);
+            list.addAll(tempList);
             if (!list.isEmpty()) {
                 binding.layoutTotal.setVisibility(View.VISIBLE);
                 binding.tvEmpty.setVisibility(View.GONE);
@@ -142,10 +196,117 @@ public class ProductFragment extends Fragment {
             }
         }
     }
+
+//    private void onCheckSearch(invoice) {
+//        if (invoice != null) {
+//            list.clear();
+//            list.add(invoice);
+//            binding.rcvInvoice.setVisibility(View.VISIBLE);
+//            binding.tvTotalInvoice.setVisibility(View.VISIBLE);
+//            binding.tvEmpty.setVisibility(View.GONE);
+//            binding.pbLoading.setVisibility(View.GONE);
+//            binding.pbLoadMore.setVisibility(View.GONE);
+//            binding.rcvInvoice.setAdapter(adapter);
+//            adapter.setData(list);
+//        } else {
+//            binding.rcvInvoice.setVisibility(View.INVISIBLE);
+//            binding.tvTotalInvoice.setVisibility(View.GONE);
+//            binding.pbLoading.setVisibility(View.GONE);
+//            binding.pbLoadMore.setVisibility(View.GONE);
+//            binding.tvEmpty.setVisibility(View.VISIBLE);
+//        }
+//    }
+
+
+    private void loadNextPage() {
+        handler.postDelayed(() -> {
+            adapter.removeFooterLoading();
+
+            isLoading = false;
+            if (pageIndex < perPage) {
+                adapter.addFooterLoading();
+                callApi();
+                Log.d("tag_kiemTra", "loadNextPage: ");
+            } else {
+                isLastPage = true;
+            }
+        }, 500);
+    }
+
+    private void callApi() {
+        Log.d("tag_kiemTra", "callApi: ");
+        ApiProduct.apiProduct.getData(token, pageIndex).enqueue(new Callback<ProductResponse>() {
+            @Override
+            public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
+                if (response.isSuccessful()) {
+                    productResponse = response.body();
+                    if (productResponse != null) {
+                        binding.tvTotalProduct.setText(productResponse.getTotal() + "");
+                        perPage = productResponse.getLast_page();
+                        if (productResponse.getData() != null) {
+                            List<Product> temp = Arrays.asList(productResponse.getData());
+                            onCheckList(temp);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ProductResponse> call, Throwable throwable) {
+                Log.d("onFailure", "onFailure: " + throwable.getMessage());
+                Toast.makeText(getActivity(), "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void onCheckList(List<Product> list1) {
+        if (list != null) {
+            list.addAll(list1);
+            if (!list.isEmpty()) {
+                binding.layoutTotal.setVisibility(View.VISIBLE);
+                binding.tvEmpty.setVisibility(View.GONE);
+                binding.pbLoading.setVisibility(View.GONE);
+                adapter.setData(list);
+            } else {
+                binding.layoutTotal.setVisibility(View.GONE);
+                binding.pbLoading.setVisibility(View.GONE);
+                binding.tvEmpty.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.toolbar_menu, menu);
+        inflater.inflate(R.menu.invoice_menu, menu);
+        SearchManager searchManager = (SearchManager) getContext().getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.item_search).getActionView();
+
+        if (searchView != null) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(((Activity) getContext()).getComponentName()));
+            searchView.setMaxWidth(Integer.MAX_VALUE);
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+//                    if (newText.isEmpty()) {
+//                        list.clear();
+//                        pageIndex = 1;
+//                        getData();
+//                        adapter.notifyDataSetChanged();
+//                    } else {
+//                        debounceSearch(newText, 300);
+//                        return true;
+//                    }
+                    return false;
+                }
+            });
+        }
+
     }
 
     @Override
@@ -157,6 +318,7 @@ public class ProductFragment extends Fragment {
             list.clear();
             adapter.notifyDataSetChanged();
             callApi();
+            Log.d("tag_kiemTra", "onResume: ");
             isLoadData = false;
         }
     }
