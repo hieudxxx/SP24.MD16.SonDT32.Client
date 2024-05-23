@@ -77,7 +77,12 @@ public class SupplierFragment extends Fragment {
         });
 
         binding.fab.setOnClickListener(view12 -> {
-            Helper.loadFragment(getParentFragmentManager(), new SupplierAddFragment(), null, R.id.frag_container_supplier);
+            Integer role = (Integer) Helper.getSharedPre(getContext(), "role", Integer.class);
+            if (role == 1){
+                Helper.loadFragment(getParentFragmentManager(), new SupplierAddFragment(), null, R.id.frag_container_supplier);
+            }else {
+                Toast.makeText(getContext(), "Bạn không có quyền truy cập chức năng này", Toast.LENGTH_SHORT).show();
+            }
         });
 
         token = "Bearer " + Helper.getSharedPre(getContext(), "token", String.class);

@@ -119,12 +119,13 @@
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnChangePass"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="15dp"
         android:layout_marginBottom="30dp"
         android:background="@drawable/bgr_btn_menu"
-        android:backgroundTint="@color/tv_blue_bold"
+        android:backgroundTint="@color/bgr_btn"
         android:text="Hoàn thành"
         android:textColor="@color/white" />
 </LinearLayout>

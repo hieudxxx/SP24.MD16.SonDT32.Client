@@ -113,8 +113,14 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
             @Override
             public void onClick(View view) {
                 if (onItemRcvClick != null){
-                    bottomSheetDialog.cancel();
-                    onItemRcvClick.onClick(customer);
+                    Integer role = (Integer) Helper.getSharedPre(context, "role", Integer.class);
+                    if (role == 1){
+                        bottomSheetDialog.cancel();
+                        onItemRcvClick.onClick(customer);
+                    }else {
+                        Toast.makeText(context, "Bạn không có quyền truy cập chức năng này", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
             }
 
@@ -123,26 +129,32 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
         binding.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Helper.onCheckdeleteDialog(context, () -> {
-                    ApiCustomers.API_CUSTOMERS.delete(token, customer.getId()).enqueue(new Callback<Customer>() {
-                        @Override
-                        public void onResponse(Call<Customer> call, Response<Customer> response) {
-                            if (response.isSuccessful() || response.code() == 200) {
-                                Toast.makeText(context, "Xóa khách hàng thành công!", Toast.LENGTH_SHORT).show();
-                                customerList.remove(customer);
-                                CustomerActivity.isLoadData = true;
-                                notifyDataSetChanged();
-                                bottomSheetDialog.cancel();
+                Integer role = (Integer) Helper.getSharedPre(context, "role", Integer.class);
+                if (role == 1){
+                    Helper.onCheckdeleteDialog(context, () -> {
+                        ApiCustomers.API_CUSTOMERS.delete(token, customer.getId()).enqueue(new Callback<Customer>() {
+                            @Override
+                            public void onResponse(Call<Customer> call, Response<Customer> response) {
+                                if (response.isSuccessful() || response.code() == 200) {
+                                    Toast.makeText(context, "Xóa khách hàng thành công!", Toast.LENGTH_SHORT).show();
+                                    customerList.remove(customer);
+                                    CustomerActivity.isLoadData = true;
+                                    notifyDataSetChanged();
+                                    bottomSheetDialog.cancel();
+                                }
                             }
-                        }
 
-                        @Override
-                        public void onFailure(Call<Customer> call, Throwable throwable) {
-                            Log.d("onFailure", "onFailure: " + throwable.getMessage());
-                            Toast.makeText(context, "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
-                        }
+                            @Override
+                            public void onFailure(Call<Customer> call, Throwable throwable) {
+                                Log.d("onFailure", "onFailure: " + throwable.getMessage());
+                                Toast.makeText(context, "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     });
-                });
+                }else {
+                    Toast.makeText(context, "Bạn không có quyền truy cập chức năng này", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }

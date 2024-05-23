@@ -150,55 +150,55 @@
                 android:id="@+id/btn_info"
                 style="@style/custom_bgr_btn2_menu"
                 android:drawableStart="@drawable/in4_shop"
-                android:text="Thông tin gian hàng" />
+                android:text="   Thông tin gian hàng" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_policy"
                 style="@style/custom_bgr_btn2_menu"
                 android:drawableStart="@drawable/policy"
-                android:text="Chính sách bảo mật" />
+                android:text="   Chính sách bảo mật" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_about"
                 style="@style/custom_bgr_btn2_menu"
                 android:drawableStart="@drawable/about_us"
-                android:text="Về chúng tôi" />
+                android:text="   Về chúng tôi" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_report"
                 style="@style/custom_bgr_btn2_menu"
                 android:drawableStart="@drawable/report"
-                android:text="Báo lỗi" />
+                android:text="   Báo lỗi" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_feedback"
                 style="@style/custom_bgr_btn2_menu"
                 android:drawableStart="@drawable/help"
-                android:text="Trợ giúp và phản hồi" />
+                android:text="   Trợ giúp và phản hồi" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_setting"
                 style="@style/custom_bgr_btn2_menu"
                 android:drawableStart="@drawable/settings"
-                android:text="Cài đặt" />
+                android:text="   Cài đặt" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_call"
                 style="@style/custom_bgr_btn2_menu"
                 android:drawableStart="@drawable/call"
-                android:text="Gọi tổng đài" />
+                android:text="   Gọi tổng đài" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_clause"
                 style="@style/custom_bgr_btn2_menu"
                 android:drawableStart="@drawable/rules"
-                android:text="Điều khoản" />
+                android:text="   Điều khoản" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_logout"
                 style="@style/custom_bgr_btn2_menu"
                 android:drawableStart="@drawable/logout"
-                android:text="Đăng xuất" />
+                android:text="   Đăng xuất" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
