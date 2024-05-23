@@ -104,7 +104,17 @@ public class MenuFragment extends Fragment {
             Helper.loadFragment(getActivity().getSupportFragmentManager(), new StatisticFragment(), null, R.id.frag_container_main);
             MainActivity.binding.bottomNav.show(1, true);
         });
-        binding.btnCustomer.setOnClickListener(v -> startActivity(new Intent(getContext(), CustomerActivity.class)));
+        binding.btnCustomer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Integer role = (Integer) Helper.getSharedPre(getContext(), "role", Integer.class);
+                if (role == 1){
+                    startActivity(new Intent(getContext(), CustomerActivity.class));
+                }else {
+                    Toast.makeText(getContext(), "Bạn không có quyền truy cập chức năng này", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         binding.btnInfo.setOnClickListener(v -> {
             noti_dialog();

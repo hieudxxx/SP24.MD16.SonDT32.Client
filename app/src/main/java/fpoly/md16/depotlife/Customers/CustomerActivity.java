@@ -94,7 +94,12 @@ public class CustomerActivity extends AppCompatActivity implements onItemRcvClic
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         binding.fab.setOnClickListener(v -> {
-            onAddCustomer(null);
+            Integer role = (Integer) Helper.getSharedPre(this, "role", Integer.class);
+            if (role == 1){
+                onAddCustomer(null);
+            }else {
+                Toast.makeText(this, "Bạn không có quyền truy cập chức năng này", Toast.LENGTH_SHORT).show();
+            }
         });
 
         binding.nestScoll.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {

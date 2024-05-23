@@ -43,11 +43,17 @@ public class DetailTabFragment extends Fragment {
 
         bundle = getArguments();
         if (bundle != null) {
-            id_sup =  bundle.getInt("id");
+            id_sup = bundle.getInt("id");
             if (id_sup > 0) {
                 getData();
                 binding.layoutDelete.setOnClickListener(view12 -> {
-                    delete();
+                    Integer role = (Integer) Helper.getSharedPre(getContext(), "role", Integer.class);
+                    if (role == 1) {
+                        delete();
+                    } else {
+                        Toast.makeText(getContext(), "Bạn không có quyền truy cập chức năng này", Toast.LENGTH_SHORT).show();
+                    }
+
                 });
             }
         }
@@ -82,16 +88,21 @@ public class DetailTabFragment extends Fragment {
 
                 if (response.isSuccessful()) {
                     supplier = response.body();
-                    binding.tvId.setText(supplier.getId()+"");
+                    binding.tvId.setText(supplier.getId() + "");
                     binding.tvName.setText(supplier.getName());
                     binding.tvAddress.setText(supplier.getAddress());
                     binding.tvPhone.setText(supplier.getPhone());
                     binding.tvTaxCode.setText(supplier.getTax_code());
 
                     binding.imgEdit.setOnClickListener(view13 -> {
-                        bundle = new Bundle();
-                        bundle.putSerializable("supplier", supplier);
-                        Helper.loadFragment(getActivity().getSupportFragmentManager(), new SupplierEditFragment(), bundle, R.id.frag_container_supplier);
+                        Integer role = (Integer) Helper.getSharedPre(getContext(), "role", Integer.class);
+                        if (role == 1) {
+                            bundle = new Bundle();
+                            bundle.putSerializable("supplier", supplier);
+                            Helper.loadFragment(getActivity().getSupportFragmentManager(), new SupplierEditFragment(), bundle, R.id.frag_container_supplier);
+                        } else {
+                            Toast.makeText(getContext(), "Bạn không có quyền truy cập chức năng này", Toast.LENGTH_SHORT).show();
+                        }
                     });
                 }
             }

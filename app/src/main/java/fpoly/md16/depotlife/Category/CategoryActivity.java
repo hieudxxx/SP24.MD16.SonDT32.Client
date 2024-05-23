@@ -3,6 +3,7 @@ package fpoly.md16.depotlife.Category;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import java.util.List;
 import fpoly.md16.depotlife.Category.Adapter.CategoryAdapter;
 import fpoly.md16.depotlife.Category.Model.Category;
 import fpoly.md16.depotlife.Category.Model.CategoryResponse;
+import fpoly.md16.depotlife.Customers.CustomerActivity;
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiCategory;
 import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiSupplier;
@@ -77,7 +79,13 @@ public class CategoryActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         binding.fab.setOnClickListener(v -> {
-            onAddCategory();
+            Integer role = (Integer) Helper.getSharedPre(this, "role", Integer.class);
+            if (role == 1){
+                onAddCategory();
+            }else {
+                Toast.makeText(this, "Bạn không có quyền truy cập chức năng này", Toast.LENGTH_SHORT).show();
+            }
+
         });
 
         binding.nestScoll.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {

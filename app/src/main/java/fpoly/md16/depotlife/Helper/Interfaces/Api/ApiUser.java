@@ -27,4 +27,7 @@ public interface ApiUser {
     @POST("profile/update/{id}")
     Call<StaffResponse.User> update(@Header("Authorization") String authToken, @Path("id") int id, @Body StaffResponse.User data);
 
+    @POST("profile/update-password/{id}")
+    Call<StaffResponse.User> editPass(@Header("Authorization") String authToken, @Path("id") int id, @Body StaffResponse.User data);
+
 }
