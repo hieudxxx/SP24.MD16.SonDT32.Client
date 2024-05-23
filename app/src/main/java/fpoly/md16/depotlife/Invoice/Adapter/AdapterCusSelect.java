@@ -41,11 +41,11 @@ public class AdapterCusSelect extends RecyclerView.Adapter<AdapterCusSelect.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.binding.tvName.setText(list.get(position).getCustomerName());
 
-        holder.binding.tvStatus.setText(list.get(position).getStatus() == 1 ? "Active" : "Inactive");
+        holder.binding.tvStatus.setText(list.get(position).getStatus() == 1 ? "Online" : "Off");
         holder.binding.tvStatus.setTextColor(list.get(position).getStatus() == 1 ? Color.GREEN : Color.RED);
 
         holder.binding.tvPhone.setText(list.get(position).getCustomerPhone());
-        holder.binding.tvTotalInvoice.setText(list.get(position).getTotalInvoices());
+        holder.binding.tvTotalInvoice.setText(list.get(position).getTotalInvoices()+"");
         holder.binding.email.setText(list.get(position).getCustomerEmail());
 
         holder.itemView.setOnClickListener(view -> {

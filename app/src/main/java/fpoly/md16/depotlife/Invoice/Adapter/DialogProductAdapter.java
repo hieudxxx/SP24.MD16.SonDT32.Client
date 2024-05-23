@@ -1,5 +1,6 @@
 package fpoly.md16.depotlife.Invoice.Adapter;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -17,6 +18,7 @@ public class DialogProductAdapter extends RecyclerView.Adapter<DialogProductAdap
     private ArrayList<Product> list;
     private final InterClickItemData interClickItemData;
     private List<Product> listChooseProduct;
+    private int invoiceType;
 
     public interface InterClickItemData {
         void chooseItem(Product product, Boolean aBoolean, int id);
@@ -27,9 +29,10 @@ public class DialogProductAdapter extends RecyclerView.Adapter<DialogProductAdap
         notifyDataSetChanged();
     }
 
-    public DialogProductAdapter(InterClickItemData interClickItemData, List<Product> listChooseProduct) {
+    public DialogProductAdapter(InterClickItemData interClickItemData, List<Product> listChooseProduct, int invoiceType) {
         this.interClickItemData = interClickItemData;
         this.listChooseProduct = listChooseProduct;
+        this.invoiceType = invoiceType;
     }
 
     @NonNull
@@ -45,15 +48,22 @@ public class DialogProductAdapter extends RecyclerView.Adapter<DialogProductAdap
         if (list.get(position) == null) return;
 
         holder.binding.tvName.setText(list.get(position).getProduct_name());
-        if (list.get(position).getSupplier() != null) holder.binding.tvSupplier.setText(list.get(position).getSupplier().getName());
 
-        if (list.get(position).getCategory() != null) holder.binding.tvCategories.setText(list.get(position).getCategory().getName());
+        if (list.get(position).getInventory() == 0) {
+            holder.binding.layout.setBackgroundColor(Color.GRAY);
+        }
+        if (list.get(position).getSupplier() != null)
+            holder.binding.tvSupplier.setText(list.get(position).getSupplier().getName());
+
+        if (list.get(position).getCategory() != null)
+            holder.binding.tvCategories.setText(list.get(position).getCategory().getName());
 
         holder.binding.tvInventory.setText(String.valueOf(list.get(position).getInventory()));
         holder.binding.tvExportPrice.setText(Helper.formatVND(list.get(position).getExport_price()));
         holder.binding.tvImportPrice.setText(Helper.formatVND(list.get(position).getImport_price()));
 
-        if (list.get(position).getLocation() != null) holder.binding.tvLocation.setText(list.get(position).getLocation().getCode());
+        if (list.get(position).getLocation() != null)
+            holder.binding.tvLocation.setText(list.get(position).getLocation().getCode());
         else holder.binding.tvLocation.setText("Không có vị trí");
 
         Helper.setImgProduct(list.get(position).getImg(), holder.binding.img);
@@ -64,8 +74,16 @@ public class DialogProductAdapter extends RecyclerView.Adapter<DialogProductAdap
         }
 
         holder.itemView.setOnClickListener(view -> {
-            holder.binding.cbxProduct.setChecked(!holder.binding.cbxProduct.isChecked());
-            interClickItemData.chooseItem(list.get(position), holder.binding.cbxProduct.isChecked(), list.get(position).getId());
+            if (invoiceType == 0) {
+                holder.binding.cbxProduct.setChecked(!holder.binding.cbxProduct.isChecked());
+                interClickItemData.chooseItem(list.get(position), holder.binding.cbxProduct.isChecked(), list.get(position).getId());
+            } else if (invoiceType == 1) {
+                if (list.get(position).getInventory() > 0) {
+                    holder.binding.cbxProduct.setChecked(!holder.binding.cbxProduct.isChecked());
+                    interClickItemData.chooseItem(list.get(position), holder.binding.cbxProduct.isChecked(), list.get(position).getId());
+                }
+            }
+
         });
     }
 

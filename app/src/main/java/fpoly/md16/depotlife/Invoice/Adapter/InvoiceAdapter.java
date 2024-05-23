@@ -135,15 +135,16 @@ public class InvoiceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     public void addFooterLoading() {
         isLoading = true;
+        list.add(new Invoice());
     }
 
     public void removeFooterLoading() {
         isLoading = false;
-        int position = list.size() - 1;
-        if (list.get(position) != null) {
-            list.remove(position);
-            notifyItemRemoved(position);
-        }
+        int position = list.size()+1;
+//        if (list.get(position) != null) {
+//            list.remove(position);
+//            notifyItemRemoved(position);
+//        }
     }
 
 }
