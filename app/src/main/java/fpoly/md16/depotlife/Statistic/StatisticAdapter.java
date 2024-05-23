@@ -1,10 +1,13 @@
 package fpoly.md16.depotlife.Statistic;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -13,24 +16,28 @@ import java.util.List;
 import fpoly.md16.depotlife.databinding.ItemProductStatisitcBinding;
 
 public class StatisticAdapter extends RecyclerView.Adapter<StatisticAdapter.StatisticViewHolder> {
-    private ArrayList<InventoryModel.Product> list;
+    private List<InventoryModel.Product> list = new ArrayList<>();
     private final InterClickItemData interClickItemData;
+
+    private Context context;
 
     public interface InterClickItemData {
         void clickItem(InventoryModel.Product product);
     }
 
     public void setData(List<InventoryModel.Product> list) {
-        this.list = (ArrayList<InventoryModel.Product>) list;
+        if (list != null) {
+            this.list = list;
+        } else {
+            this.list = new ArrayList<>();
+        }
         notifyDataSetChanged();
     }
 
-    public StatisticAdapter(InterClickItemData interClickItemData) {
+    public StatisticAdapter(InterClickItemData interClickItemData, Context context) {
         this.interClickItemData = interClickItemData;
+        this.context = context;
     }
-
-
-
 
     @NonNull
     @Override
@@ -42,21 +49,33 @@ public class StatisticAdapter extends RecyclerView.Adapter<StatisticAdapter.Stat
     @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull StatisticViewHolder holder, int position) {
-
         InventoryModel.Product product = list.get(position);
         if (product == null) return;
 
         holder.binding.tvName.setText(product.getProductName());
-        holder.binding.tvTonKho.setText(product.getTotalQuantity());
-        holder.binding.tvInven.setText(product.getExpiries().size());
+        holder.binding.tvTonKho.setText("Sl: " + product.getTotalQuantity());
+        if (product.getExpiries() != null) {
+            holder.binding.tvInven.setText("Số lô: " + product.getExpiries().size());
+        } else {
+            holder.binding.tvInven.setText("Số lô: 0");
+        }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (product.getExpiries() != null) {
+                    interClickItemData.clickItem(product);
+                }else {
+                    clickData();
+                }
+            }
+        });
+
     }
 
     @Override
     public int getItemCount() {
-        if (list != null) {
-            return list.size();
-        }
-        return 0;
+        return list.size();
     }
 
     public class StatisticViewHolder extends RecyclerView.ViewHolder {
@@ -66,5 +85,13 @@ public class StatisticAdapter extends RecyclerView.Adapter<StatisticAdapter.Stat
             super(binding.getRoot());
             this.binding = binding;
         }
+    }
+
+    private void clickData() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Thông báo");
+        builder.setMessage("Sản phẩm hết hàng!");
+        builder.setPositiveButton("OK",null );
+        builder.show();
     }
 }

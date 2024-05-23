@@ -1,6 +1,7 @@
 package fpoly.md16.depotlife.Statistic;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -21,6 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -97,13 +99,14 @@ public class StatisticFragment extends Fragment {
 
         callApiToday();
         callApiInventory();
-
+        productList = new ArrayList<>();
         statisticAdapter = new StatisticAdapter(new StatisticAdapter.InterClickItemData() {
             @Override
             public void clickItem(InventoryModel.Product product) {
-                // Handle item click
+                showDialog(product);
             }
-        });
+        }, view.getContext());
+
 
         binding.rcvInventory.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.rcvInventory.setAdapter(statisticAdapter);
@@ -126,12 +129,26 @@ public class StatisticFragment extends Fragment {
             if (moneyShow) {
                 binding.tvTotalInvoice.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                 binding.btnShowMoney.setImageDrawable(ContextCompat.getDrawable(view.getContext(), R.drawable.close_eye));
-            }else{
+            } else {
                 binding.tvTotalInvoice.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 binding.btnShowMoney.setImageDrawable(ContextCompat.getDrawable(view.getContext(), R.drawable.open_eye));
             }
         });
 
+    }
+
+    private void showDialog(InventoryModel.Product product) {
+        Dialog dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.dialog_inventory);
+        RecyclerView recyclerView = dialog.findViewById(R.id.rcvInvenSp);
+
+        ExpAdapter expAdapter = new ExpAdapter();
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(expAdapter);
+
+        expAdapter.setData(product.getExpiries());
+
+        dialog.show();
     }
 
     private void setValueLayout() {
@@ -618,18 +635,16 @@ public class StatisticFragment extends Fragment {
     }
 
     private void callApiInventory() {
-        ApiStatistic apiStatistic = ApiStatistic.apiStatistic.getClient().create(ApiStatistic.class);
-        apiStatistic.getInventory("Bearer " + token).enqueue(new Callback<InventoryModel.InventoryResponse>() {
+        ApiStatistic.apiStatistic.getInventory("Bearer " + token).enqueue(new Callback<InventoryModel.InventoryResponse>() {
             @Override
             public void onResponse(Call<InventoryModel.InventoryResponse> call, Response<InventoryModel.InventoryResponse> response) {
-                Log.d("zzzzzzzzzzzzz", "onResponse: " + response.code());
                 if (response.isSuccessful() && response.body() != null) {
                     inventoryResponse = response.body();
                     productList.clear();
-                    for (List<InventoryModel.Product> products : inventoryResponse.getProducts().values()) {
-                        productList.addAll(products);
-                    }
+                    productList.addAll(inventoryResponse.getProducts());
+                    binding.rcvInventory.setAdapter(statisticAdapter);
                     statisticAdapter.setData(productList);
+                    binding.tvInventory.setText("Tổng hàng tồn kho: "+inventoryResponse.getTotalInventory());
                 } else {
                     showNoDataMessage();
                 }
@@ -641,6 +656,11 @@ public class StatisticFragment extends Fragment {
                 Toast.makeText(getActivity(), "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void showNoDataMessage() {
+        // Hiển thị thông báo không có dữ liệu
+        Toast.makeText(getActivity(), "Không có dữ liệu", Toast.LENGTH_SHORT).show();
     }
 
     private void updateChart() {

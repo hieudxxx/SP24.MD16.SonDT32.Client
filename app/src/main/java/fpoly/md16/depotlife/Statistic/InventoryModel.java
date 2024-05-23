@@ -1,54 +1,45 @@
 package fpoly.md16.depotlife.Statistic;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
-import java.util.Map;
 
 public class InventoryModel {
 
-    public static class InventoryResponse {
-        private Map<String, List<Product>> products;
-        private int total_inventory;
+    public class Product {
+        @SerializedName("product_id")
+        private int productId;
 
-        public Map<String, List<Product>> getProducts() {
-            return products;
-        }
+        @SerializedName("product_name")
+        private String productName;
 
-        public void setProducts(Map<String, List<Product>> products) {
-            this.products = products;
-        }
-
-        public int getTotalInventory() {
-            return total_inventory;
-        }
-
-        public void setTotalInventory(int total_inventory) {
-            this.total_inventory = total_inventory;
-        }
-    }
-
-    public static class Product {
-        private int product_id;
-        private String product_name;
+        @SerializedName("category")
         private String category;
-        private Location location;
-        private String message;
-        private List<Expiry> expiries;
-        private int total_quantity;
 
+        @SerializedName("location")
+        private String location;
+
+        @SerializedName("expiries")
+        private List<Expiry> expiries;
+
+        @SerializedName("total_quantity")
+        private int totalQuantity;
+
+        // Getters and Setters
         public int getProductId() {
-            return product_id;
+            return productId;
         }
 
-        public void setProductId(int product_id) {
-            this.product_id = product_id;
+        public void setProductId(int productId) {
+            this.productId = productId;
         }
 
         public String getProductName() {
-            return product_name;
+            return productName;
         }
 
-        public void setProductName(String product_name) {
-            this.product_name = product_name;
+        public void setProductName(String productName) {
+            this.productName = productName;
         }
 
         public String getCategory() {
@@ -59,20 +50,12 @@ public class InventoryModel {
             this.category = category;
         }
 
-        public Location getLocation() {
+        public String getLocation() {
             return location;
         }
 
-        public void setLocation(Location location) {
+        public void setLocation(String location) {
             this.location = location;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-
-        public void setMessage(String message) {
-            this.message = message;
         }
 
         public List<Expiry> getExpiries() {
@@ -84,71 +67,61 @@ public class InventoryModel {
         }
 
         public int getTotalQuantity() {
-            return total_quantity;
+            return totalQuantity;
         }
 
-        public void setTotalQuantity(int total_quantity) {
-            this.total_quantity = total_quantity;
-        }
-    }
-
-    public static class Location {
-        private int zone;
-        private String shelf;
-        private int level;
-        private String code;
-
-        public int getZone() {
-            return zone;
-        }
-
-        public void setZone(int zone) {
-            this.zone = zone;
-        }
-
-        public String getShelf() {
-            return shelf;
-        }
-
-        public void setShelf(String shelf) {
-            this.shelf = shelf;
-        }
-
-        public int getLevel() {
-            return level;
-        }
-
-        public void setLevel(int level) {
-            this.level = level;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public void setCode(String code) {
-            this.code = code;
+        public void setTotalQuantity(int totalQuantity) {
+            this.totalQuantity = totalQuantity;
         }
     }
 
-    public static class Expiry {
-        private String expiry_date;
-        private int total_quantity;
+    public class Expiry {
+        @SerializedName("expiry_date")
+        private String expiryDate;
 
+        @SerializedName("total_quantity")
+        private int totalQuantity;
+
+        // Getters and Setters
         public String getExpiryDate() {
-            return expiry_date;
+            return expiryDate;
         }
 
-        public void setExpiryDate(String expiry_date) {
-            this.expiry_date = expiry_date;
+        public void setExpiryDate(String expiryDate) {
+            this.expiryDate = expiryDate;
         }
 
         public int getTotalQuantity() {
-            return total_quantity;
+            return totalQuantity;
         }
 
-        public void setTotalQuantity(int total_quantity) {
-            this.total_quantity = total_quantity;
+        public void setTotalQuantity(int totalQuantity) {
+            this.totalQuantity = totalQuantity;
+        }
+    }
+
+    public class InventoryResponse {
+        @SerializedName("products")
+        private List<Product> products;
+
+        @SerializedName("total_inventory")
+        private int totalInventory;
+
+        // Getters and Setters
+        public List<Product> getProducts() {
+            return products;
+        }
+
+        public void setProducts(List<Product> products) {
+            this.products = products;
+        }
+
+        public int getTotalInventory() {
+            return totalInventory;
+        }
+
+        public void setTotalInventory(int totalInventory) {
+            this.totalInventory = totalInventory;
         }
     }
 }
