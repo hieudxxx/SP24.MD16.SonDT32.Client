@@ -62,6 +62,8 @@ public interface ApiInvoice {
         private int invoice_type;
         private int pay_status;
         private int user_id;
+        private int supplier_id;
+        private int customer_id;
         private int total_amount;
         private String due_date;
         private MultipartBody.Part multipartBody;
@@ -69,7 +71,7 @@ public interface ApiInvoice {
         public InvoiceRequest() {
         }
 
-        public InvoiceRequest(int discount, List<Invoice.ProductInvoice> products, String note, String term, String signature_name, int invoice_type, int pay_status, int user_id, int total_amount, String due_date, MultipartBody.Part multipartBody) {
+        public InvoiceRequest(int discount, List<Invoice.ProductInvoice> products, String note, String term, String signature_name, int invoice_type, int pay_status, int user_id, int supplier_id, int customer_id, int total_amount, String due_date, MultipartBody.Part multipartBody) {
             this.discount = discount;
             this.products = products;
             this.note = note;
@@ -78,9 +80,27 @@ public interface ApiInvoice {
             this.invoice_type = invoice_type;
             this.pay_status = pay_status;
             this.user_id = user_id;
+            this.supplier_id = supplier_id;
+            this.customer_id = customer_id;
             this.total_amount = total_amount;
             this.due_date = due_date;
             this.multipartBody = multipartBody;
+        }
+
+        public int getSupplier_id() {
+            return supplier_id;
+        }
+
+        public void setSupplier_id(int supplier_id) {
+            this.supplier_id = supplier_id;
+        }
+
+        public int getCustomer_id() {
+            return customer_id;
+        }
+
+        public void setCustomer_id(int customer_id) {
+            this.customer_id = customer_id;
         }
 
         public int getDiscount() {

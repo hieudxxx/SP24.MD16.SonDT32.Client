@@ -29,6 +29,7 @@ import fpoly.md16.depotlife.Helper.Interfaces.Api.ApiInvoice;
 import fpoly.md16.depotlife.Invoice.Activity.InvoiceActivity;
 import fpoly.md16.depotlife.Invoice.Adapter.InvoiceDetailAdapter;
 import fpoly.md16.depotlife.Invoice.Model.Invoice;
+import fpoly.md16.depotlife.R;
 import fpoly.md16.depotlife.databinding.FragmentInvoiceDetailBinding;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -110,7 +111,12 @@ public class InvoiceDetailFragment extends Fragment {
         binding.tvDiscount.setText(invoice.getDiscount() + "%");
         binding.tvNotes.setText(invoice.getNote());
         binding.tvTerms.setText(invoice.getTerm());
-        Picasso.get().load("https://warehouse.sinhvien.io.vn/public/" + invoice.getSignature_img().replaceFirst("public", "storage")).into(binding.imgSignature);
+        if (invoice.getSignature_img() == null)
+            binding.imgSignature.setImageResource(R.drawable.add);
+        else
+            Picasso.get().load("https://warehouse.sinhvien.io.vn/public/" + invoice.getSignature_img().replaceFirst("public", "storage")).into(binding.imgSignature);
+
+
         binding.tvNameSignature.setText(invoice.getSignature_name());
         double totalAmount = invoice.getTotalAmount();
         double discount = invoice.getDiscount();

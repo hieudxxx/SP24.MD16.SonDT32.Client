@@ -69,8 +69,15 @@ public class ChooseProductAdapter extends RecyclerView.Adapter<ChooseProductAdap
 
         holder.binding.tvName.setText(product.getProduct_name());
         holder.binding.tvInventory.setText(String.valueOf(product.getInventory()));
-        holder.binding.tvExportPrice.setText(Helper.formatVND(product.getExport_price()));
-        holder.binding.tvImportPrice.setText(Helper.formatVND(product.getImport_price()));
+        if (valInvoiceType == 0){
+            holder.binding.layoutExportPrice.setVisibility(View.GONE);
+            holder.binding.layoutImportPrice.setVisibility(View.VISIBLE);
+            holder.binding.tvImportPrice.setText(Helper.formatVND(product.getImport_price()));
+        } else if (valInvoiceType == 1){
+            holder.binding.layoutExportPrice.setVisibility(View.VISIBLE);
+            holder.binding.layoutImportPrice.setVisibility(View.GONE);
+            holder.binding.tvExportPrice.setText(Helper.formatVND(product.getExport_price()));
+        }
         Helper.setImgProduct(product.getImg(), holder.binding.img);
 
         if (valInvoiceType == 0)
