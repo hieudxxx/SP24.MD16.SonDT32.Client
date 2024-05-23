@@ -3,16 +3,11 @@ package fpoly.md16.depotlife.Invoice.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.Menu;
 import android.view.View;
-import android.view.WindowManager;
-
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import fpoly.md16.depotlife.Helper.Helper;
 import fpoly.md16.depotlife.Invoice.Fragment.InvoiceAddFragment;
@@ -32,7 +27,7 @@ public class InvoiceActivity extends AppCompatActivity {
         binding = ActivityInvoiceBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        int invoiceId = getIntent().getIntExtra("invoiceId",0);
+        int invoiceId = getIntent().getIntExtra("invoiceId", 0);
         Invoice invoiceDetail = (Invoice) getIntent().getSerializableExtra("invoiceDetail");
         int typeInvoice = getIntent().getIntExtra("type_invoice", 0);
 
@@ -45,10 +40,9 @@ public class InvoiceActivity extends AppCompatActivity {
             bundle.putSerializable("invoiceDetail", invoiceDetail);
             Helper.loadFragment(getSupportFragmentManager(), new InvoiceEditFragment(), bundle, R.id.frag_container_invoice);
         } else {
-            InvoiceAddFragment fragment = new InvoiceAddFragment();
             Bundle bundle = new Bundle();
             bundle.putInt("type_invoice", typeInvoice);
-            Helper.loadFragment(getSupportFragmentManager(), fragment, bundle, R.id.frag_container_invoice);
+            Helper.loadFragment(getSupportFragmentManager(), new InvoiceAddFragment(), bundle, R.id.frag_container_invoice);
         }
     }
 

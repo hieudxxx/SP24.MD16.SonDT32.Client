@@ -424,7 +424,7 @@ public class CustomerActivity extends AppCompatActivity implements onItemRcvClic
                 if (response.isSuccessful()) {
                     List<Customer> customers = response.body();
                     if (customers != null) {
-                        binding.tvTotalInvoice.setText("1");
+                        binding.tvTotalInvoice.setText(customers.size()+"");
                         onCheckSearch(customers);
                     }
                 } else {

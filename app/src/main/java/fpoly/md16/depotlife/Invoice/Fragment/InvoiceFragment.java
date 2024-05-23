@@ -58,8 +58,6 @@ public class InvoiceFragment extends Fragment {
     private boolean isLastPage;
 
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentInvoiceBinding.inflate(inflater, container, false);
@@ -91,6 +89,7 @@ public class InvoiceFragment extends Fragment {
             public void loadMore() {
                 isLoading = true;
                 pageIndex += 1;
+//                Log.d("tag_kiemTra", "loadMore: "+pageIndex);
                 loadNextPage();
             }
 
@@ -122,31 +121,33 @@ public class InvoiceFragment extends Fragment {
         binding.spnInvoiceType.setAdapter(adapter_type);
 
         binding.spnInvoiceType.setOnItemClickListener((adapterView, view13, i, l) -> {
-            if (i != 0){
+            if (i != 0) {
                 invoiceType = String.valueOf(i - 1);
-            }else {
+            } else {
                 invoiceType = null;
             }
             filterData();
         });
 
         binding.spnPaymentStatus.setOnItemClickListener((adapterView, view14, i, l) -> {
-            if (i != 0){
+            if (i != 0) {
                 payMentStatus = String.valueOf(i - 1);
-            }else {
+            } else {
                 payMentStatus = null;
             }
             filterData();
         });
     }
+
     private void loadNextPage() {
         handler.postDelayed(() -> {
             adapter.removeFooterLoading();
-            getData();
 
             isLoading = false;
             if (pageIndex < perPage) {
                 adapter.addFooterLoading();
+                getData();
+
             } else {
                 isLastPage = true;
             }
@@ -154,15 +155,14 @@ public class InvoiceFragment extends Fragment {
     }
 
 
-
     private void showPopupMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
         popupMenu.getMenuInflater().inflate(R.menu.popup_invoice, popupMenu.getMenu());
         popupMenu.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.invoice_import){
-                getContext().startActivity(new Intent(getContext(), InvoiceActivity.class).putExtra("type_invoice",0));
-            }else if (item.getItemId() == R.id.invoice_export) {
-                getContext().startActivity(new Intent(getContext(), InvoiceActivity.class).putExtra("type_invoice",1));
+            if (item.getItemId() == R.id.invoice_import) {
+                getContext().startActivity(new Intent(getContext(), InvoiceActivity.class).putExtra("type_invoice", 0));
+            } else if (item.getItemId() == R.id.invoice_export) {
+                getContext().startActivity(new Intent(getContext(), InvoiceActivity.class).putExtra("type_invoice", 1));
             }
             return false;
         });
@@ -174,13 +174,14 @@ public class InvoiceFragment extends Fragment {
         if (invoiceResponse.getData() != null) {
             list.addAll(Arrays.asList(invoiceResponse.getData()));
             if (!list.isEmpty()) {
+//                Log.d("tag_kiemTra", "onCheckList: " + list.size());
                 binding.rcvInvoice.setVisibility(View.VISIBLE);
                 binding.tvTotalInvoice.setVisibility(View.VISIBLE);
                 binding.tvEmpty.setVisibility(View.GONE);
                 binding.pbLoading.setVisibility(View.GONE);
                 binding.pbLoadMore.setVisibility(View.GONE);
                 pageIndex++;
-//                binding.rcvInvoice.setAdapter(adapter);
+                binding.rcvInvoice.setAdapter(adapter);
                 adapter.setData(list);
             } else {
                 binding.rcvInvoice.setVisibility(View.INVISIBLE);
@@ -234,7 +235,9 @@ public class InvoiceFragment extends Fragment {
                 public boolean onQueryTextChange(String newText) {
                     if (newText.isEmpty()) {
                         list.clear();
+                        pageIndex = 1;
                         getData();
+                        adapter.notifyDataSetChanged();
                     } else {
                         debounceSearch(newText, 300);
                         return true;
@@ -247,12 +250,10 @@ public class InvoiceFragment extends Fragment {
 
     private void filterData() {
         list.clear();
-        Log.d("tag_kiemTra", "invoiceType: " + invoiceType);
-        Log.d("tag_kiemTra", "payMentStatus: " + payMentStatus);
-        ApiInvoice.apiInvoice.filter(token,invoiceType,payMentStatus).enqueue(new Callback<InvoiceResponse>() {
+        ApiInvoice.apiInvoice.filter(token, invoiceType, payMentStatus).enqueue(new Callback<InvoiceResponse>() {
             @Override
             public void onResponse(Call<InvoiceResponse> call, Response<InvoiceResponse> response) {
-                Log.d("tag_kiemTra", "onFailure: " + response.code());
+//                Log.d("tag_kiemTra", "onFailure: " + response.code());
                 if (response.isSuccessful()) {
                     invoiceResponse = response.body();
                     if (invoiceResponse != null) {
@@ -263,7 +264,7 @@ public class InvoiceFragment extends Fragment {
                 } else {
                     try {
                         String errorBody = response.errorBody().string();
-                        Log.e("onResponse", "errorBodyData: " + errorBody);
+//                        Log.e("onResponse", "errorBodyData: " + errorBody);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -280,10 +281,10 @@ public class InvoiceFragment extends Fragment {
     }
 
     private void getData() {
+//        Log.d("tag_kiemTra", "getData: " + pageIndex);
         ApiInvoice.apiInvoice.getData(token, pageIndex).enqueue(new Callback<InvoiceResponse>() {
             @Override
             public void onResponse(Call<InvoiceResponse> call, Response<InvoiceResponse> response) {
-                Log.d("tag_kiemTra", "onFailure: " + response.code());
                 if (response.isSuccessful()) {
                     invoiceResponse = response.body();
                     if (invoiceResponse != null) {
@@ -316,10 +317,11 @@ public class InvoiceFragment extends Fragment {
             handler.removeCallbacks(runnable);
         }
 
-        // Tạo Runnable mới để thực hiện tìm kiếm
         runnable = new Runnable() {
             @Override
             public void run() {
+                pageIndex = 1;
+                list.clear();
                 searchData(Integer.parseInt(newText));
             }
         };
@@ -345,7 +347,6 @@ public class InvoiceFragment extends Fragment {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    //Toast.makeText(getActivity(), "Không thể lấy dữ liệu danh mục", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -360,15 +361,14 @@ public class InvoiceFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-//        list.clear();
-//        getData();
+//        Log.d("tag_kiemTra", "onResume: ");
 
-        if (isLoadData) {
+//        if (isLoadData) {
             pageIndex = 1;
             list.clear();
             adapter.notifyDataSetChanged();
             getData();
             isLoadData = false;
-        }
+//        }
     }
 }

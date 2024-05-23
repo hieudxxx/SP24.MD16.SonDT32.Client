@@ -31,7 +31,7 @@ public interface ApiProduct {
     Call<List<Product>> getProductById(@Header("Authorization") String authToken, @Path("id") int id);
 
     @GET("products/search")
-    Call<List<Product>> productSearch(@Header("Authorization") String authToken, @Query("keyword") String keyword, @Query("supplier_id") int supplier_id);
+    Call<List<Product>> productSearch(@Header("Authorization") String authToken, @Query("keyword") String keyword, @Query("supplier_id") Integer supplier_id);
 
     @GET("products/get-product-by-supplier")
     Call<ProductResponse> getProductBySupplier(@Header("Authorization") String authToken, @Query("page") int page_index, @Query("supplier_id") int supplier_id);

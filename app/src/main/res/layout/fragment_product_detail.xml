@@ -242,6 +242,18 @@
             android:height="50dp"
             android:background="@color/white" />
 
+        <TextView
+            style="@style/custom_tv_title"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Lô hàng" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvInventory"
+            style="@style/custom_rcv"
+            android:layout_marginTop="5dp"
+            tools:listitem="@layout/item_product_batch" />
+
         <LinearLayout
             android:id="@+id/layout_delete"
             android:layout_width="match_parent"

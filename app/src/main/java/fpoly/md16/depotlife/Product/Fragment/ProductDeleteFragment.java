@@ -91,7 +91,6 @@ public class ProductDeleteFragment extends Fragment implements onItemRcvClick<In
             @Override
             public void onFailure(Call<List<BatchResponse>> call, Throwable throwable) {
                 Log.d("onFailure", "onFailure: " + throwable.getMessage());
-                Toast.makeText(getActivity(), "Không thể kết nối đến máy chủ", Toast.LENGTH_SHORT).show();
             }
         });
     }

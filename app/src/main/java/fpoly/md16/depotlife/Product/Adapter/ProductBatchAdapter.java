@@ -2,6 +2,7 @@ package fpoly.md16.depotlife.Product.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -37,6 +38,7 @@ public class ProductBatchAdapter extends RecyclerView.Adapter<ProductBatchAdapte
         holder.binding.tvQuantity.setText("Số lượng: " + list.get(position).getQuantity_exp());
         holder.binding.tvExpiry.setText("Hạn sử dụng: " + list.get(position).getExpiry_date());
 
+        if (onItemRcvClick == null) holder.binding.imgDelete.setVisibility(View.GONE);
         holder.binding.imgDelete.setOnClickListener(view -> {
             if (onItemRcvClick != null) {
                 onItemRcvClick.onClick(holder.getAdapterPosition());
