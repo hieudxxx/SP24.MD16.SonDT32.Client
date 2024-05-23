@@ -50,12 +50,12 @@
                 app:cardElevation="10dp">
 
                 <ImageView
-                    android:layout_width="wrap_content"
                     android:id="@+id/filter"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/calendar" />
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/baseline_calendar_month_24" />
 
                 <LinearLayout
                     android:id="@+id/layout_calendar"
@@ -67,14 +67,8 @@
                     <TextView
                         android:id="@+id/tv_date"
                         style="@style/custom_tv_date_time"
-                        android:text="Hôm nay, 5/3/2024" />
+                        android:text="Hôm nay" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginEnd="10dp"
-                        android:src="@drawable/arrow_down_bold" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -92,25 +86,47 @@
                     android:padding="25dp">
 
                     <LinearLayout
+                        android:gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <TextView
+                        <LinearLayout
+                            android:gravity="center"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="Doanh thu"
-                            android:textColor="#939292"
-                            android:textSize="18sp" />
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="Doanh thu"
+                                android:textColor="#939292"
+                                android:textSize="18sp" />
+
+                            <ImageButton
+                                android:layout_marginLeft="5dp"
+                                android:id="@+id/btnShowMoney"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@color/white"
+                                android:cropToPadding="true"
+                                android:src="@drawable/open_eye" />
+
+                        </LinearLayout>
 
                         <TextView
+                            android:id="@+id/tvTotalInvoice"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
+                            android:inputType="textPassword"
                             android:text="15.000.000"
                             android:textColor="@color/bgr_btn"
                             android:textSize="25sp" />
+
+
                     </LinearLayout>
 
                     <View
@@ -145,9 +161,9 @@
                                 android:src="@drawable/export_invoice" />
 
                             <TextView
+                                android:id="@+id/totalExport"
                                 style="@style/custom_tv_mini_title"
                                 android:text="100" />
-
                         </LinearLayout>
 
                         <View
@@ -178,13 +194,11 @@
                                 android:src="@drawable/import_invoice" />
 
                             <TextView
+                                android:id="@+id/totalImport"
                                 style="@style/custom_tv_mini_title"
                                 android:text="100" />
-
                         </LinearLayout>
-
                     </LinearLayout>
-
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -198,20 +212,32 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="500dp"
+                    android:orientation="vertical"
+                    android:padding="10dp">
 
                     <TextView
                         style="@style/custom_tv_title_edt"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginTop="10dp"
-                        android:text="Biểu đồ" />
+                        android:text="Biểu đồ hóa đơn nhập/xuất" />
 
-                    <com.github.mikephil.charting.charts.CombinedChart
-                        android:id="@+id/combinedChart"
-                        android:layout_width="300dp"
-                        android:layout_height="300dp"
-                        android:layout_gravity="center" />
+                    <com.github.mikephil.charting.charts.BarChart
+                        android:id="@+id/idBarChart"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/noDataTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="100dp"
+                        android:gravity="center"
+                        android:text="Không có hóa đơn nào"
+                        android:textColor="@color/red"
+                        android:textSize="25dp"
+                        android:textStyle="bold" />
+
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -228,7 +254,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:padding="25dp">
+                    android:padding="10dp">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -244,13 +270,11 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tvInventory"
                             style="@style/custom_tv_mini_title"
+                            android:textSize="20sp"
                             android:text="hàng tồn kho 100" />
 
-                        <TextView
-                            style="@style/custom_tv_mini_title"
-                            android:text="60 triệu"
-                            android:textColor="@color/red" />
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -271,96 +295,15 @@
                     <TextView
                         style="@style/custom_tv_title_edt"
                         android:padding="10dp"
-                        android:text="Sản phẩm bán chạy" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:layout_weight="1"
-                            android:backgroundTint="@color/bgr_btn_statistic"
-                            app:cardCornerRadius="10dp">
-
-                            <TextView
-                                style="@style/custom_tv_btn"
-                                android:text="Theo doanh thu" />
-
-                        </androidx.cardview.widget.CardView>
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:layout_weight="1"
-                            android:backgroundTint="@color/bgr_btn_statistic"
-                            app:cardCornerRadius="10dp">
-
-                            <TextView
-                                style="@style/custom_tv_btn"
-                                android:text="Theo số lượng" />
-
-                        </androidx.cardview.widget.CardView>
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_margin="5dp"
-                            android:layout_weight="1"
-                            android:backgroundTint="@color/bgr_btn_statistic"
-                            app:cardCornerRadius="10dp">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    style="@style/custom_tv_btn"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Top 20" />
-
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
-                                    android:src="@drawable/filter_statistic" />
-
-                            </LinearLayout>
-                        </androidx.cardview.widget.CardView>
-                    </LinearLayout>
+                        android:text="Danh sách tồn kho" />
 
                     <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rcvInventory"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         tools:listitem="@layout/item_product_statisitc" />
 
-                    <TextView
-                        style="@style/custom_tv_title_edt"
-                        android:padding="10dp"
-                        android:text="Sản phẩm bán chạy" />
-
-                    <TextView
-                        style="@style/custom_tv_title_edt"
-                        android:padding="10dp"
-                        android:text="Sản phẩm bán chạy" />
-
-                    <TextView
-                        style="@style/custom_tv_title_edt"
-                        android:padding="10dp"
-                        android:text="Sản phẩm bán chạy" />
-
-                    <TextView
-                        style="@style/custom_tv_title_edt"
-                        android:padding="10dp"
-                        android:text="Sản phẩm bán chạy" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
         </LinearLayout>
